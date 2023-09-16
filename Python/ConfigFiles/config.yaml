@@ -1,0 +1,16 @@
+settings:
+    nofib_runs: 10
+    flags: [-fcall-arity,-fcase-merge,-fcmm-elim-common-blocks,-fcmm-sink,-fcpr-anal,-fcse,
+            -fdicts-cheap,-fdicts-strict,-fdmd-tx-dict-sel,-fdo-eta-reduction,-fdo-lambda-eta-expansion,
+            -feager-blackholing,-fenable-rewrite-rules,-fexcess-precision,-fexpose-all-unfoldings,
+            -ffloat-in,-ffull-laziness,-ffun-to-thunk,-fignore-asserts,-fignore-interface-pragmas,
+            -flate-dmd-anal,-fliberate-case,-fliberate-case-threshold=2000,-floopification,-fmax-inline-alloc-size=128,
+            -fmax-inline-memcpy-insns=32,-fmax-inline-memset-insns=32,-fmax-relevant-binds=6,-fmax-simplifier-iterations=4,
+            -fmax-worker-args=10,-fno-opt-coercion,-fno-pre-inlining,-fno-state-hack,-fomit-interface-pragmas,-fomit-yields,
+            -foptimal-applicative-do,-fpedantic-bottoms,-fregs-graph,-fregs-iterative,-fsimplifier-phases=2,-fsimpl-tick-factor=100,
+            -fspec-constr,-fspec-constr-count=3,-fspec-constr-threshold=2000,-fspecialise,-fcross-module-specialise,-fstatic-argument-transformation,
+            -fstrictness,-fstrictness-before=1,-funbox-small-strict-fields,-funbox-strict-fields,-funfolding-creation-threshold=750,
+            -funfolding-dict-discount=30,-funfolding-fun-discount=60,-funfolding-keeness-factor=1.5,-funfolding-use-threshold=60,
+            -fvectorisation-avoidance,-fvectorise,-fworker-wrapper]
+    ghc-default-flags: [-O0,-O1,-O2,-Os]
+    log_output_loc: logs/

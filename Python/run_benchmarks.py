@@ -3,21 +3,23 @@ import argparse
 import os
 import subprocess
 import json
+import yaml
 import multiprocessing
 from Optimizer import IterativeOptimizer
 
 NOFIB_CONFIG_DIR_PATH = r'..\nofib\mk'
 NOFIB_EXEC_PATH = r'../nofib'
 NOFIB_LOGS_DIR = r'..\nofib\logs'
-MY_CONFIG_DIR_PATH = r'ConfigFiles'
+CONFIG_PATH = r'ConfigFiles/config.yaml'
 FLAG_PRESET_FILE = "presets.json"
 TEST_DIRECTORIES = ["imaginary", "parallel", "real", "shake", "shootout", "smp", "spectral"]
-NUM_OF_CONFIG_FILES = 0
+CFG = None
 
 
 def build_individual_test_command(flag_string, process_name):
-    #return f'make -C {process_name} {flag_string} NoFibRuns=10 2>&1 | tee logs/{process_name}-nofib-log'
-    return f'make -C {process_name} {flag_string}  NoFibRuns=10 2>&1 | tee logs/what100-nofib-log'
+    # return f'make -C {process_name} {flag_string} NoFibRuns=10 2>&1 | tee logs/{process_name}-nofib-log'
+    return f'make -C {process_name} {flag_string}  NoFibRuns={CFG["settings"]["nofib_runs"]} 2>&1 | tee {CFG["settings"]["log_output_loc"]}what100-nofib-log'
+
 
 def apply_preset_task_all(process_name, flag_string):
     print("Applying Preset: " + process_name)
@@ -34,13 +36,13 @@ def apply_preset_task_all(process_name, flag_string):
 
 def setup_preset_task(preset):
     extra_flags = ""
-    if preset['flags']:
+    if preset:
         extra_flags = 'EXTRA_HC_OPTS="'
-        for flag in preset['flags']:
+        for flag in preset:
             extra_flags += flag
         extra_flags += '" '
         return extra_flags
-       # apply_preset_task_all(preset['presetName'], extra_flags)
+    # apply_preset_task_all(preset['presetName'], extra_flags)
     else:
         print("No flags? What's the point?")
         return ""
@@ -57,7 +59,7 @@ def apply_optimizer_task_one(optimizer, test):
     tests = []
     print(f'Apply Preset Task to: {test}')
 
-    command = build_individual_test_command(setup_preset_task(optimizer.flag_preset[0]), test)
+    command = build_individual_test_command(setup_preset_task(optimizer.flag_preset), test)
     print(command)
     result = subprocess.run(
         command,
@@ -92,14 +94,11 @@ def main():
 
     args = parser.parse_args()
 
-
-
     # Add the Flag Presets to dictionary. All these presets will be run once per config file.
     try:
         with open(FLAG_PRESET_FILE, "r") as preset_file:
             for line in preset_file:
                 flag_presets.append(json.loads(line))
-
 
         # Multithreading currently broken. I think the problem is with nofib. I think the quickest thread 'hijacks'
         # the compilation of the tests which causes the other threads to throw an error and exit prematurely. Testing
@@ -108,7 +107,7 @@ def main():
         match args.optimization_type:
             case 0:
                 print("Iterative Optimization Selected...")
-                optimizer = IterativeOptimizer(flag_presets)
+                optimizer = IterativeOptimizer(CFG["settings"]["flags"])
             case _:
                 print("Default Selected...")
 
@@ -133,4 +132,16 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+
+    try:
+        with open(CONFIG_PATH, "r") as cfg_file:
+            CFG = yaml.load(cfg_file)
+
+        if CFG is None:
+            raise IOError("CFG File is blank!")
+
+        main()
+
+    except IOError as e:
+        print("Unable to open Configuration file")
+        print(e)
