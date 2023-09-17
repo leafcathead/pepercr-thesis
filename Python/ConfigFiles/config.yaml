@@ -14,3 +14,5 @@ settings:
             -fvectorisation-avoidance,-fvectorise,-fworker-wrapper]
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     log_output_loc: logs/
+iterative_settings:
+    num_of_presets: 3

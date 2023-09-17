@@ -18,7 +18,7 @@ CFG = None
 
 def build_individual_test_command(flag_string, process_name):
     # return f'make -C {process_name} {flag_string} NoFibRuns=10 2>&1 | tee logs/{process_name}-nofib-log'
-    return f'make -C {process_name} {flag_string}  NoFibRuns={CFG["settings"]["nofib_runs"]} 2>&1 | tee {CFG["settings"]["log_output_loc"]}what100-nofib-log'
+    return f'make -C {process_name} {flag_string}  NoFibRuns={CFG["settings"]["nofib_runs"]} 2>&1 | tee {CFG["settings"]["log_output_loc"]}what101-nofib-log'
 
 
 def apply_preset_task_all(process_name, flag_string):
@@ -36,10 +36,10 @@ def apply_preset_task_all(process_name, flag_string):
 
 def setup_preset_task(preset):
     extra_flags = ""
-    if preset:
+    if len(preset) > 0:
         extra_flags = 'EXTRA_HC_OPTS="'
         for flag in preset:
-            extra_flags += flag
+            extra_flags += flag + " "
         extra_flags += '" '
         return extra_flags
     # apply_preset_task_all(preset['presetName'], extra_flags)
@@ -54,12 +54,15 @@ def apply_optimizer_task_all(optimizer):
     print("Apply Preset Task to all things")
     #   TODO: Implement
 
-
+# Don't forget to run each program with the different levels of difficulty! See nofib documentation!
 def apply_optimizer_task_one(optimizer, test):
     tests = []
     print(f'Apply Preset Task to: {test}')
 
-    command = build_individual_test_command(setup_preset_task(optimizer.flag_preset), test)
+    # Run test with -O0 as a baseline and -O2 as an upperbound.
+
+    # Run test with optimization set.
+    command = build_individual_test_command(setup_preset_task(optimizer.flag_presets), test)
     print(command)
     result = subprocess.run(
         command,
@@ -107,7 +110,7 @@ def main():
         match args.optimization_type:
             case 0:
                 print("Iterative Optimization Selected...")
-                optimizer = IterativeOptimizer(CFG["settings"]["flags"])
+                optimizer = IterativeOptimizer(CFG["settings"]["flags"], CFG["iterative_settings"]["num_of_presets"])
             case _:
                 print("Default Selected...")
 
