@@ -61,9 +61,13 @@ def apply_optimizer_task_one(optimizer, test):
     print(f'Apply Preset Task to: {test}')
 
     # Run test with -O0 as a baseline and -O2 as an upperbound.
-    optimizer.configure_baseline()
+    optimizer.configure_baseline("slow")
+    optimizer.configure_baseline("norm")
+    optimizer.configure_baseline("fast")
 
-    optimizer.optimize()
+    optimizer.optimize("slow")
+    optimizer.optimize("norm")
+    optimizer.optimize("fast")
     # Run test with optimization set.
     # command = build_individual_test_command(setup_preset_task(optimizer.flag_presets), test)
     # print(command)

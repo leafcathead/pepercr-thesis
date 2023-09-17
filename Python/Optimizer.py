@@ -18,15 +18,15 @@ class Optimizer(ABC):
         self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
 
     @abstractmethod
-    def configure_baseline(self):
+    def configure_baseline(self, mode):
         pass
 
     @abstractmethod
-    def optimize(self):
+    def optimize(self, mode):
         pass
 
     @abstractmethod
-    def analyze(self):
+    def _analyze(self):
         pass
 
     @abstractmethod
@@ -34,6 +34,7 @@ class Optimizer(ABC):
         pass
 
     def _setup_preset_task(self, preset):
+        print(preset)
         extra_flags = ""
         if len(preset) > 0:
             extra_flags = 'EXTRA_HC_OPTS="'
@@ -46,9 +47,9 @@ class Optimizer(ABC):
             print("No flags? What's the point?")
             return ""
 
-    def _build_individual_test_command(self, flag_string, log_name):
+    def _build_individual_test_command(self, flag_string, log_name, mode):
         # return f'make -C {process_name} {flag_string} NoFibRuns=10 2>&1 | tee logs/{process_name}-nofib-log'
-        return f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} 2>&1 | tee {log_name}'
+        return f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} mode={mode} 2>&1 | tee {log_name}'
 
 
 # self.flags - The entire search area of flags.
@@ -72,18 +73,29 @@ class IterativeOptimizer(Optimizer, ABC):
         preset_size = np.random.randint(len(self.flags))
         for i in range(self.num_of_presets):
             print(i)
-            presets.append(np.random.choice(self.flags, size=preset_size, replace=True))
+            presets.append([np.random.choice(self.flags, size=preset_size, replace=True),uuid.uuid4()])
         return presets
 
-    def optimize(self):
+    def optimize(self, mode):
         command_list = []
 
         for preset in self.flag_presets:
-            run_id = uuid.uuid4()
-            log_file_name = f'{self.test_name}-{run_id}-nofib-log'
-            command = super()._build_individual_test_command(super()._setup_preset_task(preset), f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}')
+
+            # If preset already exist in Dictionary, get the same ID.
+            run_id = -1
+            for entry in self.log_dictionary:
+                if np.array_equiv(self.log_dictionary[entry]["preset"], preset[0]):
+                    print("Found a match!")
+                    run_id = self.log_dictionary[entry]["id"]
+                    break
+
+            if run_id == -1:
+                run_id = preset[1]
+
+            log_file_name = f'{self.test_name}-iterative-{mode}-{run_id}-nofib-log'
+            command = super()._build_individual_test_command(super()._setup_preset_task(preset[0]), f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}', mode)
             command_list.append(command)
-            self.log_dictionary[log_file_name] = preset
+            self.log_dictionary[log_file_name] = {"preset": preset[0], "mode": mode, "id": run_id}
 
         for c in command_list:
             print(fr'Applying command to {self.test_path}')
@@ -96,19 +108,19 @@ class IterativeOptimizer(Optimizer, ABC):
                 text=True)
             print(result)
 
-    def analyze(self):
+    def _analyze(self):
         pass
 
-    def configure_baseline(self):
+    def configure_baseline(self, mode):
         command_list = []
+        baseline_list = [["-O0"],["-O2"]]
         print("Configuring baseline... -O0, -O2")
-        log_file_name = f'{self.test_name}-O0-nofib-log'
-        command_list.append(super()._build_individual_test_command(super()._setup_preset_task(["-O0"]), f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}'))
-        self.log_dictionary[log_file_name] = ["-O0"]
-        log_file_name = f'{self.test_name}-O2-nofib-log'
-        command_list.append(super()._build_individual_test_command(super()._setup_preset_task(["-O2"]),
-                                                                   f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}'))
-        self.log_dictionary[log_file_name] = ["-O1"]
+
+        for preset in baseline_list:
+            log_file_name = f'{self.test_name}-iterative{preset[0]}-{mode}-nofib-log'
+            command_list.append(super()._build_individual_test_command(super()._setup_preset_task(preset),
+                                                                       f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',mode))
+            self.log_dictionary[log_file_name] = {"preset": preset, "mode": mode, "id": preset[0]}
 
         for c in command_list:
             print(fr'Applying command to {self.test_path}')
