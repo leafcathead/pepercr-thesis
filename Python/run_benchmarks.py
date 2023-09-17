@@ -54,12 +54,14 @@ def apply_optimizer_task_all(optimizer):
     print("Apply Preset Task to all things")
     #   TODO: Implement
 
+
 # Don't forget to run each program with the different levels of difficulty! See nofib documentation!
 def apply_optimizer_task_one(optimizer, test):
     tests = []
     print(f'Apply Preset Task to: {test}')
 
     # Run test with -O0 as a baseline and -O2 as an upperbound.
+    optimizer.configure_baseline()
 
     optimizer.optimize()
     # Run test with optimization set.

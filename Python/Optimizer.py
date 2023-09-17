@@ -26,6 +26,10 @@ class Optimizer(ABC):
         pass
 
     @abstractmethod
+    def analyze(self):
+        pass
+
+    @abstractmethod
     def write_results(self):
         pass
 
@@ -92,8 +96,30 @@ class IterativeOptimizer(Optimizer, ABC):
                 text=True)
             print(result)
 
-    def configure_baseline(self):
+    def analyze(self):
         pass
+
+    def configure_baseline(self):
+        command_list = []
+        print("Configuring baseline... -O0, -O2")
+        log_file_name = f'{self.test_name}-O0-nofib-log'
+        command_list.append(super()._build_individual_test_command(super()._setup_preset_task(["-O0"]), f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}'))
+        self.log_dictionary[log_file_name] = ["-O0"]
+        log_file_name = f'{self.test_name}-O2-nofib-log'
+        command_list.append(super()._build_individual_test_command(super()._setup_preset_task(["-O2"]),
+                                                                   f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}'))
+        self.log_dictionary[log_file_name] = ["-O1"]
+
+        for c in command_list:
+            print(fr'Applying command to {self.test_path}')
+            result = subprocess.run(
+                c,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.nofib_exec_path,
+                text=True)
+            print(result)
 
     def write_results(self):
         pass
