@@ -16,9 +16,9 @@ TEST_DIRECTORIES = ["imaginary", "parallel", "real", "shake", "shootout", "smp",
 CFG = None
 
 
-def build_individual_test_command(flag_string, process_name):
-    # return f'make -C {process_name} {flag_string} NoFibRuns=10 2>&1 | tee logs/{process_name}-nofib-log'
-    return f'make -C {process_name} {flag_string}  NoFibRuns={CFG["settings"]["nofib_runs"]} 2>&1 | tee {CFG["settings"]["log_output_loc"]}what101-nofib-log'
+# def build_individual_test_command(flag_string, process_name):
+#     # return f'make -C {process_name} {flag_string} NoFibRuns=10 2>&1 | tee logs/{process_name}-nofib-log'
+#     return f'make -C {process_name} {flag_string}  NoFibRuns={CFG["settings"]["nofib_runs"]} 2>&1 | tee {CFG["settings"]["log_output_loc"]}what101-nofib-log'
 
 
 def apply_preset_task_all(process_name, flag_string):
@@ -34,18 +34,18 @@ def apply_preset_task_all(process_name, flag_string):
     print("Thread applying preset " + process_name + " has completed...")
 
 
-def setup_preset_task(preset):
-    extra_flags = ""
-    if len(preset) > 0:
-        extra_flags = 'EXTRA_HC_OPTS="'
-        for flag in preset:
-            extra_flags += flag + " "
-        extra_flags += '" '
-        return extra_flags
-    # apply_preset_task_all(preset['presetName'], extra_flags)
-    else:
-        print("No flags? What's the point?")
-        return ""
+# def setup_preset_task(preset):
+#     extra_flags = ""
+#     if len(preset) > 0:
+#         extra_flags = 'EXTRA_HC_OPTS="'
+#         for flag in preset:
+#             extra_flags += flag + " "
+#         extra_flags += '" '
+#         return extra_flags
+#     # apply_preset_task_all(preset['presetName'], extra_flags)
+#     else:
+#         print("No flags? What's the point?")
+#         return ""
 
 
 def apply_optimizer_task_all(optimizer):
@@ -61,16 +61,17 @@ def apply_optimizer_task_one(optimizer, test):
 
     # Run test with -O0 as a baseline and -O2 as an upperbound.
 
+    optimizer.optimize()
     # Run test with optimization set.
-    command = build_individual_test_command(setup_preset_task(optimizer.flag_presets), test)
-    print(command)
-    result = subprocess.run(
-        command,
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        cwd=NOFIB_EXEC_PATH,
-        text=True)
+    # command = build_individual_test_command(setup_preset_task(optimizer.flag_presets), test)
+    # print(command)
+    # result = subprocess.run(
+    #     command,
+    #     shell=True,
+    #     stdout=subprocess.PIPE,
+    #     stderr=subprocess.PIPE,
+    #     cwd=NOFIB_EXEC_PATH,
+    #     text=True)
     #   TODO: Implement
 
 
@@ -110,7 +111,7 @@ def main():
         match args.optimization_type:
             case 0:
                 print("Iterative Optimization Selected...")
-                optimizer = IterativeOptimizer(CFG["settings"]["flags"], CFG["iterative_settings"]["num_of_presets"])
+                optimizer = IterativeOptimizer(CFG, args.f)
             case _:
                 print("Default Selected...")
 
