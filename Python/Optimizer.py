@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import yaml
 import numpy as np
 import subprocess
 import uuid
@@ -34,7 +33,6 @@ class Optimizer(ABC):
         pass
 
     def _setup_preset_task(self, preset):
-        print(preset)
         extra_flags = ""
         if len(preset) > 0:
             extra_flags = 'EXTRA_HC_OPTS="'
@@ -48,12 +46,9 @@ class Optimizer(ABC):
             return ""
 
     def _build_individual_test_command(self, flag_string, log_name, mode):
-        # return f'make -C {process_name} {flag_string} NoFibRuns=10 2>&1 | tee logs/{process_name}-nofib-log'
         return f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} mode={mode} 2>&1 | tee {log_name}'
 
 
-# self.flags - The entire search area of flags.
-# self.flag_presets - List of subsets of self.flags
 class IterativeOptimizer(Optimizer, ABC):
 
     def __init__(self, cfg, test_path):
@@ -62,6 +57,7 @@ class IterativeOptimizer(Optimizer, ABC):
         self.num_of_presets = self.CFG["iterative_settings"]["num_of_presets"]
         self.flag_presets = self.__generate_initial_domain()
         self.log_dictionary = dict()
+        self.optimal_preset = None
 
         print("Iterative Optimizer")
 
@@ -73,7 +69,7 @@ class IterativeOptimizer(Optimizer, ABC):
         preset_size = np.random.randint(len(self.flags))
         for i in range(self.num_of_presets):
             print(i)
-            presets.append([np.random.choice(self.flags, size=preset_size, replace=True),uuid.uuid4()])
+            presets.append([np.random.choice(self.flags, size=preset_size, replace=True), uuid.uuid4()])
         return presets
 
     def optimize(self, mode):
@@ -93,7 +89,9 @@ class IterativeOptimizer(Optimizer, ABC):
                 run_id = preset[1]
 
             log_file_name = f'{self.test_name}-iterative-{mode}-{run_id}-nofib-log'
-            command = super()._build_individual_test_command(super()._setup_preset_task(preset[0]), f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}', mode)
+            command = super()._build_individual_test_command(super()._setup_preset_task(preset[0]),
+                                                             f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                             mode)
             command_list.append(command)
             self.log_dictionary[log_file_name] = {"preset": preset[0], "mode": mode, "id": run_id}
 
@@ -108,18 +106,28 @@ class IterativeOptimizer(Optimizer, ABC):
                 text=True)
             print(result)
 
+        self.optimal_preset = self._analyze()
+
     def _analyze(self):
-        pass
+        # Get a list of all files that we need to analyze
+        # Put them into a command
+        # Launch the analysis program and export to CSV
+        # Re-Import that CSV and re-configure it the way we want
+        # Export that CSV
+        # Re-import it at look at the results.
+        # Return results to optimize
+        return None
 
     def configure_baseline(self, mode):
         command_list = []
-        baseline_list = [["-O0"],["-O2"]]
+        baseline_list = [["-O0"], ["-O2"]]
         print("Configuring baseline... -O0, -O2")
 
         for preset in baseline_list:
             log_file_name = f'{self.test_name}-iterative{preset[0]}-{mode}-nofib-log'
             command_list.append(super()._build_individual_test_command(super()._setup_preset_task(preset),
-                                                                       f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',mode))
+                                                                       f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                                       mode))
             self.log_dictionary[log_file_name] = {"preset": preset, "mode": mode, "id": preset[0]}
 
         for c in command_list:
@@ -135,3 +143,11 @@ class IterativeOptimizer(Optimizer, ABC):
 
     def write_results(self):
         pass
+
+
+class BOCAOptimizer(Optimizer, ABC):
+    pass
+
+
+class GeneticOptimizer(Optimizer, ABC):
+    pass

@@ -68,6 +68,8 @@ def apply_optimizer_task_one(optimizer, test):
     optimizer.optimize("slow")
     optimizer.optimize("norm")
     optimizer.optimize("fast")
+
+    optimizer.write_results()
     # Run test with optimization set.
     # command = build_individual_test_command(setup_preset_task(optimizer.flag_presets), test)
     # print(command)
