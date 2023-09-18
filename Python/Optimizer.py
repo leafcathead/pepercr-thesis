@@ -18,6 +18,7 @@ class Optimizer(ABC):
         self.analysis_exec_path = cfg["locations"]["nofib_analysis_exec"]
         self.test_path = test_path
         self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
+        self.tables = {"slow": None, "norm": None, "fast": None}
 
     @abstractmethod
     def configure_baseline(self, mode):
@@ -168,7 +169,7 @@ class IterativeOptimizer(Optimizer, ABC):
         headers_ideal = ["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"]  # This is for our combined table later.
         headers_real = ["Program"]
         for log in logs_list:
-            headers_real.append(self.log_dictionary[log]["id"])
+            headers_real.append(log)
 
         print(headers_real)
 
@@ -178,10 +179,35 @@ class IterativeOptimizer(Optimizer, ABC):
         elapsed_times = pd.read_csv(self.analysis_dir + "/" + elapsed_csv_name, header=None, names=headers_real)
         print(elapsed_times.head())
 
-        # Export that CSV
-        # Re-import it at look at the results.
-        # Return results to optimize
-        return None
+        tables_to_merge = [run_times, elapsed_times]
+
+        # Create the Custom Pandas table
+
+        merged_table = pd.DataFrame(columns=["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"])
+
+        # Configure each row.
+
+        # for log in self.log_dictionary:
+        #     if mode == self.log_dictionary[log]:
+        #         id = self.log_dictionary[log]["id"]
+        #         flags= self.log_dictionary[log]["preset"]
+
+        print(self.log_dictionary)
+
+        for t in tables_to_merge:
+            for c in t.columns:
+                if not (c == "Program"):
+                    r_id = self.log_dictionary[c]["id"]
+                    flags = self.log_dictionary[c]["preset"]
+                    m = self.log_dictionary[c]["mode"]
+                    r = t[c].max()
+                    e = t[c].max()
+
+                    merged_table.loc[len(merged_table.index)] = [r_id, flags, m, r, e]
+
+        self.tables[mode] = merged_table
+
+        return merged_table
 
     def configure_baseline(self, mode):
         command_list = []
@@ -207,6 +233,15 @@ class IterativeOptimizer(Optimizer, ABC):
             print(result)
 
     def write_results(self):
+        # Take the tables in the dictionary and concatinate them together!
+
+        tables = self.tables.values()
+        complete_table = pd.concat(tables)
+
+        print(complete_table)
+
+        complete_table.to_csv(f'{self.analysis_dir}/{self.test_name}-Iterative-COMPLETE.csv')
+
         pass
 
 
