@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 import subprocess
 import uuid
+import pandas as pd
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -27,7 +28,7 @@ class Optimizer(ABC):
         pass
 
     @abstractmethod
-    def _analyze(self):
+    def _analyze(self, mode):
         pass
 
     @abstractmethod
@@ -50,23 +51,13 @@ class Optimizer(ABC):
     def _build_individual_test_command(self, flag_string, log_name, mode):
         return f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} mode={mode} 2>&1 | tee {log_name}'
 
-    def _build_individual_analyze_commands(self, log_list, output_id):
+    def _build_individual_analyze_commands(self, log_list, table, csv_name):
         command_string_list = []
         logs_string = ""
         for log in log_list:
             logs_string += " logs/" + log
 
-        # Runtime
-        command_string_list.append(
-            f'nofib-analyse/nofib-analyse --csv=Runtime {logs_string} > {self.analysis_dir}/{self.test_name}-runtime-{output_id}.csv')
-        # Compile Times (Not working for some reason ?)
-        # command_string_list.append(
-        #     f'nofib-analyse/nofib-analyse --csv="Compile Times" {logs_string} > {self.analysis_dir}/{self.test_name}-compiletime-{output_id}.csv')
-        # Elapsed
-        command_string_list.append(
-            f'nofib-analyse/nofib-analyse --csv=Elapsed {logs_string} > {self.analysis_dir}/{self.test_name}-elapsedtime-{output_id}.csv')
-
-        return command_string_list
+        return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
 
 
 class IterativeOptimizer(Optimizer, ABC):
@@ -77,6 +68,7 @@ class IterativeOptimizer(Optimizer, ABC):
         self.num_of_presets = self.CFG["iterative_settings"]["num_of_presets"]
         self.flag_presets = self.__generate_initial_domain()
         self.log_dictionary = dict()
+        self.csv_dictionary = dict()
         self.optimal_preset = None
 
         print("Iterative Optimizer")
@@ -126,28 +118,42 @@ class IterativeOptimizer(Optimizer, ABC):
                 text=True)
             print(result)
 
-        self.optimal_preset = self._analyze()
+        self.optimal_preset = self._analyze(mode)
 
-    def _analyze(self):
+    def _analyze(self, mode):
         # Get a list of all files that we need to analyze
         command_list = []
         logs_list = []
 
         for entry in self.log_dictionary:
-            logs_list.append(entry)
-            log_name = entry
-            flags = self.log_dictionary[entry]["preset"]
-            mode = self.log_dictionary[entry]["mode"]
-            run_id = self.log_dictionary[entry]["id"]
+            if self.log_dictionary[entry]["mode"] == mode:
+                logs_list.append(entry)
+                log_name = entry
+                flags = self.log_dictionary[entry]["preset"]
+                mode = self.log_dictionary[entry]["mode"]
+                run_id = self.log_dictionary[entry]["id"]
+
         # Put them into a command
         output_id = uuid.uuid4()
-        command_list = super()._build_individual_analyze_commands(logs_list, output_id)
+        runtime_csv_name = f'{self.test_name}-runtime-{mode}-{output_id}.csv'
 
-        print("-----Command List-----")
-        print(command_list)
+        # Runtime
+        self.csv_dictionary[runtime_csv_name] = output_id
+        command_list.append(super()._build_individual_analyze_commands(logs_list, "Runtime", runtime_csv_name))
+
+        # Compile Time
+        # compiletime_csv_name = f'{self.test_name}-compiletime-{mode}-{output_id}.csv'
+        # self.csv_dictionary[compiletime_csv_name] = output_id
+        # command_list.append(super()._build_individual_analyze_commands(logs_list, compiletime_csv_name))
+
+        # Elapsed Time
+        elapsed_csv_name = f'{self.test_name}-elapsed-{mode}-{output_id}.csv'
+        self.csv_dictionary[elapsed_csv_name] = output_id
+        command_list.append(super()._build_individual_analyze_commands(logs_list, "Elapsed", elapsed_csv_name))
+
         # Launch the analysis program and export to CSV
         for c in command_list:
-            print("Running Command: " + c)
+            # print("Running Command: " + c)
             result = subprocess.run(
                 c,
                 shell=True,
@@ -157,6 +163,21 @@ class IterativeOptimizer(Optimizer, ABC):
                 text=True)
 
         # Re-Import that CSV and re-configure it the way we want
+
+        # Configure column headers
+        headers_ideal = ["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"]  # This is for our combined table later.
+        headers_real = ["Program"]
+        for log in logs_list:
+            headers_real.append(self.log_dictionary[log]["id"])
+
+        print(headers_real)
+
+        run_times = pd.read_csv(self.analysis_dir + "/" + runtime_csv_name, header=None, names=headers_real)
+        print(run_times.head())
+        # compile_times = pd.read_csv(self.analysis_dir + "/" + self.csv_dictionary[compiletime_csv_name])
+        elapsed_times = pd.read_csv(self.analysis_dir + "/" + elapsed_csv_name, header=None, names=headers_real)
+        print(elapsed_times.head())
+
         # Export that CSV
         # Re-import it at look at the results.
         # Return results to optimize
