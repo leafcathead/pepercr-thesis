@@ -13,6 +13,8 @@ class Optimizer(ABC):
         self.CFG = cfg
         self.nofib_log_dir = cfg["locations"]["nofib_logs_dir"]
         self.nofib_exec_path = cfg["locations"]["nofib_exec_path"]
+        self.analysis_dir = cfg["locations"]["nofib_analysis_dir"]
+        self.analysis_exec_path = cfg["locations"]["nofib_analysis_exec"]
         self.test_path = test_path
         self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
 
@@ -47,6 +49,24 @@ class Optimizer(ABC):
 
     def _build_individual_test_command(self, flag_string, log_name, mode):
         return f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} mode={mode} 2>&1 | tee {log_name}'
+
+    def _build_individual_analyze_commands(self, log_list, output_id):
+        command_string_list = []
+        logs_string = ""
+        for log in log_list:
+            logs_string += " logs/" + log
+
+        # Runtime
+        command_string_list.append(
+            f'nofib-analyse/nofib-analyse --csv=Runtime {logs_string} > {self.analysis_dir}/{self.test_name}-runtime-{output_id}.csv')
+        # Compile Times (Not working for some reason ?)
+        # command_string_list.append(
+        #     f'nofib-analyse/nofib-analyse --csv="Compile Times" {logs_string} > {self.analysis_dir}/{self.test_name}-compiletime-{output_id}.csv')
+        # Elapsed
+        command_string_list.append(
+            f'nofib-analyse/nofib-analyse --csv=Elapsed {logs_string} > {self.analysis_dir}/{self.test_name}-elapsedtime-{output_id}.csv')
+
+        return command_string_list
 
 
 class IterativeOptimizer(Optimizer, ABC):
@@ -110,8 +130,32 @@ class IterativeOptimizer(Optimizer, ABC):
 
     def _analyze(self):
         # Get a list of all files that we need to analyze
+        command_list = []
+        logs_list = []
+
+        for entry in self.log_dictionary:
+            logs_list.append(entry)
+            log_name = entry
+            flags = self.log_dictionary[entry]["preset"]
+            mode = self.log_dictionary[entry]["mode"]
+            run_id = self.log_dictionary[entry]["id"]
         # Put them into a command
+        output_id = uuid.uuid4()
+        command_list = super()._build_individual_analyze_commands(logs_list, output_id)
+
+        print("-----Command List-----")
+        print(command_list)
         # Launch the analysis program and export to CSV
+        for c in command_list:
+            print("Running Command: " + c)
+            result = subprocess.run(
+                c,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.nofib_exec_path,
+                text=True)
+
         # Re-Import that CSV and re-configure it the way we want
         # Export that CSV
         # Re-import it at look at the results.

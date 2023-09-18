@@ -61,12 +61,12 @@ def apply_optimizer_task_one(optimizer, test):
     print(f'Apply Preset Task to: {test}')
 
     # Run test with -O0 as a baseline and -O2 as an upperbound.
-    optimizer.configure_baseline("slow")
-    optimizer.configure_baseline("norm")
+ #   optimizer.configure_baseline("slow")
+ #   optimizer.configure_baseline("norm")
     optimizer.configure_baseline("fast")
 
-    optimizer.optimize("slow")
-    optimizer.optimize("norm")
+  #  optimizer.optimize("slow")
+  #  optimizer.optimize("norm")
     optimizer.optimize("fast")
 
     optimizer.write_results()

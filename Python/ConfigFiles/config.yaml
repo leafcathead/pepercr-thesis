@@ -2,7 +2,7 @@ locations:
     nofib_config_dir_path: ..\nofib\mk
     nofib_exec_path: ../nofib
     nofib_logs_dir: ..\nofib\logs
-    nofib_analysis_dir: ..\nofib\analysis
+    nofib_analysis_dir: analysis
     nofib_analysis_exec: ..\nofib\nofib-analyse
     optimal_presets: ..\optimal_presets
 settings:
