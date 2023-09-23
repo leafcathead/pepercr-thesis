@@ -26,7 +26,7 @@ iterative_settings:
     num_of_presets: 3 # DEFAULT 300
 genetic_settings: # FOGA Paper
     max_iterations: 10 # DEFAULT 100
-    population_size: 59 # I think
+    population_size: 27 # DEFAULT 277
     mutation_prob: 0.287
     elitism_ratio: 0.147
     crossover_prob: 0.120

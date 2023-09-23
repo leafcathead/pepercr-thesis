@@ -3,7 +3,7 @@ import numpy as np
 import subprocess
 import uuid
 import pandas as pd
-import Chromosome
+from Genetics import Chromosome
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -265,15 +265,64 @@ class GeneticOptimizer(Optimizer, ABC):
         self.elitism_ratio = self.CFG["genetic_settings"]["elitism_ratio"]
         self.crossover_prob = self.CFG["genetic_settings"]["crossover_prob"]
         self.no_improvement_threshold = self.CFG["genetic_settings"]["max_iter_without_improvement"]
+        self.log_directory = dict()
+        self.iterations = 0
+        self.iterations_with_no_improvement = 0
 
     def __generate_initial_population(self, pop_size):
-        pass
+        chromosomes = []
+        for i in range(0, pop_size):
+            rand_active_genes = np.random.randint(len(self.flags))
+            active_genes = np.random.choice(self.flags, size=rand_active_genes, replace=False)
+            chromosomes.append(Chromosome(active_genes, uuid.uuid4()))
+        for c in chromosomes:
+            print(c)
+        return chromosomes
 
     def configure_baseline(self, mode):
-        pass
+        baseline_flags = ["-01", "-02"]
+
+        for f in baseline_flags:
+            log_file_name = f'{self.test_name}-genetic-{mode}{f}-nofib-log'
+            command = super()._build_individual_test_command(super()._setup_preset_task([f]),
+                                                             f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                             mode)
+            result = subprocess.run(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.nofib_exec_path,
+                text=True)
+            print(result)
+
+        print("Baseline Configured...")
 
     def optimize(self, mode):
-        pass
+        command_list = []
+
+        self.configure_baseline(mode)
+
+        # Set up command to run benchmark for each chromosome
+        for c in self.chromosomes:
+            log_file_name = f'{self.test_name}-genetic-{mode}-{c.genetic_id}-{self.iterations}-nofib-log'
+            command = super()._build_individual_test_command(super()._setup_preset_task(c.get_active_genes()),
+                                                             f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                             mode)
+            command_list.append(command)
+            self.log_directory[log_file_name] = {"chromosome": c, "mode": mode}
+
+        # Run each command
+        for c in command_list:
+            print(fr'Applying command to {self.test_path}')
+            result = subprocess.run(
+                c,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.nofib_exec_path,
+                text=True)
+            print(result)
 
     def _analyze(self, mode):
         pass
