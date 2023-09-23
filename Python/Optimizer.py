@@ -58,6 +58,7 @@ class Optimizer(ABC):
         for log in log_list:
             logs_string += " logs/" + log
 
+        # Can use the --normalize="none" flag to get raw values instead of percentages from the baseline.
         return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
 
 
@@ -82,11 +83,14 @@ class IterativeOptimizer(Optimizer, ABC):
         preset_size = np.random.randint(len(self.flags))
         for i in range(self.num_of_presets):
             print(i)
-            presets.append([np.random.choice(self.flags, size=preset_size, replace=True), uuid.uuid4()])
+            presets.append(
+                [np.append(["-O0"], np.random.choice(self.flags, size=preset_size, replace=True)), uuid.uuid4()])
         return presets
 
     def optimize(self, mode):
         command_list = []
+
+        self.configure_baseline(mode)
 
         for preset in self.flag_presets:
 
@@ -240,6 +244,8 @@ class IterativeOptimizer(Optimizer, ABC):
 
         print(complete_table)
 
+        complete_table = complete_table.drop_duplicates(keep='first', subset=["ID", "Mode"])
+
         complete_table.to_csv(f'{self.analysis_dir}/{self.test_name}-Iterative-COMPLETE.csv')
 
         pass
@@ -250,4 +256,28 @@ class BOCAOptimizer(Optimizer, ABC):
 
 
 class GeneticOptimizer(Optimizer, ABC):
-    pass
+
+    def __init__(self, cfg, test_path):
+        super().__init__(cfg, test_path)
+        # TODO: Implement more
+
+    def __generate_initial_population(self):
+        pass
+
+    def configure_baseline(self, mode):
+        pass
+
+    def optimize(self, mode):
+        pass
+
+    def _analyze(self, mode):
+        pass
+
+    def write_results(self):
+        pass
+
+    def crossover(self):
+        pass
+
+    def mutate(self):
+        pass

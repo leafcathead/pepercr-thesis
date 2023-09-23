@@ -18,8 +18,18 @@ settings:
             -fspec-constr,-fspec-constr-count=3,-fspec-constr-threshold=2000,-fspecialise,-fcross-module-specialise,-fstatic-argument-transformation,
             -fstrictness,-fstrictness-before=1,-funbox-small-strict-fields,-funbox-strict-fields,-funfolding-creation-threshold=750,
             -funfolding-dict-discount=30,-funfolding-fun-discount=60,-funfolding-keeness-factor=1.5,-funfolding-use-threshold=60,
-            -fvectorisation-avoidance,-fvectorise,-fworker-wrapper]
+            -fvectorisation-avoidance,-fvectorise,-fworker-wrapper] # 59 items
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     log_output_loc: logs/
 iterative_settings:
     num_of_presets: 3 # DEFAULT 300
+genetic_settings: # FOGA Paper
+    max_iterations: 10 # DEFAULT 100
+    population_size: 59 # I think
+    mutation_prob: 0.287
+    elitism_ratio: 0.147
+    crossover_prob: 0.120
+    crossover_type: segment
+    mutation_type: guass_by_center
+    selection_type: linear_ranking
+    max_iter_without_improvement: 5 # Default 45
