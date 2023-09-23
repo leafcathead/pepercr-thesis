@@ -20,6 +20,7 @@ settings:
             -funfolding-dict-discount=30,-funfolding-fun-discount=60,-funfolding-keeness-factor=1.5,-funfolding-use-threshold=60,
             -fvectorisation-avoidance,-fvectorise,-fworker-wrapper] # 59 items
     ghc-default-flags: [-O0,-O1,-O2,-Os]
+    multicore_cores: 4
     log_output_loc: logs/
 iterative_settings:
     num_of_presets: 3 # DEFAULT 300

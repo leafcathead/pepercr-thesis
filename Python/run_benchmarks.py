@@ -5,7 +5,7 @@ import subprocess
 import json
 import yaml
 import multiprocessing
-from Optimizer import IterativeOptimizer
+from Optimizer import IterativeOptimizer, GeneticOptimizer
 
 NOFIB_CONFIG_DIR_PATH = r'..\nofib\mk'
 NOFIB_EXEC_PATH = r'../nofib'
@@ -51,7 +51,7 @@ def apply_preset_task_all(process_name, flag_string):
 def apply_optimizer_task_all(optimizer):
     tests = []
 
-    print("Apply Preset Task to all things")
+    print("DEPRECIATED! WILL REMOVE WHEN I GET AROUND TO IT!")
     #   TODO: Implement
 
 
@@ -61,7 +61,7 @@ def apply_optimizer_task_one(optimizer, test):
     print(f'Apply Preset Task to: {test}')
 
     # optimizer.optimize("slow")
-    optimizer.optimize("norm")
+    # optimizer.optimize("norm")
     optimizer.optimize("fast")
 
     optimizer.write_results()
@@ -90,6 +90,9 @@ def main():
         description='This program will run optimize the flags for each program in the benchmark',
         epilog='Must select which optimization algorithm to use')
 
+    parser.add_argument("--threaded", required=False, action="store_true", help="Select if the application is intended to be run "
+                                                                "multithreaded.")
+
     file_group = parser.add_mutually_exclusive_group()
     file_group.add_argument("--all", action="store_true", help="Designate whether one test or all test should be ran.")
     file_group.add_argument("-f", metavar="file_path", help="File path to the test to be optimized")
@@ -97,6 +100,8 @@ def main():
     optimizer_group = parser.add_mutually_exclusive_group()
     optimizer_group.add_argument("--iterative", dest="optimization_type", action="store_const", const=0,
                                  help="Use iterative optimization to optimize benchmark.")
+    optimizer_group.add_argument("--genetic", dest="optimization_type", action="store_const", const=1,
+                                 help="Use genetic optimization to optimize benchmark.")
     # ADD MORE ARGUMENTS HERE AS THEY BECOME AVAILABLE
 
     args = parser.parse_args()
@@ -114,9 +119,12 @@ def main():
         match args.optimization_type:
             case 0:
                 print("Iterative Optimization Selected...")
-                optimizer = IterativeOptimizer(CFG, args.f)
+                optimizer = IterativeOptimizer(CFG, args.f, args.threaded)
+            case 1:
+                print("Genetic Optimization Selected...")
+                optimizer = GeneticOptimizer(CFG, args.f, args.threaded)
             case _:
-                print("Default Selected...")
+                raise ValueError("Invalid optimization type.")
 
         if args.all:
             apply_optimizer_task_all(optimizer)
@@ -142,7 +150,7 @@ if __name__ == "__main__":
 
     try:
         with open(CONFIG_PATH, "r") as cfg_file:
-            CFG = yaml.load(cfg_file)
+            CFG = yaml.safe_load(cfg_file)
 
         if CFG is None:
             raise IOError("CFG File is blank!")

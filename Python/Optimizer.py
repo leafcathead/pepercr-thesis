@@ -3,6 +3,7 @@ import numpy as np
 import subprocess
 import uuid
 import pandas as pd
+import Chromosome
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -10,8 +11,11 @@ import pandas as pd
 
 class Optimizer(ABC):
 
-    def __init__(self, cfg, test_path):
+    def __init__(self, cfg, test_path, t):
         self.CFG = cfg
+        self.threaded = t
+        self.flags = self.CFG["settings"]["flags"]
+        self.num_of_threads = cfg["settings"]["multicore_cores"]
         self.nofib_log_dir = cfg["locations"]["nofib_logs_dir"]
         self.nofib_exec_path = cfg["locations"]["nofib_exec_path"]
         self.analysis_dir = cfg["locations"]["nofib_analysis_dir"]
@@ -37,17 +41,18 @@ class Optimizer(ABC):
         pass
 
     def _setup_preset_task(self, preset):
-        extra_flags = ""
+        extra_flags = 'EXTRA_HC_OPTS="'
         if len(preset) > 0:
-            extra_flags = 'EXTRA_HC_OPTS="'
+
             for flag in preset:
                 extra_flags += flag + " "
-            extra_flags += '" '
-            return extra_flags
-        # apply_preset_task_all(preset['presetName'], extra_flags)
-        else:
-            print("No flags? What's the point?")
-            return ""
+        if self.threaded:
+            print("Application is multi-threaded!")
+            extra_flags += '-threaded" '
+            extra_flags += f'EXTRA_RUNTEST_OPTS="+RTS -N{self.num_of_threads} -RTS'
+
+        extra_flags += '" '
+        return extra_flags
 
     def _build_individual_test_command(self, flag_string, log_name, mode):
         return f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} mode={mode} 2>&1 | tee {log_name}'
@@ -64,9 +69,8 @@ class Optimizer(ABC):
 
 class IterativeOptimizer(Optimizer, ABC):
 
-    def __init__(self, cfg, test_path):
-        super().__init__(cfg, test_path)
-        self.flags = self.CFG["settings"]["flags"]
+    def __init__(self, cfg, test_path, t):
+        super().__init__(cfg, test_path, t)
         self.num_of_presets = self.CFG["iterative_settings"]["num_of_presets"]
         self.flag_presets = self.__generate_initial_domain()
         self.log_dictionary = dict()
@@ -191,11 +195,6 @@ class IterativeOptimizer(Optimizer, ABC):
 
         # Configure each row.
 
-        # for log in self.log_dictionary:
-        #     if mode == self.log_dictionary[log]:
-        #         id = self.log_dictionary[log]["id"]
-        #         flags= self.log_dictionary[log]["preset"]
-
         print(self.log_dictionary)
 
         for t in tables_to_merge:
@@ -237,7 +236,7 @@ class IterativeOptimizer(Optimizer, ABC):
             print(result)
 
     def write_results(self):
-        # Take the tables in the dictionary and concatinate them together!
+        # Take the tables in the dictionary and concat them together!
 
         tables = self.tables.values()
         complete_table = pd.concat(tables)
@@ -257,11 +256,17 @@ class BOCAOptimizer(Optimizer, ABC):
 
 class GeneticOptimizer(Optimizer, ABC):
 
-    def __init__(self, cfg, test_path):
-        super().__init__(cfg, test_path)
-        # TODO: Implement more
+    def __init__(self, cfg, test_path, t):
+        super().__init__(cfg, test_path, t)
+        Chromosome.genes = self.CFG["settings"]["flags"]
+        self.max_iterations = self.CFG["genetic_settings"]["max_iterations"]
+        self.chromosomes = self.__generate_initial_population(self.CFG["genetic_settings"]["population_size"])
+        self.mutation_prob = self.CFG["genetic_settings"]["mutation_prob"]
+        self.elitism_ratio = self.CFG["genetic_settings"]["elitism_ratio"]
+        self.crossover_prob = self.CFG["genetic_settings"]["crossover_prob"]
+        self.no_improvement_threshold = self.CFG["genetic_settings"]["max_iter_without_improvement"]
 
-    def __generate_initial_population(self):
+    def __generate_initial_population(self, pop_size):
         pass
 
     def configure_baseline(self, mode):
