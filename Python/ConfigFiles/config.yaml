@@ -31,6 +31,7 @@ genetic_settings: # FOGA Paper
     elitism_ratio: 0.147
     crossover_prob: 0.120
     crossover_type: segment
+    num_of_segments: 3 # Change later?
     mutation_type: guass_by_center
     selection_type: linear_ranking
     max_iter_without_improvement: 5 # Default 45

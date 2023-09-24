@@ -289,6 +289,7 @@ class GeneticOptimizer(Optimizer, ABC):
     def __init__(self, cfg, test_path, t):
         super().__init__(cfg, test_path, t)
         Chromosome.genes = self.CFG["settings"]["flags"]
+        Chromosome.num_of_segments = self.CFG["genetic_settings"]["num_of_segments"]
         self.max_iterations = self.CFG["genetic_settings"]["max_iterations"]
         self.chromosomes = self.__generate_initial_population(self.CFG["genetic_settings"]["population_size"])
         self.mutation_prob = self.CFG["genetic_settings"]["mutation_prob"]
@@ -369,19 +370,20 @@ class GeneticOptimizer(Optimizer, ABC):
 
         for c in self.chromosomes:
             row = merged_table.loc[[c.genetic_id]]
-            c.fitness = row["Runtime"][0] # Store fitness value from table into Chromosome
-            print(c)
+            c.fitness = row["Runtime"][0]  # Store fitness value from table into Chromosome
 
         # Sort Chromosomes
         self.chromosomes.sort(key=lambda x: x.fitness)
 
-        
-
+        print("Segment Creation Test")
+        print(self.chromosomes[0].get_gene_segments())
         # Get the best values
 
-        # Cross the best values
+        # Crossover by Segment Based Crossover
 
-        # Mutate them
+        # Mutate them by Gauss By Center
+
+        # Selection  by Linear Selection
 
     def write_results(self):
         pass
