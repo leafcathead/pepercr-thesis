@@ -365,6 +365,24 @@ class GeneticOptimizer(Optimizer, ABC):
         merged_table = super()._run_analysis_tool(mode)
         print(merged_table)
 
+        merged_table = merged_table.set_index("ID")
+
+        for c in self.chromosomes:
+            row = merged_table.loc[[c.genetic_id]]
+            c.fitness = row["Runtime"][0] # Store fitness value from table into Chromosome
+            print(c)
+
+        # Sort Chromosomes
+        self.chromosomes.sort(key=lambda x: x.fitness)
+
+        
+
+        # Get the best values
+
+        # Cross the best values
+
+        # Mutate them
+
     def write_results(self):
         pass
 

@@ -9,6 +9,7 @@ class Chromosome:
         # 1 - flag is enabled in chromosome
         # 0 - flag is disabled in chromosome
         self.__build_sequence(active_genes)
+        self.fitness = -1
 
     def __build_sequence(self, active_genes):
 
@@ -28,5 +29,6 @@ class Chromosome:
 
     def __str__(self):
         return (f'\nChromosome ID: {self.genetic_id} \n'
+                f'Fitness: {self.fitness} \n'
                 f'----------------------------------- \n'
                 f'{self.sequence}')
