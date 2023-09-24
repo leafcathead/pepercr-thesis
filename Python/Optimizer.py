@@ -4,6 +4,7 @@ import subprocess
 import uuid
 import pandas as pd
 from Genetics import Chromosome
+import copy # Used for testing
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -22,6 +23,8 @@ class Optimizer(ABC):
         self.analysis_exec_path = cfg["locations"]["nofib_analysis_exec"]
         self.test_path = test_path
         self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
+        self.log_dictionary = dict()
+        self.csv_dictionary = dict()
         self.tables = {"slow": None, "norm": None, "fast": None}
 
     @abstractmethod
@@ -63,8 +66,114 @@ class Optimizer(ABC):
         for log in log_list:
             logs_string += " logs/" + log
 
-        # Can use the --normalize="none" flag to get raw values instead of percentages from the baseline.
-        return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
+        # Can use the --normalise="none" flag to get raw values instead of percentages from the baseline.
+        return f'nofib-analyse/nofib-analyse --normalise="none" --csv={table} {logs_string} > analysis/{csv_name}'
+        # return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
+
+    def _run_analysis_tool(self, mode):
+        # Run analysis tool and put things into a table.
+        # Get a list of all files that we need to analyze
+        command_list = []
+        logs_list = []
+
+        for entry in self.log_dictionary:
+            if self.log_dictionary[entry]["mode"] == mode:
+                logs_list.append(entry)
+                log_name = entry
+                flags = self.log_dictionary[entry]["preset"]
+                mode = self.log_dictionary[entry]["mode"]
+                run_id = self.log_dictionary[entry]["id"]
+
+        # Put them into a command
+        output_id = uuid.uuid4()
+        runtime_csv_name = f'{self.test_name}-runtime-{mode}-{output_id}.csv'
+
+        # Runtime
+        self.csv_dictionary[runtime_csv_name] = output_id
+        command_list.append(self._build_individual_analyze_commands(logs_list, "Runtime", runtime_csv_name))
+
+        # Compile Time
+        # compiletime_csv_name = f'{self.test_name}-compiletime-{mode}-{output_id}.csv'
+        # self.csv_dictionary[compiletime_csv_name] = output_id
+        # command_list.append(super()._build_individual_analyze_commands(logs_list, compiletime_csv_name))
+
+        # Elapsed Time
+        elapsed_csv_name = f'{self.test_name}-elapsed-{mode}-{output_id}.csv'
+        self.csv_dictionary[elapsed_csv_name] = output_id
+        command_list.append(self._build_individual_analyze_commands(logs_list, "Elapsed", elapsed_csv_name))
+
+        # Launch the analysis program and export to CSV
+        for c in command_list:
+            # print("Running Command: " + c)
+            result = subprocess.run(
+                c,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.nofib_exec_path,
+                text=True)
+            # print(result)
+
+        # Re-Import that CSV and re-configure it the way we want
+
+        # Configure column headers
+        headers_ideal = ["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"]  # This is for our combined table later.
+        headers_real = ["Program"]
+        for log in logs_list:
+            headers_real.append(log)
+
+        # print(headers_real)
+
+        run_times = pd.read_csv(self.analysis_dir + "/" + runtime_csv_name, header=None, names=headers_real)
+        print(run_times.head())
+        # compile_times = pd.read_csv(self.analysis_dir + "/" + self.csv_dictionary[compiletime_csv_name])
+        elapsed_times = pd.read_csv(self.analysis_dir + "/" + elapsed_csv_name, header=None, names=headers_real)
+        print(elapsed_times.head())
+
+        tables_to_merge = [run_times, elapsed_times]
+
+        # Create the Custom Pandas table
+
+        merged_table = pd.DataFrame(columns=["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"])
+
+        # Configure each row.
+
+        # print(self.log_dictionary)
+
+        for c in run_times.columns:
+            if not (c == "Program"):
+                r_id = self.log_dictionary[c]["id"]
+                flags = self.log_dictionary[c]["preset"]
+                m = self.log_dictionary[c]["mode"]
+                r = run_times[c].max()
+                merged_table.loc[len(merged_table.index)] = [r_id, flags, m, r, None]
+
+
+        for c in elapsed_times.columns:
+            if not (c == "Program"):
+                r_id = self.log_dictionary[c]["id"]
+                flags = self.log_dictionary[c]["preset"]
+                m = self.log_dictionary[c]["mode"]
+                e = run_times[c].max()
+                merged_table.loc[merged_table["ID"] == r_id, 'Elapsed_Time'] = e
+
+        # for t in tables_to_merge:
+        #     for c in t.columns:
+        #         print (c)
+        #         if not (c == "Program"):
+        #             r_id = self.log_dictionary[c]["id"]
+        #             flags = self.log_dictionary[c]["preset"]
+        #             m = self.log_dictionary[c]["mode"]
+        #             r = t[c].max()
+        #             e = t[c].max()
+        #
+        #             merged_table.loc[len(merged_table.index)] = [r_id, flags, m, r, e]
+        #             print(merged_table)
+        #             print("---------------------------------------------------\n")
+
+        self.tables[mode] = merged_table
+
+        return merged_table
 
 
 class IterativeOptimizer(Optimizer, ABC):
@@ -73,8 +182,6 @@ class IterativeOptimizer(Optimizer, ABC):
         super().__init__(cfg, test_path, t)
         self.num_of_presets = self.CFG["iterative_settings"]["num_of_presets"]
         self.flag_presets = self.__generate_initial_domain()
-        self.log_dictionary = dict()
-        self.csv_dictionary = dict()
         self.optimal_preset = None
 
         print("Iterative Optimizer")
@@ -86,7 +193,6 @@ class IterativeOptimizer(Optimizer, ABC):
 
         preset_size = np.random.randint(len(self.flags))
         for i in range(self.num_of_presets):
-            print(i)
             presets.append(
                 [np.append(["-O0"], np.random.choice(self.flags, size=preset_size, replace=True)), uuid.uuid4()])
         return presets
@@ -130,87 +236,7 @@ class IterativeOptimizer(Optimizer, ABC):
         self.optimal_preset = self._analyze(mode)
 
     def _analyze(self, mode):
-        # Get a list of all files that we need to analyze
-        command_list = []
-        logs_list = []
-
-        for entry in self.log_dictionary:
-            if self.log_dictionary[entry]["mode"] == mode:
-                logs_list.append(entry)
-                log_name = entry
-                flags = self.log_dictionary[entry]["preset"]
-                mode = self.log_dictionary[entry]["mode"]
-                run_id = self.log_dictionary[entry]["id"]
-
-        # Put them into a command
-        output_id = uuid.uuid4()
-        runtime_csv_name = f'{self.test_name}-runtime-{mode}-{output_id}.csv'
-
-        # Runtime
-        self.csv_dictionary[runtime_csv_name] = output_id
-        command_list.append(super()._build_individual_analyze_commands(logs_list, "Runtime", runtime_csv_name))
-
-        # Compile Time
-        # compiletime_csv_name = f'{self.test_name}-compiletime-{mode}-{output_id}.csv'
-        # self.csv_dictionary[compiletime_csv_name] = output_id
-        # command_list.append(super()._build_individual_analyze_commands(logs_list, compiletime_csv_name))
-
-        # Elapsed Time
-        elapsed_csv_name = f'{self.test_name}-elapsed-{mode}-{output_id}.csv'
-        self.csv_dictionary[elapsed_csv_name] = output_id
-        command_list.append(super()._build_individual_analyze_commands(logs_list, "Elapsed", elapsed_csv_name))
-
-        # Launch the analysis program and export to CSV
-        for c in command_list:
-            # print("Running Command: " + c)
-            result = subprocess.run(
-                c,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=self.nofib_exec_path,
-                text=True)
-
-        # Re-Import that CSV and re-configure it the way we want
-
-        # Configure column headers
-        headers_ideal = ["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"]  # This is for our combined table later.
-        headers_real = ["Program"]
-        for log in logs_list:
-            headers_real.append(log)
-
-        print(headers_real)
-
-        run_times = pd.read_csv(self.analysis_dir + "/" + runtime_csv_name, header=None, names=headers_real)
-        print(run_times.head())
-        # compile_times = pd.read_csv(self.analysis_dir + "/" + self.csv_dictionary[compiletime_csv_name])
-        elapsed_times = pd.read_csv(self.analysis_dir + "/" + elapsed_csv_name, header=None, names=headers_real)
-        print(elapsed_times.head())
-
-        tables_to_merge = [run_times, elapsed_times]
-
-        # Create the Custom Pandas table
-
-        merged_table = pd.DataFrame(columns=["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"])
-
-        # Configure each row.
-
-        print(self.log_dictionary)
-
-        for t in tables_to_merge:
-            for c in t.columns:
-                if not (c == "Program"):
-                    r_id = self.log_dictionary[c]["id"]
-                    flags = self.log_dictionary[c]["preset"]
-                    m = self.log_dictionary[c]["mode"]
-                    r = t[c].max()
-                    e = t[c].max()
-
-                    merged_table.loc[len(merged_table.index)] = [r_id, flags, m, r, e]
-
-        self.tables[mode] = merged_table
-
-        return merged_table
+        return super()._run_analysis_tool(mode)
 
     def configure_baseline(self, mode):
         command_list = []
@@ -241,9 +267,9 @@ class IterativeOptimizer(Optimizer, ABC):
         tables = self.tables.values()
         complete_table = pd.concat(tables)
 
-        print(complete_table)
-
         complete_table = complete_table.drop_duplicates(keep='first', subset=["ID", "Mode"])
+
+        print(complete_table)
 
         complete_table.to_csv(f'{self.analysis_dir}/{self.test_name}-Iterative-COMPLETE.csv')
 
@@ -265,7 +291,7 @@ class GeneticOptimizer(Optimizer, ABC):
         self.elitism_ratio = self.CFG["genetic_settings"]["elitism_ratio"]
         self.crossover_prob = self.CFG["genetic_settings"]["crossover_prob"]
         self.no_improvement_threshold = self.CFG["genetic_settings"]["max_iter_without_improvement"]
-        self.log_directory = dict()
+        self.base_log_dictionary = dict()
         self.iterations = 0
         self.iterations_with_no_improvement = 0
 
@@ -301,7 +327,8 @@ class GeneticOptimizer(Optimizer, ABC):
     def optimize(self, mode):
         command_list = []
 
-        self.configure_baseline(mode)
+        if self.iterations == 0:
+            self.configure_baseline(mode)
 
         # Set up command to run benchmark for each chromosome
         for c in self.chromosomes:
@@ -310,7 +337,7 @@ class GeneticOptimizer(Optimizer, ABC):
                                                              f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
                                                              mode)
             command_list.append(command)
-            self.log_directory[log_file_name] = {"chromosome": c, "mode": mode}
+            self.log_dictionary[log_file_name] = {"chromosome": c, "mode": mode}
 
         # Run each command
         for c in command_list:
@@ -322,10 +349,16 @@ class GeneticOptimizer(Optimizer, ABC):
                 stderr=subprocess.PIPE,
                 cwd=self.nofib_exec_path,
                 text=True)
-            print(result)
+            # print(result)
+
+        self._analyze()
 
     def _analyze(self, mode):
-        pass
+
+        old_chromosomes = copy.deepcopy(self.chromosomes) # Used for testing. Will be removed one I have confirmed that crossing over/mutation is successful.
+
+        merged_table = super()._run_analysis_tool(mode)
+        print(merged_table)
 
     def write_results(self):
         pass
