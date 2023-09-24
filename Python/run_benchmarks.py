@@ -61,7 +61,7 @@ def apply_optimizer_task_one(optimizer, test):
     print(f'Apply Preset Task to: {test}')
 
     # optimizer.optimize("slow")
-    optimizer.optimize("norm")
+    # optimizer.optimize("norm")
     optimizer.optimize("fast")
 
     optimizer.write_results()

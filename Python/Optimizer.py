@@ -4,7 +4,7 @@ import subprocess
 import uuid
 import pandas as pd
 from Genetics import Chromosome
-import copy # Used for testing
+import copy  # Used for testing
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -79,10 +79,7 @@ class Optimizer(ABC):
         for entry in self.log_dictionary:
             if self.log_dictionary[entry]["mode"] == mode:
                 logs_list.append(entry)
-                log_name = entry
-                flags = self.log_dictionary[entry]["preset"]
                 mode = self.log_dictionary[entry]["mode"]
-                run_id = self.log_dictionary[entry]["id"]
 
         # Put them into a command
         output_id = uuid.uuid4()
@@ -140,20 +137,27 @@ class Optimizer(ABC):
 
         # print(self.log_dictionary)
 
+        # print typeof
+
         for c in run_times.columns:
             if not (c == "Program"):
-                r_id = self.log_dictionary[c]["id"]
-                flags = self.log_dictionary[c]["preset"]
-                m = self.log_dictionary[c]["mode"]
-                r = run_times[c].max()
+                if isinstance(self, IterativeOptimizer):
+                    r_id = self.log_dictionary[c]["id"]
+                    flags = self.log_dictionary[c]["preset"]
+                    m = self.log_dictionary[c]["mode"]
+                    r = run_times[c].max()
+                elif isinstance(self, GeneticOptimizer):
+                    r_id = self.log_dictionary[c]["id"]
+                    flags = self.log_dictionary[c]["chromosome"].get_active_genes()
+                    m = self.log_dictionary[c]["mode"]
+                    r = run_times[c].max()
+                else:
+                    raise TypeError("What other type of optimizer is there?")
                 merged_table.loc[len(merged_table.index)] = [r_id, flags, m, r, None]
-
 
         for c in elapsed_times.columns:
             if not (c == "Program"):
                 r_id = self.log_dictionary[c]["id"]
-                flags = self.log_dictionary[c]["preset"]
-                m = self.log_dictionary[c]["mode"]
                 e = run_times[c].max()
                 merged_table.loc[merged_table["ID"] == r_id, 'Elapsed_Time'] = e
 
@@ -337,7 +341,7 @@ class GeneticOptimizer(Optimizer, ABC):
                                                              f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
                                                              mode)
             command_list.append(command)
-            self.log_dictionary[log_file_name] = {"chromosome": c, "mode": mode}
+            self.log_dictionary[log_file_name] = {"chromosome": c, "mode": mode, "id": c.genetic_id}
 
         # Run each command
         for c in command_list:
@@ -351,11 +355,12 @@ class GeneticOptimizer(Optimizer, ABC):
                 text=True)
             # print(result)
 
-        self._analyze()
+        self._analyze(mode)
 
     def _analyze(self, mode):
 
-        old_chromosomes = copy.deepcopy(self.chromosomes) # Used for testing. Will be removed one I have confirmed that crossing over/mutation is successful.
+        old_chromosomes = copy.deepcopy(
+            self.chromosomes)  # Used for testing. Will be removed one I have confirmed that crossing over/mutation is successful.
 
         merged_table = super()._run_analysis_tool(mode)
         print(merged_table)
