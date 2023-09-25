@@ -28,24 +28,39 @@ class Chromosome:
             raise ZeroDivisionError("Did you configure the number of segments correctly in the configuration file?")
 
         len_per_seg = round(len(Chromosome.genes) / Chromosome.num_of_segments)
+
         sequence_segments = []
+
+        if len_per_seg == 1:
+            sequence_segments = list(map(lambda x: {x[0]: x[1]}, self.sequence.items()))
+            return sequence_segments
 
         i = 0
         n = 0
-        seg = []
         tmp = dict()
+        # for entry in self.sequence:
+        #     if i < len_per_seg:
+        #         tmp[entry] = self.sequence[entry]
+        #         i += 1
+        #     else:
+        #         seg.append(tmp)
+        #         tmp = dict()
+        #         i = 0
+        # if len(tmp) > 0:
+        #     seg.append(tmp)
+
         for entry in self.sequence:
-            if i < len_per_seg:
-                tmp[entry] = self.sequence[entry]
-                i += 1
-            else:
-                seg.append(tmp)
+            if i > len_per_seg:
+                sequence_segments.append(tmp)
                 tmp = dict()
                 i = 0
 
-        print(seg)
+            tmp[entry] = self.sequence[entry]
+            i += 1
+        if len(tmp) > 0:
+            sequence_segments.append(tmp)
 
-        return seg
+        return sequence_segments
 
 
     def mutate(self):
