@@ -1,3 +1,4 @@
+import random
 from abc import ABC, abstractmethod
 import numpy as np
 import subprocess
@@ -370,25 +371,75 @@ class GeneticOptimizer(Optimizer, ABC):
 
         for c in self.chromosomes:
             row = merged_table.loc[[c.genetic_id]]
-            c.fitness = row["Runtime"][0]  # Store fitness value from table into Chromosome
+            c.fitness = row["Runtime"].iloc[0]  # Store fitness value from table into Chromosome
 
-        # Sort Chromosomes
-        self.chromosomes.sort(key=lambda x: x.fitness)
+        # Sort Chromosomes by ascending order (Better values at front of the list)
+        self.chromosomes.sort(key=lambda x: x.fitness, reverse=False)
 
-        print("Segment Creation Test")
-        print(self.chromosomes[0].get_gene_segments())
-        # Get the best values
+        # Selection  by Linear Selection
+
+        # First, we must store the elite chromosomes. These are not ones we will cross and mutate.
+
+        elite_chromosomes = self.chromosomes[:round(len(self.chromosomes) * self.elitism_ratio)]
+        non_elite_chromosomes = list(filter(lambda x: x not in elite_chromosomes, self.chromosomes))
+
+        if list(set(elite_chromosomes) & set(non_elite_chromosomes)): # Checks intersection.
+            raise RuntimeError("Duplicates exist within the chromosome list or the filter did not work...")
+
+        # Get the highest performing values that are not 'Elite'
+
+        selected_list = self.__select_via_linear_ranking(non_elite_chromosomes)
 
         # Crossover by Segment Based Crossover
 
+        self.crossover(selected_list)
+
         # Mutate them by Gauss By Center
 
-        # Selection  by Linear Selection
+    # Use selection pressure. (sp=2)
+    def __select_via_linear_ranking(self, lower_ranked_population):
+        n = len(lower_ranked_population)
+        sp = 2
+        selected_list = []
+
+        for i in range(0, n):
+            chromosome = lower_ranked_population[i]
+            # Calculate ranked probability
+            ranked_probability = (1/n)*(sp-((2*sp)-2)*((i-1)/(n-1))) # Cannot get access to original paper to see if this is right. Seems to work fine.
+            if ranked_probability >= random.random():
+                selected_list.append(chromosome)
+
+        return selected_list
 
     def write_results(self):
         pass
 
-    def crossover(self):
+    def crossover(self, selected_list):
+
+        new_pop_list = []
+
+        # Create the binary mask
+
+        binary_mask = []
+        for i in range(0, Chromosome.num_of_segments):
+            if self.crossover_prob >= random.random():
+                binary_mask.append(1)
+            else:
+                binary_mask.append(0)
+
+        print(binary_mask)
+
+        # Use sequential pairing for crossover.
+        print("SEQUENTIAL THING!")
+        print(f"Original List:  + {selected_list}")
+        iterator = iter(selected_list)
+
+        thing = list(zip(iterator, iterator))
+
+        print(f'New List: {thing}')
+
+        # Perform the crossover
+
         pass
 
     def mutate(self):

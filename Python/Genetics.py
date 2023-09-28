@@ -70,7 +70,7 @@ class Chromosome:
         return list(filter(lambda x: self.sequence[x] == 1, self.sequence))
 
     @staticmethod
-    def crossover_chromosomes(a, b):
+    def crossover_chromosomes(a, b, bit_mask):
         pass
 
     def __str__(self):

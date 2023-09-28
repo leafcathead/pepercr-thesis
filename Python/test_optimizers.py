@@ -1,3 +1,4 @@
+import random
 import unittest
 import uuid
 
@@ -18,9 +19,14 @@ def deconstruct_seg_list(seg_list):
     return deconstructed_list
 
 
+
+
 class GeneticTests(unittest.TestCase):
     GHC_FLAGS = None
     CFG = None
+
+    def create_random_chromosome(self):
+        return Chromosome(np.random.choice(self.GHC_FLAGS, size=random.randint(0, len(self.GHC_FLAGS) - 1), replace=False), uuid.uuid4())
 
     @classmethod
     def setUpClass(cls):
@@ -38,7 +44,6 @@ class GeneticTests(unittest.TestCase):
             print("Unable to open Configuration file")
             print(e)
 
-
     def test_segment(self):
 
         # Select a random set of active genes
@@ -51,16 +56,17 @@ class GeneticTests(unittest.TestCase):
         gene_segments = c.get_gene_segments()
 
         self.assertEqual(len(gene_segments), 1)  # Test that correct number of segments was made
-        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (set(["-O0"] + self.GHC_FLAGS)))   # Test that no flags were left out
+        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (
+            set(["-O0"] + self.GHC_FLAGS)))  # Test that no flags were left out
 
         # test a chromosome with 3 segments
         Chromosome.num_of_segments = 3
         c = Chromosome(active_genes, uuid.uuid4())
         gene_segments = c.get_gene_segments()
 
-
         self.assertEqual(len(gene_segments), 3)  # Test that correct number of segments was made
-        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (set(["-O0"] + self.GHC_FLAGS)))  # Test that no flags were left out
+        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (
+            set(["-O0"] + self.GHC_FLAGS)))  # Test that no flags were left out
 
         # test a chromosome with 4 segments
         Chromosome.num_of_segments = 4
@@ -68,8 +74,8 @@ class GeneticTests(unittest.TestCase):
         gene_segments = c.get_gene_segments()
 
         self.assertEqual(len(gene_segments), 4)  # Test that correct number of segments was made
-        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (set(["-O0"] + self.GHC_FLAGS)))  # Test that no flags were left out
-
+        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (
+            set(["-O0"] + self.GHC_FLAGS)))  # Test that no flags were left out
 
         # test a chromosome with 30 segments
         Chromosome.num_of_segments = 30
@@ -77,7 +83,8 @@ class GeneticTests(unittest.TestCase):
         gene_segments = c.get_gene_segments()
 
         self.assertEqual(len(gene_segments), 20)  # Test that correct number of segments was made
-        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (set(["-O0"] + self.GHC_FLAGS)))   # Test that no flags were left out
+        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (
+            set(["-O0"] + self.GHC_FLAGS)))  # Test that no flags were left out
 
         # test a chromosome with num of segments = to length of flags
         Chromosome.num_of_segments = len(self.GHC_FLAGS)
@@ -85,7 +92,8 @@ class GeneticTests(unittest.TestCase):
         gene_segments = c.get_gene_segments()
 
         self.assertEqual(len(gene_segments), len(self.GHC_FLAGS) + 1)  # Test that correct number of segments was made
-        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (set(["-O0"] + self.GHC_FLAGS)))  # Test that no flags were left out
+        self.assertFalse(set(deconstruct_seg_list(gene_segments)) - (
+            set(["-O0"] + self.GHC_FLAGS)))  # Test that no flags were left out
 
         # test a chromosome with 0 segments
         Chromosome.num_of_segments = 0
@@ -95,16 +103,30 @@ class GeneticTests(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             gene_segments = c.get_gene_segments()
 
-
         self.assertEqual(
             "Did you configure the number of segments correctly in the configuration file?", context.exception.args[0])
+
+    def test_crossover(self):
+
+        # Test crossover with 1 chromosome.
+
+        # test crossover with 2 chromosomes
+
+        # test crossover with 3 chromosomes
+
+        # test crossover with 10 chromosomes
+
+        pass
+
+
+
+
 
 
 if __name__ == '__main__':
     # loads all unit tests from GeneticTests into a test suite
     genetic_optimizer_suite = unittest.TestLoader() \
         .loadTestsFromTestCase(GeneticTests)
-
 
     runner = unittest.TextTestRunner()
     runner.run(genetic_optimizer_suite)
