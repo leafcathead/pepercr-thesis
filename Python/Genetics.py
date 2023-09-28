@@ -1,4 +1,6 @@
 # Used to help abstract the genetic algorithm
+import uuid
+
 
 class Chromosome:
     genes = []
@@ -69,12 +71,30 @@ class Chromosome:
     def get_active_genes(self):
         return list(filter(lambda x: self.sequence[x] == 1, self.sequence))
 
-    @staticmethod
-    def crossover_chromosomes(a, b, bit_mask):
-        pass
+
 
     def __str__(self):
         return (f'\nChromosome ID: {self.genetic_id} \n'
                 f'Fitness: {self.fitness} \n'
                 f'----------------------------------- \n'
                 f'{self.sequence}')
+
+
+def crossover_chromosomes(a: Chromosome, b: Chromosome, bit_mask):
+    a_segs = a.get_gene_segments()
+    b_segs = b.get_gene_segments()
+    child = None # New Chromosome
+    new_flag_list = []
+
+    if len(a_segs) != len(b_segs):
+        raise RuntimeError("How are they different lengths? This is not good.")
+
+    for i in range(0, len(a_segs)):
+        if bit_mask[i] == 0:
+            new_flag_list += list(filter(lambda entry: a_segs[i][entry] == 1, a_segs[i]))
+        else:
+            new_flag_list += list(filter(lambda entry: b_segs[i][entry] == 1, b_segs[i]))
+
+    child = Chromosome(new_flag_list, uuid.uuid4())
+
+    return child

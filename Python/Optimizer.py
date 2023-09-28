@@ -4,6 +4,8 @@ import numpy as np
 import subprocess
 import uuid
 import pandas as pd
+
+from Genetics import crossover_chromosomes
 from Genetics import Chromosome
 import copy  # Used for testing
 
@@ -381,9 +383,10 @@ class GeneticOptimizer(Optimizer, ABC):
         # First, we must store the elite chromosomes. These are not ones we will cross and mutate.
 
         elite_chromosomes = self.chromosomes[:round(len(self.chromosomes) * self.elitism_ratio)]
+
         non_elite_chromosomes = list(filter(lambda x: x not in elite_chromosomes, self.chromosomes))
 
-        if list(set(elite_chromosomes) & set(non_elite_chromosomes)): # Checks intersection.
+        if list(set(elite_chromosomes) & set(non_elite_chromosomes)):  # Checks intersection.
             raise RuntimeError("Duplicates exist within the chromosome list or the filter did not work...")
 
         # Get the highest performing values that are not 'Elite'
@@ -392,20 +395,25 @@ class GeneticOptimizer(Optimizer, ABC):
 
         # Crossover by Segment Based Crossover
 
-        self.crossover(selected_list)
+        crossover_list = self.crossover(selected_list)
+
+        self.chromosomes = set(crossover_list + elite_chromosomes + non_elite_chromosomes)
 
         # Mutate them by Gauss By Center
 
-    # Use selection pressure. (sp=2)
+    # Use exploration tilted selection pressure.
     def __select_via_linear_ranking(self, lower_ranked_population):
+
         n = len(lower_ranked_population)
-        sp = 2
+        n_plus = n / 3
+        n_minus = 2 * (n / 3)
         selected_list = []
 
         for i in range(0, n):
             chromosome = lower_ranked_population[i]
             # Calculate ranked probability
-            ranked_probability = (1/n)*(sp-((2*sp)-2)*((i-1)/(n-1))) # Cannot get access to original paper to see if this is right. Seems to work fine.
+            ranked_probability = (1 / n) * (n_minus + (n_plus - n_minus) * ((i - 1) / (n - 1)))
+            print(f'{i}: {ranked_probability}')
             if ranked_probability >= random.random():
                 selected_list.append(chromosome)
 
@@ -414,33 +422,49 @@ class GeneticOptimizer(Optimizer, ABC):
     def write_results(self):
         pass
 
-    def crossover(self, selected_list):
+    def crossover(self, selected_list, binary_mask=None):
 
         new_pop_list = []
 
-        # Create the binary mask
+        # Create the binary mask (Should always be, but I wanted to be able to test it easier)
 
-        binary_mask = []
-        for i in range(0, Chromosome.num_of_segments):
-            if self.crossover_prob >= random.random():
-                binary_mask.append(1)
-            else:
-                binary_mask.append(0)
+        if binary_mask is None:
+            binary_mask = []
+            for i in range(0, Chromosome.num_of_segments):
+                if self.crossover_prob >= random.random():
+                    binary_mask.append(1)
+                else:
+                    binary_mask.append(0)
 
         print(binary_mask)
 
+        # selected_list = [Chromosome([], 0),Chromosome([], 1),Chromosome([], 2)]
+
         # Use sequential pairing for crossover.
+
+        if len(selected_list) % 2 == 1:
+            new_pop_list.append(
+                selected_list[len(selected_list) - 1])  # Odd number list need the last element to just be re-introduced
+
         print("SEQUENTIAL THING!")
         print(f"Original List:  + {selected_list}")
         iterator = iter(selected_list)
 
-        thing = list(zip(iterator, iterator))
+        crossing_pairs = list(zip(iterator, iterator))
 
-        print(f'New List: {thing}')
+        print(f'New List: {crossing_pairs}')
 
         # Perform the crossover
 
-        pass
+        for pair in crossing_pairs:
+            a = pair[0]  # Fitter chromosome
+            b = pair[1]  # Less fit chromosome
+            b = crossover_chromosomes(a, b, binary_mask)  # Worse performing chromosome is replaced.
+
+            new_pop_list.append(a)
+            new_pop_list.append(b)
+
+        return new_pop_list
 
     def mutate(self):
         pass

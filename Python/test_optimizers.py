@@ -108,13 +108,21 @@ class GeneticTests(unittest.TestCase):
 
     def test_crossover(self):
 
-        # Test crossover with 1 chromosome.
+        # Set up test chromosomes
 
-        # test crossover with 2 chromosomes
+        c0 = Chromosome(self.GHC_FLAGS[:20], 0)
+        c1 = Chromosome(self.GHC_FLAGS[20:40], 1)
+        c2 = Chromosome(self.GHC_FLAGS[:40], 2)
+        c3 = Chromosome(self.GHC_FLAGS[:10] + self.GHC_FLAGS[20:30], 3)
+        c4 = Chromosome(self.GHC_FLAGS[40:50], 4)
+        c5 = Chromosome(self.GHC_FLAGS[5:10] + self.GHC_FLAGS[15:20] + self.GHC_FLAGS[25:30] + self.GHC_FLAGS[35:40], 5)
 
-        # test crossover with 3 chromosomes
-
-        # test crossover with 10 chromosomes
+        c0.fitness = 0.0
+        c1.fitness = 0.1
+        c2.fitness = 0.2
+        c3.fitness = 0.3
+        c4.fitness = 0.4
+        c5.fitness = 0.5
 
         pass
 
