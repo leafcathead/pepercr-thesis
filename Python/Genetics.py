@@ -1,4 +1,5 @@
 # Used to help abstract the genetic algorithm
+import random
 import uuid
 
 
@@ -64,14 +65,23 @@ class Chromosome:
 
         return sequence_segments
 
+    def mutate_via_bitmask(self, mutation_rate=0.0, bit_mask=None):
 
-    def mutate_via_bitmask(self):
-        pass
+        if bit_mask is None:
+            bit_mask = []
+            for i in range(0, len(Chromosome.genes)):
+                if mutation_rate > random.random():
+                    bit_mask.append(1)
+                else:
+                    bit_mask.append(0)
+
+        i = 0
+        for gene in self.sequence:
+            self.sequence[gene] = bit_mask[i] ^ self.sequence[gene]
+            i += 1
 
     def get_active_genes(self):
         return list(filter(lambda x: self.sequence[x] == 1, self.sequence))
-
-
 
     def __str__(self):
         return (f'\nChromosome ID: {self.genetic_id} \n'
@@ -83,7 +93,7 @@ class Chromosome:
 def crossover_chromosomes(a: Chromosome, b: Chromosome, bit_mask):
     a_segs = a.get_gene_segments()
     b_segs = b.get_gene_segments()
-    child = None # New Chromosome
+    child = None  # New Chromosome
     new_flag_list = []
 
     if len(a_segs) != len(b_segs):

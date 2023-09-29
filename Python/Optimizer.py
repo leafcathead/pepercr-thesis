@@ -185,7 +185,6 @@ class Optimizer(ABC):
 
 
 class IterativeOptimizer(Optimizer, ABC):
-
     optimizer_number = 0
 
     def __init__(self, cfg, test_path, t):
@@ -286,8 +285,8 @@ class IterativeOptimizer(Optimizer, ABC):
         if not os.path.exists(f'{self.analysis_dir}/{self.test_name}'):
             os.mkdir(f'{self.analysis_dir}/{self.test_name}')
 
-        complete_table.to_csv(f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-COMPLETE-{self.optimizer_number}.csv')
-
+        complete_table.to_csv(
+            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-COMPLETE-{self.optimizer_number}.csv')
 
 
 class BOCAOptimizer(Optimizer, ABC):
@@ -425,6 +424,11 @@ class GeneticOptimizer(Optimizer, ABC):
                 selected_list.append(chromosome)
 
         return selected_list
+
+    def mutate_genes_via_bitmask(self, bit_mask=None):
+
+        for chromosome in self.chromosomes:
+            chromosome.mutate_via_bitmask(self.mutation_prob)
 
     def write_results(self):
         pass

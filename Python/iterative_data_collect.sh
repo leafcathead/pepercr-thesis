@@ -2,11 +2,9 @@
 
 # Define programs
 
-#arguments=("real/rsa" "real/prolog" "real/linear" "real/grep" "real/fem" "real/compress" "real/cacheprof" "real/ben-raytrace" "shootout/binary-trees" "shootout/n-body" "imaginary/primes" "spectral/gcd" "spectral/sorting")
-arguments=("real/rsa" "real/prolog")
+arguments=("real/rsa" "real/prolog" "real/linear" "real/grep" "real/fem" "real/compress" "real/cacheprof" "real/ben-raytrace" "shootout/binary-trees" "shootout/n-body" "imaginary/primes" "spectral/gcd" "spectral/sorting")
 
-# threaded_programs=("parallel/parfib" "parallel/ray" "parallel/queens" "parallel/nbody)
-threaded_programs=("parallel/cfd")
+threaded_programs=("parallel/parfib" "parallel/ray" "parallel/queens" "parallel/nbody")
 
 
 
