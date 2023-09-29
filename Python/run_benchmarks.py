@@ -56,27 +56,19 @@ def apply_optimizer_task_all(optimizer):
 
 
 # Don't forget to run each program with the different levels of difficulty! See nofib documentation!
-def apply_optimizer_task_one(optimizer, test):
+def apply_optimizer_task_one(optimizer_list, test, modes):
     tests = []
     print(f'Apply Preset Task to: {test}')
 
-    # optimizer.optimize("slow")
-    # optimizer.optimize("norm")
-    optimizer.optimize("fast")
+    for optimizer in optimizer_list:
+        if modes[0]:
+            optimizer.optimize("slow")
+        if modes[1]:
+            optimizer.optimize("norm")
+        if modes[2]:
+            optimizer.optimize("fast")
 
-    optimizer.write_results()
-    # Run test with optimization set.
-    # command = build_individual_test_command(setup_preset_task(optimizer.flag_presets), test)
-    # print(command)
-    # result = subprocess.run(
-    #     command,
-    #     shell=True,
-    #     stdout=subprocess.PIPE,
-    #     stderr=subprocess.PIPE,
-    #     cwd=NOFIB_EXEC_PATH,
-    #     text=True)
-    #   TODO: Implement
-
+        optimizer.write_results()
 
 def main():
     flag_presets = []
@@ -102,9 +94,22 @@ def main():
                                  help="Use iterative optimization to optimize benchmark.")
     optimizer_group.add_argument("--genetic", dest="optimization_type", action="store_const", const=1,
                                  help="Use genetic optimization to optimize benchmark.")
+
+    mode_group = parser.add_mutually_exclusive_group()
+    mode_group.add_argument("-sm", "--slow", dest="slow", action="store_true",
+                                 help="Run the program in only slow mode. Default is to run in all three modes.")
+    mode_group.add_argument("-nm", "--norm", dest="norm", action="store_true",
+                                 help="Run the program in only normal mode. Default is to run in all three modes.")
+    mode_group.add_argument("-fm", "--fast", dest="fast", action="store_true",
+                                 help="Run the program in only fast mode. Default is to run in all three modes.")
     # ADD MORE ARGUMENTS HERE AS THEY BECOME AVAILABLE
 
     args = parser.parse_args()
+
+    if not(args.slow or args.norm or args.fast):
+        mode_list = [1,1,1]
+    else:
+        mode_list = [args.slow, args.norm, args.fast]
 
     # Add the Flag Presets to dictionary. All these presets will be run once per config file.
     try:
@@ -116,20 +121,26 @@ def main():
         # the compilation of the tests which causes the other threads to throw an error and exit prematurely. Testing
         # right now to see if the problem goes away during sequential execution.
 
+        optimizer_list = []
+
         match args.optimization_type:
             case 0:
                 print("Iterative Optimization Selected...")
-                optimizer = IterativeOptimizer(CFG, args.f, args.threaded)
+                for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
+                    optimizer = IterativeOptimizer(CFG, args.f, args.threaded)
+                    optimizer_list.append(optimizer)
             case 1:
                 print("Genetic Optimization Selected...")
-                optimizer = GeneticOptimizer(CFG, args.f, args.threaded)
+                for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
+                    optimizer = GeneticOptimizer(CFG, args.f, args.threaded)
+                    optimizer_list.append(optimizer)
             case _:
                 raise ValueError("Invalid optimization type.")
 
         if args.all:
             apply_optimizer_task_all(optimizer)
         else:
-            apply_optimizer_task_one(optimizer, args.f)
+            apply_optimizer_task_one(optimizer_list, args.f, mode_list)
 
         # with multiprocessing.get_context("spawn").Pool(1) as pool:
         #     pool.map(setup_preset_task, flag_presets)

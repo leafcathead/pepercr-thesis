@@ -1,3 +1,4 @@
+import os
 import random
 from abc import ABC, abstractmethod
 import numpy as np
@@ -185,11 +186,15 @@ class Optimizer(ABC):
 
 class IterativeOptimizer(Optimizer, ABC):
 
+    optimizer_number = 0
+
     def __init__(self, cfg, test_path, t):
         super().__init__(cfg, test_path, t)
         self.num_of_presets = self.CFG["iterative_settings"]["num_of_presets"]
         self.flag_presets = self.__generate_initial_domain()
         self.optimal_preset = None
+        self.optimizer_number = IterativeOptimizer.optimizer_number
+        IterativeOptimizer.optimizer_number += 1
 
         print("Iterative Optimizer")
 
@@ -278,9 +283,11 @@ class IterativeOptimizer(Optimizer, ABC):
 
         print(complete_table)
 
-        complete_table.to_csv(f'{self.analysis_dir}/{self.test_name}-Iterative-COMPLETE.csv')
+        if not os.path.exists(f'{self.analysis_dir}/{self.test_name}'):
+            os.mkdir(f'{self.analysis_dir}/{self.test_name}')
 
-        pass
+        complete_table.to_csv(f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-COMPLETE-{self.optimizer_number}.csv')
+
 
 
 class BOCAOptimizer(Optimizer, ABC):

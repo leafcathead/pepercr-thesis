@@ -65,7 +65,7 @@ class Chromosome:
         return sequence_segments
 
 
-    def mutate(self):
+    def mutate_via_bitmask(self):
         pass
 
     def get_active_genes(self):
