@@ -316,6 +316,7 @@ class GeneticOptimizer(Optimizer, ABC):
         self.best_value = None
         self.optimizer_number = GeneticOptimizer.optimizer_number
         GeneticOptimizer.optimizer_number += 1
+        self.initial_size = self.CFG["genetic_settings"]["population_size"]
 
     def __chromosomes_to_df(self, mode):
         chromosome_table = pd.DataFrame(columns=["ID", "Mode", "Flags", "Fitness"])
@@ -437,6 +438,9 @@ class GeneticOptimizer(Optimizer, ABC):
         if list(set(elite_chromosomes) & set(non_elite_chromosomes)):  # Checks intersection.
             raise RuntimeError("Duplicates exist within the chromosome list or the filter did not work...")
 
+        if len(elite_chromosomes) + len(non_elite_chromosomes) > self.initial_size:
+            raise RuntimeError("Population growing error... before linear selection")
+
         # Get the highest performing values that are not 'Elite'
 
         selected_list = self.__select_via_linear_ranking(non_elite_chromosomes)
@@ -445,7 +449,24 @@ class GeneticOptimizer(Optimizer, ABC):
 
         crossover_list = self.crossover(selected_list)
 
-        self.chromosomes = list(set(crossover_list + elite_chromosomes + non_elite_chromosomes))
+        print(f"Length of Elite Chromosomes: {len(elite_chromosomes)}" )
+        print(f"Length of Non-Elite Chromosomes: {len(non_elite_chromosomes)}")
+        print(f"Length of Crossover Chromosomes: {len(crossover_list)}")
+        print(f"Length of Original Chromosomes: {self.initial_size}")
+        print(f"Length of Crossover + Non-Elite: {len(list((set(crossover_list)) | (set(non_elite_chromosomes) - set(selected_list))))}")
+
+        print(non_elite_chromosomes)
+        print("-------------------")
+        print(crossover_list)
+        print("---------------------")
+        print(list((set(crossover_list)) | (set(non_elite_chromosomes) - set(selected_list))))
+
+        self.chromosomes = elite_chromosomes + list((set(crossover_list)) | (set(non_elite_chromosomes) - set(selected_list)))
+        print(f"Length of New Chromosomes: {len(self.chromosomes)}")
+
+
+        if len(self.chromosomes) > self.initial_size:
+            raise RuntimeError("Population growing error... after cross over")
 
         # Mutate them by Gauss By Center OR Bit mask
 
@@ -511,13 +532,11 @@ class GeneticOptimizer(Optimizer, ABC):
                 else:
                     binary_mask.append(0)
 
-        print(binary_mask)
-
-        # selected_list = [Chromosome([], 0),Chromosome([], 1),Chromosome([], 2)]
 
         # Use sequential pairing for crossover.
 
         if len(selected_list) % 2 == 1:
+            print("Odd number of crossovers!")
             new_pop_list.append(
                 selected_list[len(selected_list) - 1])  # Odd number list need the last element to just be re-introduced
 
@@ -538,6 +557,9 @@ class GeneticOptimizer(Optimizer, ABC):
 
             new_pop_list.append(a)
             new_pop_list.append(b)
+
+        if len(new_pop_list) > len(selected_list):
+            raise RuntimeError("Growth in population during cross over")
 
         return new_pop_list
 
