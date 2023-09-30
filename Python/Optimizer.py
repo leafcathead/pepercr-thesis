@@ -449,20 +449,7 @@ class GeneticOptimizer(Optimizer, ABC):
 
         crossover_list = self.crossover(selected_list)
 
-        print(f"Length of Elite Chromosomes: {len(elite_chromosomes)}" )
-        print(f"Length of Non-Elite Chromosomes: {len(non_elite_chromosomes)}")
-        print(f"Length of Crossover Chromosomes: {len(crossover_list)}")
-        print(f"Length of Original Chromosomes: {self.initial_size}")
-        print(f"Length of Crossover + Non-Elite: {len(list((set(crossover_list)) | (set(non_elite_chromosomes) - set(selected_list))))}")
-
-        print(non_elite_chromosomes)
-        print("-------------------")
-        print(crossover_list)
-        print("---------------------")
-        print(list((set(crossover_list)) | (set(non_elite_chromosomes) - set(selected_list))))
-
         self.chromosomes = elite_chromosomes + list((set(crossover_list)) | (set(non_elite_chromosomes) - set(selected_list)))
-        print(f"Length of New Chromosomes: {len(self.chromosomes)}")
 
 
         if len(self.chromosomes) > self.initial_size:
