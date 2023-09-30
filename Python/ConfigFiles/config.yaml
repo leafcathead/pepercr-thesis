@@ -22,12 +22,12 @@ settings:
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     multicore_cores: 4
     log_output_loc: logs/
-    num_of_optimizer_runs: 3 
+    num_of_optimizer_runs: 1
 iterative_settings:
     num_of_presets: 3 # DEFAULT 300
 genetic_settings: # FOGA Paper
-    max_iterations: 10 # DEFAULT 100
-    population_size: 14 # DEFAULT 277
+    max_iterations: 5 # DEFAULT 100
+    population_size: 7 # DEFAULT 277
     mutation_prob: 0.287
     elitism_ratio: 0.147
     crossover_prob: 0.120

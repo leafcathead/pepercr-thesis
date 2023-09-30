@@ -43,9 +43,6 @@ class Optimizer(ABC):
     def _analyze(self, mode):
         pass
 
-    @abstractmethod
-    def write_results(self):
-        pass
 
     def _setup_preset_task(self, preset):
         extra_flags = 'EXTRA_HC_OPTS="'
@@ -183,6 +180,21 @@ class Optimizer(ABC):
 
         return merged_table
 
+    @abstractmethod
+    def write_results(self):
+        # Take the tables in the dictionary and concat them together!
+
+        tables = self.tables.values()
+        complete_table = pd.concat(tables)
+
+        complete_table = complete_table.drop_duplicates(keep='first', subset=["ID", "Mode"])
+
+        print(complete_table)
+
+        if not os.path.exists(f'{self.analysis_dir}/{self.test_name}'):
+            os.mkdir(f'{self.analysis_dir}/{self.test_name}')
+
+        return complete_table
 
 class IterativeOptimizer(Optimizer, ABC):
     optimizer_number = 0
@@ -247,7 +259,9 @@ class IterativeOptimizer(Optimizer, ABC):
         self.optimal_preset = self._analyze(mode)
 
     def _analyze(self, mode):
-        return super()._run_analysis_tool(mode)
+        returner = super()._run_analysis_tool(mode)
+        #self.log_dictionary.clear()
+        return returner
 
     def configure_baseline(self, mode):
         command_list = []
@@ -273,17 +287,7 @@ class IterativeOptimizer(Optimizer, ABC):
             print(result)
 
     def write_results(self):
-        # Take the tables in the dictionary and concat them together!
-
-        tables = self.tables.values()
-        complete_table = pd.concat(tables)
-
-        complete_table = complete_table.drop_duplicates(keep='first', subset=["ID", "Mode"])
-
-        print(complete_table)
-
-        if not os.path.exists(f'{self.analysis_dir}/{self.test_name}'):
-            os.mkdir(f'{self.analysis_dir}/{self.test_name}')
+        complete_table = super().write_results()
 
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-COMPLETE-{self.optimizer_number}.csv')
@@ -294,6 +298,7 @@ class BOCAOptimizer(Optimizer, ABC):
 
 
 class GeneticOptimizer(Optimizer, ABC):
+    optimizer_number = 0
 
     def __init__(self, cfg, test_path, t):
         super().__init__(cfg, test_path, t)
@@ -308,6 +313,23 @@ class GeneticOptimizer(Optimizer, ABC):
         self.base_log_dictionary = dict()
         self.iterations = 0
         self.iterations_with_no_improvement = 0
+        self.best_value = None
+        self.optimizer_number = GeneticOptimizer.optimizer_number
+        GeneticOptimizer.optimizer_number += 1
+
+    def __chromosomes_to_df(self, mode):
+        chromosome_table = pd.DataFrame(columns=["ID", "Mode", "Flags", "Fitness"])
+        for entry in self.base_log_dictionary:
+            print(self.base_log_dictionary[entry])
+            #chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
+            chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, entry,
+                                                                 self.base_log_dictionary[entry]["Runtime"].iloc[0]]
+
+        for chromosome in self.chromosomes:
+            chromosome_table.loc[len(chromosome_table.index)] = [chromosome.genetic_id, mode, list(filter(lambda key: chromosome.sequence[key] == 1, chromosome.sequence.keys())), chromosome.fitness]
+
+        print(f'CHROMOSOME TABLE: {chromosome_table}')
+        return chromosome_table
 
     def __generate_initial_population(self, pop_size):
         chromosomes = []
@@ -336,9 +358,28 @@ class GeneticOptimizer(Optimizer, ABC):
                 text=True)
             print(result)
 
+            self.log_dictionary[log_file_name] = {"chromosome": Chromosome([f], f), "mode": mode, "id": f}
+            table = self._run_analysis_tool(mode)
+            self.log_dictionary.clear()
+            self.base_log_dictionary[f] = table
+
+
         print("Baseline Configured...")
 
     def optimize(self, mode):
+        print(f"Iteration: {self.iterations}")
+
+        self.csv_dictionary.clear()
+
+        if self.iterations >= self.max_iterations:
+            print("Max Iterations Reached... Terminating")
+            self.tables[mode] = self.__chromosomes_to_df(mode)
+            return
+        elif self.iterations_with_no_improvement >= self.no_improvement_threshold:
+            print("No improvement threshold reached... Terminating")
+            self.tables[mode] = self.__chromosomes_to_df(mode)
+            return
+
         command_list = []
 
         if self.iterations == 0:
@@ -373,6 +414,7 @@ class GeneticOptimizer(Optimizer, ABC):
             self.chromosomes)  # Used for testing. Will be removed one I have confirmed that crossing over/mutation is successful.
 
         merged_table = super()._run_analysis_tool(mode)
+        self.log_dictionary.clear()
         print(merged_table)
 
         merged_table = merged_table.set_index("ID")
@@ -403,9 +445,26 @@ class GeneticOptimizer(Optimizer, ABC):
 
         crossover_list = self.crossover(selected_list)
 
-        self.chromosomes = set(crossover_list + elite_chromosomes + non_elite_chromosomes)
+        self.chromosomes = list(set(crossover_list + elite_chromosomes + non_elite_chromosomes))
 
-        # Mutate them by Gauss By Center
+        # Mutate them by Gauss By Center OR Bit mask
+
+        self.mutate_genes_via_bitmask()
+
+        # Now, with everything complete, begin optimize again.
+
+        self.chromosomes.sort(key=lambda x: x.fitness, reverse=False)
+        best_value = self.chromosomes[0].fitness
+
+        if self.best_value is None or best_value < self.best_value:
+            self.best_value = best_value
+            self.iterations_with_no_improvement = 0
+        else:
+            self.iterations_with_no_improvement += 1
+
+        self.iterations += 1
+        self.optimize(mode)
+        print(f'{mode} MODE TABLE: {self.tables[mode]}')
 
     # Use exploration tilted selection pressure.
     def __select_via_linear_ranking(self, lower_ranked_population):
@@ -431,7 +490,12 @@ class GeneticOptimizer(Optimizer, ABC):
             chromosome.mutate_via_bitmask(self.mutation_prob)
 
     def write_results(self):
-        pass
+        complete_table = super().write_results()
+
+        complete_table = complete_table[complete_table["Fitness"] >= 0]
+
+        complete_table.to_csv(
+            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Genetic-COMPLETE-{self.optimizer_number}.csv')
 
     def crossover(self, selected_list, binary_mask=None):
 

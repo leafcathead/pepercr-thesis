@@ -69,8 +69,10 @@ class Chromosome:
 
         if bit_mask is None:
             bit_mask = []
-            for i in range(0, len(Chromosome.genes)):
-                if mutation_rate > random.random():
+            for i in range(0, len(self.sequence)):
+                if i == 0: # The first one is always -O0, so we need to keep that one enabled. No mutation allowed.
+                    bit_mask.append(0)
+                elif mutation_rate > random.random():
                     bit_mask.append(1)
                 else:
                     bit_mask.append(0)
