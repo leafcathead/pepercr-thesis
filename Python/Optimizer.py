@@ -123,10 +123,8 @@ class Optimizer(ABC):
         # print(headers_real)
 
         run_times = pd.read_csv(self.analysis_dir + "/" + runtime_csv_name, header=None, names=headers_real)
-        print(run_times.head())
         # compile_times = pd.read_csv(self.analysis_dir + "/" + self.csv_dictionary[compiletime_csv_name])
         elapsed_times = pd.read_csv(self.analysis_dir + "/" + elapsed_csv_name, header=None, names=headers_real)
-        print(elapsed_times.head())
 
         tables_to_merge = [run_times, elapsed_times]
 
@@ -321,7 +319,6 @@ class GeneticOptimizer(Optimizer, ABC):
     def __chromosomes_to_df(self, mode):
         chromosome_table = pd.DataFrame(columns=["ID", "Mode", "Flags", "Fitness"])
         for entry in self.base_log_dictionary:
-            print(self.base_log_dictionary[entry])
             #chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
             chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, entry,
                                                                  self.base_log_dictionary[entry]["Runtime"].iloc[0]]
@@ -329,7 +326,6 @@ class GeneticOptimizer(Optimizer, ABC):
         for chromosome in self.chromosomes:
             chromosome_table.loc[len(chromosome_table.index)] = [chromosome.genetic_id, mode, list(filter(lambda key: chromosome.sequence[key] == 1, chromosome.sequence.keys())), chromosome.fitness]
 
-        print(f'CHROMOSOME TABLE: {chromosome_table}')
         return chromosome_table
 
     def __generate_initial_population(self, pop_size):
@@ -338,8 +334,7 @@ class GeneticOptimizer(Optimizer, ABC):
             rand_active_genes = np.random.randint(len(self.flags))
             active_genes = np.random.choice(self.flags, size=rand_active_genes, replace=False)
             chromosomes.append(Chromosome(active_genes, uuid.uuid4()))
-        for c in chromosomes:
-            print(c)
+
         return chromosomes
 
     def configure_baseline(self, mode):
@@ -357,7 +352,6 @@ class GeneticOptimizer(Optimizer, ABC):
                 stderr=subprocess.PIPE,
                 cwd=self.nofib_exec_path,
                 text=True)
-            print(result)
 
             self.log_dictionary[log_file_name] = {"chromosome": Chromosome([f], f), "mode": mode, "id": f}
             table = self._run_analysis_tool(mode)
@@ -416,8 +410,7 @@ class GeneticOptimizer(Optimizer, ABC):
 
         merged_table = super()._run_analysis_tool(mode)
         self.log_dictionary.clear()
-        print(merged_table)
-
+  
         merged_table = merged_table.set_index("ID")
 
         for c in self.chromosomes:
@@ -472,7 +465,6 @@ class GeneticOptimizer(Optimizer, ABC):
 
         self.iterations += 1
         self.optimize(mode)
-        print(f'{mode} MODE TABLE: {self.tables[mode]}')
 
     # Use exploration tilted selection pressure.
     def __select_via_linear_ranking(self, lower_ranked_population):
@@ -486,7 +478,6 @@ class GeneticOptimizer(Optimizer, ABC):
             chromosome = lower_ranked_population[i]
             # Calculate ranked probability
             ranked_probability = (1 / n) * (n_minus + (n_plus - n_minus) * ((i - 1) / (n - 1)))
-            print(f'{i}: {ranked_probability}')
             if ranked_probability >= random.random():
                 selected_list.append(chromosome)
 
@@ -523,17 +514,13 @@ class GeneticOptimizer(Optimizer, ABC):
         # Use sequential pairing for crossover.
 
         if len(selected_list) % 2 == 1:
-            print("Odd number of crossovers!")
             new_pop_list.append(
                 selected_list[len(selected_list) - 1])  # Odd number list need the last element to just be re-introduced
 
-        print("SEQUENTIAL THING!")
-        print(f"Original List:  + {selected_list}")
         iterator = iter(selected_list)
 
         crossing_pairs = list(zip(iterator, iterator))
 
-        print(f'New List: {crossing_pairs}')
 
         # Perform the crossover
 
