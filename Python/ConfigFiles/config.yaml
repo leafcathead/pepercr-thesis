@@ -6,7 +6,7 @@ locations:
     nofib_analysis_exec: ..\nofib\nofib-analyse
     optimal_presets: ..\optimal_presets
 settings:
-    nofib_runs: 3 # DEFAULT 30
+    nofib_runs: 5 # DEFAULT 30
     flags: [-fcall-arity,-fcase-merge,-fcmm-elim-common-blocks,-fcmm-sink,-fcpr-anal,-fcse,
             -fdicts-cheap,-fdicts-strict,-fdmd-tx-dict-sel,-fdo-eta-reduction,-fdo-lambda-eta-expansion,
             -feager-blackholing,-fenable-rewrite-rules,-fexcess-precision,-fexpose-all-unfoldings,
