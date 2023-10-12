@@ -95,12 +95,12 @@ def main():
     optimizer_group.add_argument("--genetic", dest="optimization_type", action="store_const", const=1,
                                  help="Use genetic optimization to optimize benchmark.")
 
-    mode_group = parser.add_mutually_exclusive_group()
-    mode_group.add_argument("-sm", "--slow", dest="slow", action="store_true",
+    #mode_group = parser.add_mutually_exclusive_group()
+    parser.add_argument("-sm", "--slow", dest="slow", action="store_true",
                                  help="Run the program in only slow mode. Default is to run in all three modes.")
-    mode_group.add_argument("-nm", "--norm", dest="norm", action="store_true",
+    parser.add_argument("-nm", "--norm", dest="norm", action="store_true",
                                  help="Run the program in only normal mode. Default is to run in all three modes.")
-    mode_group.add_argument("-fm", "--fast", dest="fast", action="store_true",
+    parser.add_argument("-fm", "--fast", dest="fast", action="store_true",
                                  help="Run the program in only fast mode. Default is to run in all three modes.")
     # ADD MORE ARGUMENTS HERE AS THEY BECOME AVAILABLE
 
