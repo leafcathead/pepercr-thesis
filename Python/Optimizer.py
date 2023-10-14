@@ -43,7 +43,6 @@ class Optimizer(ABC):
     def _analyze(self, mode):
         pass
 
-
     def _setup_preset_task(self, preset):
         extra_flags = 'EXTRA_HC_OPTS="'
         if len(preset) > 0:
@@ -194,6 +193,7 @@ class Optimizer(ABC):
 
         return complete_table
 
+
 class IterativeOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
@@ -258,7 +258,7 @@ class IterativeOptimizer(Optimizer, ABC):
 
     def _analyze(self, mode):
         returner = super()._run_analysis_tool(mode)
-        #self.log_dictionary.clear()
+        # self.log_dictionary.clear()
         return returner
 
     def configure_baseline(self, mode):
@@ -292,7 +292,25 @@ class IterativeOptimizer(Optimizer, ABC):
 
 
 class BOCAOptimizer(Optimizer, ABC):
-    pass
+    optimizer_number = 0
+
+    def __init__(self, cfg, test_path, t):
+        super().__init__(cfg, test_path, t)
+
+    def __generate_training_set(self):
+        pass
+
+    def configure_baseline(self, mode):
+        print("Baseline Configured...")
+
+    def optimize(self, mode):
+        pass
+
+    def _analyze(self, mode):
+        pass
+
+    def write_results(self):
+        pass
 
 
 class GeneticOptimizer(Optimizer, ABC):
@@ -319,12 +337,13 @@ class GeneticOptimizer(Optimizer, ABC):
     def __chromosomes_to_df(self, mode):
         chromosome_table = pd.DataFrame(columns=["ID", "Mode", "Flags", "Fitness"])
         for entry in self.base_log_dictionary:
-            #chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
+            # chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
             chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, entry,
                                                                  self.base_log_dictionary[entry]["Runtime"].iloc[0]]
 
         for chromosome in self.chromosomes:
-            chromosome_table.loc[len(chromosome_table.index)] = [chromosome.genetic_id, mode, list(filter(lambda key: chromosome.sequence[key] == 1, chromosome.sequence.keys())), chromosome.fitness]
+            chromosome_table.loc[len(chromosome_table.index)] = [chromosome.genetic_id, mode, list(
+                filter(lambda key: chromosome.sequence[key] == 1, chromosome.sequence.keys())), chromosome.fitness]
 
         return chromosome_table
 
@@ -357,7 +376,6 @@ class GeneticOptimizer(Optimizer, ABC):
             table = self._run_analysis_tool(mode)
             self.log_dictionary.clear()
             self.base_log_dictionary[f] = table
-
 
         print("Baseline Configured...")
 
@@ -410,7 +428,7 @@ class GeneticOptimizer(Optimizer, ABC):
 
         merged_table = super()._run_analysis_tool(mode)
         self.log_dictionary.clear()
-  
+
         merged_table = merged_table.set_index("ID")
 
         for c in self.chromosomes:
@@ -442,8 +460,8 @@ class GeneticOptimizer(Optimizer, ABC):
 
         crossover_list = self.crossover(selected_list)
 
-        self.chromosomes = elite_chromosomes + list((set(crossover_list)) | (set(non_elite_chromosomes) - set(selected_list)))
-
+        self.chromosomes = elite_chromosomes + list(
+            (set(crossover_list)) | (set(non_elite_chromosomes) - set(selected_list)))
 
         if len(self.chromosomes) > self.initial_size:
             raise RuntimeError("Population growing error... after cross over")
@@ -510,7 +528,6 @@ class GeneticOptimizer(Optimizer, ABC):
                 else:
                     binary_mask.append(0)
 
-
         # Use sequential pairing for crossover.
 
         if len(selected_list) % 2 == 1:
@@ -520,7 +537,6 @@ class GeneticOptimizer(Optimizer, ABC):
         iterator = iter(selected_list)
 
         crossing_pairs = list(zip(iterator, iterator))
-
 
         # Perform the crossover
 
@@ -536,6 +552,3 @@ class GeneticOptimizer(Optimizer, ABC):
             raise RuntimeError("Growth in population during cross over")
 
         return new_pop_list
-
-    def mutate(self):
-        pass

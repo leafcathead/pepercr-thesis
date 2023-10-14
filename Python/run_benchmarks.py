@@ -5,7 +5,7 @@ import subprocess
 import json
 import yaml
 import multiprocessing
-from Optimizer import IterativeOptimizer, GeneticOptimizer
+from Optimizer import IterativeOptimizer, GeneticOptimizer, BOCAOptimizer
 
 NOFIB_CONFIG_DIR_PATH = r'..\nofib\mk'
 NOFIB_EXEC_PATH = r'../nofib'
@@ -16,9 +16,9 @@ TEST_DIRECTORIES = ["imaginary", "parallel", "real", "shake", "shootout", "smp",
 CFG = None
 
 
-# def build_individual_test_command(flag_string, process_name):
-#     # return f'make -C {process_name} {flag_string} NoFibRuns=10 2>&1 | tee logs/{process_name}-nofib-log'
-#     return f'make -C {process_name} {flag_string}  NoFibRuns={CFG["settings"]["nofib_runs"]} 2>&1 | tee {CFG["settings"]["log_output_loc"]}what101-nofib-log'
+# def build_individual_test_command(flag_string, process_name): # return f'make -C {process_name} {flag_string}
+# NoFibRuns=10 2>&1 | tee logs/{process_name}-nofib-log' return f'make -C {process_name} {flag_string}  NoFibRuns={
+# CFG["settings"]["nofib_runs"]} 2>&1 | tee {CFG["settings"]["log_output_loc"]}what101-nofib-log'
 
 
 def apply_preset_task_all(process_name, flag_string):
@@ -94,6 +94,8 @@ def main():
                                  help="Use iterative optimization to optimize benchmark.")
     optimizer_group.add_argument("--genetic", dest="optimization_type", action="store_const", const=1,
                                  help="Use genetic optimization to optimize benchmark.")
+    optimizer_group.add_argument("--boca", dest="optimization_type", action="store_const", const=2,
+                                 help="Use BOCA to optimize benchmark.")
 
     #mode_group = parser.add_mutually_exclusive_group()
     parser.add_argument("-sm", "--slow", dest="slow", action="store_true",
@@ -134,6 +136,11 @@ def main():
                 for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
                     optimizer = GeneticOptimizer(CFG, args.f, args.threaded)
                     optimizer_list.append(optimizer)
+            case 2:
+                print("BOCA Selected...")
+                for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
+                    optimizer = BOCAOptimizer(CFG, args.f, args.threaded)
+                    optimizer_list.append(optimizer)
             case _:
                 raise ValueError("Invalid optimization type.")
 
@@ -151,8 +158,6 @@ def main():
         print("Unable to open flag preset file...")
 
         print("All threads have finished executing...")
-
-        # TODO: Extra compilation steps required to benchmark multi-threaded applications
 
     print("All configuration files have finished executing...")
 
