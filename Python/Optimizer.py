@@ -16,7 +16,7 @@ import copy  # Used for testing
 
 class Optimizer(ABC):
 
-    def __init__(self, cfg, test_path, t):
+    def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
         self.CFG = cfg
         self.threaded = t
         self.flags = self.CFG["settings"]["flags"]
@@ -29,6 +29,7 @@ class Optimizer(ABC):
         self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
         self.log_dictionary = dict()
         self.csv_dictionary = dict()
+        self.label = test_desc
         self.tables = {"slow": None, "norm": None, "fast": None}
 
     @abstractmethod
@@ -197,8 +198,8 @@ class Optimizer(ABC):
 class IterativeOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
-    def __init__(self, cfg, test_path, t):
-        super().__init__(cfg, test_path, t)
+    def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
+        super().__init__(cfg, test_path, t, test_desc)
         self.num_of_presets = self.CFG["iterative_settings"]["num_of_presets"]
         self.flag_presets = self.__generate_initial_domain()
         self.optimal_preset = None
@@ -288,17 +289,19 @@ class IterativeOptimizer(Optimizer, ABC):
         complete_table = super().write_results()
 
         complete_table.to_csv(
-            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-COMPLETE-{self.optimizer_number}.csv')
+            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-{self.label}-{self.optimizer_number}.csv')
 
 
 class BOCAOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
-    def __init__(self, cfg, test_path, t):
-        super().__init__(cfg, test_path, t)
+    def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
+        super().__init__(cfg, test_path, t, test_desc)
+        self.training_set = self.__generate_training_set(cfg["boca_settings"]["initial_set"])
+        self.num_of_K = cfg["boca_settings"]["num_of_impactful_optimizations"]
 
-    def __generate_training_set(self):
-        pass
+    def __generate_training_set(self, set_size):
+        return []
 
     def configure_baseline(self, mode):
         print("Baseline Configured...")
@@ -316,8 +319,8 @@ class BOCAOptimizer(Optimizer, ABC):
 class GeneticOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
-    def __init__(self, cfg, test_path, t):
-        super().__init__(cfg, test_path, t)
+    def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
+        super().__init__(cfg, test_path, t, test_desc)
         Chromosome.genes = self.CFG["settings"]["flags"]
         Chromosome.num_of_segments = self.CFG["genetic_settings"]["num_of_segments"]
         self.max_iterations = self.CFG["genetic_settings"]["max_iterations"]
@@ -512,7 +515,7 @@ class GeneticOptimizer(Optimizer, ABC):
         complete_table = complete_table[complete_table["Fitness"] >= 0]
 
         complete_table.to_csv(
-            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Genetic-COMPLETE-{self.optimizer_number}.csv')
+            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Genetic-{self.label}-{self.optimizer_number}.csv')
 
     def crossover(self, selected_list, binary_mask=None):
 

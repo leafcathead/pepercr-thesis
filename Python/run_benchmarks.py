@@ -104,7 +104,8 @@ def main():
                                  help="Run the program in only normal mode. Default is to run in all three modes.")
     parser.add_argument("-fm", "--fast", dest="fast", action="store_true",
                                  help="Run the program in only fast mode. Default is to run in all three modes.")
-    # ADD MORE ARGUMENTS HERE AS THEY BECOME AVAILABLE
+
+    parser.add_argument("--name", required=False, help="Give a special name to the output file to help distinguish it from other tests.")
 
     args = parser.parse_args()
 
@@ -129,17 +130,17 @@ def main():
             case 0:
                 print("Iterative Optimization Selected...")
                 for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
-                    optimizer = IterativeOptimizer(CFG, args.f, args.threaded)
+                    optimizer = IterativeOptimizer(CFG, args.f, args.threaded, args.name)
                     optimizer_list.append(optimizer)
             case 1:
                 print("Genetic Optimization Selected...")
                 for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
-                    optimizer = GeneticOptimizer(CFG, args.f, args.threaded)
+                    optimizer = GeneticOptimizer(CFG, args.f, args.threaded, args.name)
                     optimizer_list.append(optimizer)
             case 2:
                 print("BOCA Selected...")
                 for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
-                    optimizer = BOCAOptimizer(CFG, args.f, args.threaded)
+                    optimizer = BOCAOptimizer(CFG, args.f, args.threaded, args.name)
                     optimizer_list.append(optimizer)
             case _:
                 raise ValueError("Invalid optimization type.")

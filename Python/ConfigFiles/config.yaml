@@ -36,3 +36,6 @@ genetic_settings: # FOGA Paper
     mutation_type: guass_by_center
     selection_type: linear_ranking
     max_iter_without_improvement: 45 # Default 45
+boca_settings:
+    initial_set: 100
+    num_of_impactful_optimizations: 10
