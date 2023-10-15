@@ -292,6 +292,14 @@ class IterativeOptimizer(Optimizer, ABC):
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-{self.label}-{self.optimizer_number}.csv')
 
 
+class BOCAOptimization:
+
+    def __init__(self, flags):
+        self.id = uuid.uuid4()
+        self.flags = flags
+        self.runtime = -1
+
+
 class BOCAOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
@@ -299,15 +307,62 @@ class BOCAOptimizer(Optimizer, ABC):
         super().__init__(cfg, test_path, t, test_desc)
         self.training_set = self.__generate_training_set(cfg["boca_settings"]["initial_set"])
         self.num_of_K = cfg["boca_settings"]["num_of_impactful_optimizations"]
+        self.baseline_set = dict()
+        self.max_iterations = cfg["boca_settings"]["iterations"]
+        self.iterations = 0
+        print(self.training_set)
 
     def __generate_training_set(self, set_size):
-        return []
+        init_set = []
+        for i in range(0, set_size):
+            rand_active_flags_num = np.random.randint(len(self.flags))
+            init_set.append(
+                BOCAOptimization(list(np.random.choice(self.flags, size=rand_active_flags_num, replace=False))))
+        return init_set
 
     def configure_baseline(self, mode):
         print("Baseline Configured...")
 
     def optimize(self, mode):
-        pass
+        print("Beginning Optimization")
+        print(f"Iteration: {self.iterations}")
+
+        if self.iterations == self.max_iterations:
+            self.iterations = 0
+            return
+
+        if self.iterations == 0:
+            self.configure_baseline(mode)
+
+        self.csv_dictionary.clear()
+
+        command_list = []
+
+        for b in self.training_set:
+
+            log_file_name = f'{self.test_name}-BOCA-{mode}-{b.id}-nofib-log'
+
+            if self.log_dictionary.get(log_file_name) is None:
+                # Set up command to run benchmark for each BOCA Optimization
+                command = super()._build_individual_test_command(super()._setup_preset_task(b.flags),
+                                                                 f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                                 mode)
+                command_list.append(command)
+                self.log_dictionary[log_file_name] = {"BOCA": b, "mode": mode, "id": b.id}
+
+        # Run each command
+        for c in command_list:
+            print(fr'Applying command to {self.test_path}')
+            result = subprocess.run(
+                c,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.nofib_exec_path,
+                text=True)
+            # print(result)
+
+        self._analyze(mode)
 
     def _analyze(self, mode):
         pass
@@ -389,10 +444,12 @@ class GeneticOptimizer(Optimizer, ABC):
 
         if self.iterations >= self.max_iterations:
             print("Max Iterations Reached... Terminating")
+            self.iterations = 0
             self.tables[mode] = self.__chromosomes_to_df(mode)
             return
         elif self.iterations_with_no_improvement >= self.no_improvement_threshold:
             print("No improvement threshold reached... Terminating")
+            self.iterations = 0
             self.tables[mode] = self.__chromosomes_to_df(mode)
             return
 
