@@ -5,6 +5,7 @@ import numpy as np
 import subprocess
 import uuid
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
 from Genetics import crossover_chromosomes
 from Genetics import Chromosome
@@ -148,6 +149,11 @@ class Optimizer(ABC):
                 elif isinstance(self, GeneticOptimizer):
                     r_id = self.log_dictionary[c]["id"]
                     flags = self.log_dictionary[c]["chromosome"].get_active_genes()
+                    m = self.log_dictionary[c]["mode"]
+                    r = run_times[c].max()
+                elif isinstance(self, BOCAOptimizer):
+                    r_id = self.log_dictionary[c]["id"]
+                    flags = self.log_dictionary[c]["BOCA"].flags
                     m = self.log_dictionary[c]["mode"]
                     r = run_times[c].max()
                 else:
@@ -294,10 +300,12 @@ class IterativeOptimizer(Optimizer, ABC):
 
 class BOCAOptimization:
 
-    def __init__(self, flags):
+    def __init__(self, flags, flag_b):
         self.id = uuid.uuid4()
         self.flags = flags
+        self.flag_bits = flag_b
         self.runtime = -1
+
 
 
 class BOCAOptimizer(Optimizer, ABC):
@@ -316,8 +324,10 @@ class BOCAOptimizer(Optimizer, ABC):
         init_set = []
         for i in range(0, set_size):
             rand_active_flags_num = np.random.randint(len(self.flags))
+            random_choices = list(np.random.choice(self.flags, size=rand_active_flags_num, replace=False))
+            bit_random_choices = list(map(lambda x: 1 if x in random_choices else 0, self.flags))
             init_set.append(
-                BOCAOptimization(list(np.random.choice(self.flags, size=rand_active_flags_num, replace=False))))
+                BOCAOptimization(["-O0"] + random_choices, bit_random_choices))
         return init_set
 
     def configure_baseline(self, mode):
@@ -365,7 +375,32 @@ class BOCAOptimizer(Optimizer, ABC):
         self._analyze(mode)
 
     def _analyze(self, mode):
-        pass
+
+        merged_table = super()._run_analysis_tool(mode)
+        merged_table = merged_table.set_index("ID")
+
+        print(merged_table)
+
+        for b in self.training_set:
+            row = merged_table.loc[[b.id]]
+            b.runtime = row["Runtime"].iloc[0]  # Store fitness value from table into Chromosome
+
+        print("Analysis Done")
+
+        rf = RandomForestRegressor()
+        X_train = list(map(lambda x: x.flag_bits, self.training_set))
+        y_train = list(map(lambda x: x.runtime, self.training_set))
+
+        if len(X_train) != len(y_train):
+            raise RuntimeError("Somehow we have more runtimes than we do presets!")
+
+        # print(X_train)
+        # print("\n")
+        # print(y_train)
+        # np.array(X_train)
+        # np.array(y_train)
+
+        rf.fit(X_train, y_train)
 
     def write_results(self):
         pass
@@ -482,9 +517,6 @@ class GeneticOptimizer(Optimizer, ABC):
         self._analyze(mode)
 
     def _analyze(self, mode):
-
-        old_chromosomes = copy.deepcopy(
-            self.chromosomes)  # Used for testing. Will be removed one I have confirmed that crossing over/mutation is successful.
 
         merged_table = super()._run_analysis_tool(mode)
         self.log_dictionary.clear()
