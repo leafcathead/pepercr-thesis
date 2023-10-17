@@ -1,3 +1,4 @@
+import math
 import os
 import random
 from abc import ABC, abstractmethod
@@ -312,12 +313,15 @@ class BOCAOptimizer(Optimizer, ABC):
 
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
         super().__init__(cfg, test_path, t, test_desc)
-        self.training_set = self.__generate_training_set(cfg["boca_settings"]["initial_set"])
+        self.__c1 = cfg["boca_settings"]["initial_set"]
+        self.training_set = self.__generate_training_set(self.__c1)
         self.num_of_K = cfg["boca_settings"]["num_of_impactful_optimizations"]
         self.baseline_set = dict()
         self.max_iterations = cfg["boca_settings"]["iterations"]
+        self.decay = cfg["boca_settings"]["decay"]
+        self.offset = cfg["boca_settings"]["offset"]
+        self.scale = cfg["boca_settings"]["scale"]
         self.iterations = 0
-        print(self.training_set)
 
     def __generate_training_set(self, set_size):
         init_set = []
@@ -418,6 +422,15 @@ class BOCAOptimizer(Optimizer, ABC):
 
         # Do Decay Stuff
 
+        all_candidates = []
+
+        for index, optimization in enumerate(important_optimizations):
+            C = self.__normal_decay(self.iterations)
+
+            all_candidates.append([optimization] + list(np.random.choice(unimportant_optimizations, size=int(C), replace=False)))
+
+        print(all_candidates)
+        
         # Predict
 
         # Find Best Candidate
@@ -426,8 +439,11 @@ class BOCAOptimizer(Optimizer, ABC):
 
         # Re-run optimize
 
-    # def __get_importance(self, flag, model):
-    #     return model.feature_importances_[flag]
+    def __normal_decay(self, iterations):
+        sigma = -((self.scale ** 2)/(2*math.log2(self.decay))) # Assuming it's log2, since this is CS afterall lol.
+        C = self.__c1*math.exp(-((max(0, iterations - self.offset)**2)/2*(sigma ** 2)))
+
+        return C
 
     # THIS RESULTS IN THE SAME CALC AS GINI-IMPORTANCE! WHY DO IT?
     def __get_important_optimizations(self, model, gini_list):
