@@ -307,7 +307,6 @@ class BOCAOptimization:
         self.runtime = -1
 
 
-
 class BOCAOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
@@ -401,6 +400,48 @@ class BOCAOptimizer(Optimizer, ABC):
         # np.array(y_train)
 
         rf.fit(X_train, y_train)
+
+        # Determine importance
+        importance = []
+        for index, f in enumerate(self.flags):
+            importance.append((rf.feature_importances_[index], self.flags[index]))
+
+        # Determine Importance Opts
+
+        important_optimizations = self.__get_important_optimizations(rf, importance)
+        print(important_optimizations)
+
+        # Determine Unimportant Opts
+
+        # Do Decay Stuff
+
+        # Predict
+
+        # Find Best Candidate
+
+        # Add to training set
+
+        # Re-run optimize
+
+    # def __get_importance(self, flag, model):
+    #     return model.feature_importances_[flag]
+
+    # THIS RESULTS IN THE SAME CALC AS GINI-IMPORTANCE! WHY DO IT?
+    def __get_important_optimizations(self, model, gini_list):
+        # gini_list.sort(key=lambda x: x[0], reverse=True)
+        importance = []
+        decision_trees = model.estimators_
+
+        for index, gini_tuple in enumerate(gini_list):
+            impact = 0
+            for t in decision_trees:
+                impact += t.feature_importances_[index]
+            impact /= len(decision_trees)
+            importance.append((impact, gini_tuple[0], gini_tuple[1]))
+
+        importance.sort(key=lambda x: x[0], reverse=True)
+
+        return importance[0:self.num_of_K] # FORMAT: (Impact, Gini, Flag)
 
     def write_results(self):
         pass
