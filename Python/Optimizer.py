@@ -426,12 +426,17 @@ class BOCAOptimizer(Optimizer, ABC):
 
         for index, optimization in enumerate(important_optimizations):
             C = self.__normal_decay(self.iterations)
-
-            all_candidates.append([optimization] + list(np.random.choice(unimportant_optimizations, size=int(C), replace=False)))
+            new_candidate_flags = [optimization] + list(np.random.choice(unimportant_optimizations, size=int(C), replace=False))
+            all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
 
         print(all_candidates)
-        
+
         # Predict
+
+        for index, candidate in enumerate(all_candidates):
+            # candidate = (lambda A, B, e: B[A.index(e)] if e in A else None)(self.flags,)
+            result = rf.predict(np.array(candidate.flag_bits).reshape(1,-1)) # Breaks with the paper. Paper has mean and std
+            print(f'Result: {result}')
 
         # Find Best Candidate
 
