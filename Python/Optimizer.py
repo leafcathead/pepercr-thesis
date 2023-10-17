@@ -413,6 +413,9 @@ class BOCAOptimizer(Optimizer, ABC):
 
         # Determine Unimportant Opts
 
+        unimportant_optimizations = list(set(self.flags) - set(important_optimizations))
+        print(unimportant_optimizations)
+
         # Do Decay Stuff
 
         # Predict
@@ -437,11 +440,11 @@ class BOCAOptimizer(Optimizer, ABC):
             for t in decision_trees:
                 impact += t.feature_importances_[index]
             impact /= len(decision_trees)
-            importance.append((impact, gini_tuple[0], gini_tuple[1]))
+            importance.append((impact, gini_tuple[0], gini_tuple[1])) # FORMAT: (Impact, Gini, Flag)
 
         importance.sort(key=lambda x: x[0], reverse=True)
 
-        return importance[0:self.num_of_K] # FORMAT: (Impact, Gini, Flag)
+        return list(map(lambda x:x[2], importance[0:self.num_of_K]))
 
     def write_results(self):
         pass
