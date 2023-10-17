@@ -24,7 +24,7 @@ settings:
     log_output_loc: logs/
     num_of_optimizer_runs: 1
 iterative_settings:
-    num_of_presets: 1000 # DEFAULT 300
+    num_of_presets: 200 # DEFAULT 300
 genetic_settings: # FOGA Paper
     max_iterations: 100 # DEFAULT 100
     population_size: 200 # DEFAULT 277
