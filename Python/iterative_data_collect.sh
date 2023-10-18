@@ -2,7 +2,7 @@
 
 # Define programs
 
-arguments=("real/rsa"  "real/grep" "spectral/sorting" "real/smallpt" "real/fluid" "real/linear" "real/compress" "imaginary/integrate" "imaginary/primes" "spectral/gcd")
+arguments=( "real/fluid" "real/linear" "real/compress" "imaginary/integrate" "imaginary/primes" "spectral/gcd" "real/smallpt")
 # "parallel/nbody"
 threaded_programs=("parallel/parfib" "parallel/nbody")
 
