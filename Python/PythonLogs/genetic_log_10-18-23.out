@@ -1,0 +1,172 @@
+Running Python program with argument: real/grep
+Main Function Call
+Genetic Optimization Selected...
+Apply Preset Task to: real/grep
+Iteration: 0
+Baseline Configured...
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Iteration: 1
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Iteration: 2
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Iteration: 3
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Applying command to real/grep
+Iteration: 4
+No improvement threshold reached... Terminating
+Iteration: 0
+No improvement threshold reached... Terminating
+                                      ID  ... Fitness
+0                                    -01  ...   3.898
+1                                    -02  ...   3.912
+2   03b588d8-eb73-47ae-948b-77eecc855833  ...  -1.000
+3   9f922ed6-b2c2-4523-a02b-64c14fcaaf98  ...  -1.000
+4   738acdb7-94ed-4a74-9fa4-413cddd91dce  ...  -1.000
+5   7d48a336-1c8c-412b-a003-5440f594f93d  ...  -1.000
+6   a727abf9-7949-4bfa-a23f-77f556665167  ...  -1.000
+7   9cbfba6c-9b40-4ca4-b91e-724f70837afa  ...  -1.000
+8   6f1e042f-091b-4371-b96a-4dea343aacbe  ...   3.877
+9   ddd6790a-5e6e-4331-aade-349948d9dbce  ...   3.883
+10  a72eda9f-7873-469a-8f5d-9fb6b3127a07  ...   3.884
+11  2b50283b-e5fa-4370-a000-44d5a38ee78f  ...   3.886
+12  688d1add-c781-4ee8-8200-40c19d5e5269  ...   3.891
+13  905c41e1-cc73-4b3c-8d55-915c3b161a5f  ...   3.893
+14  befacdb1-a7b9-4c1f-81c9-7a7179405ea1  ...   3.895
+15  71bd9cdd-1bb6-4d12-9d28-9467c777fdcf  ...   3.897
+16  3572941c-3d39-41a8-96ca-79e373e93897  ...   3.903
+17  592772f3-e864-4465-bf6a-b43c9b61d7c1  ...   3.905
+18  5343f902-10af-42d4-ad67-0bd48d6d9fcb  ...   3.911
+19  c5c2397a-7ede-4d74-8314-e92c4984ae39  ...   3.912
+20  cb8e22de-d6c6-48ed-909c-f7482ea4d766  ...   3.912
+21  0dde1039-2a21-4469-ad72-3a487eebc55e  ...   3.914
+22  34774484-64a7-4333-83f4-1b341da6b3c3  ...   3.918
+23  3f89ee84-3ddd-47fb-88f6-3a2458d791b3  ...   3.918
+24  9cd6bf96-e014-469b-9c94-b9ce114df6b0  ...   3.924
+25  bbc41362-d93c-4e52-b569-98658adb46ae  ...   3.927
+26  4fd9cf6c-1435-4908-a410-1e9a82fc96af  ...   3.929
+0                                    -01  ...   3.898
+1                                    -02  ...   3.912
+2   03b588d8-eb73-47ae-948b-77eecc855833  ...  -1.000
+3   9f922ed6-b2c2-4523-a02b-64c14fcaaf98  ...  -1.000
+4   738acdb7-94ed-4a74-9fa4-413cddd91dce  ...  -1.000
+5   7d48a336-1c8c-412b-a003-5440f594f93d  ...  -1.000
+6   a727abf9-7949-4bfa-a23f-77f556665167  ...  -1.000
+7   9cbfba6c-9b40-4ca4-b91e-724f70837afa  ...  -1.000
+8   6f1e042f-091b-4371-b96a-4dea343aacbe  ...   3.877
+9   ddd6790a-5e6e-4331-aade-349948d9dbce  ...   3.883
+10  a72eda9f-7873-469a-8f5d-9fb6b3127a07  ...   3.884
+11  2b50283b-e5fa-4370-a000-44d5a38ee78f  ...   3.886
+12  688d1add-c781-4ee8-8200-40c19d5e5269  ...   3.891
+13  905c41e1-cc73-4b3c-8d55-915c3b161a5f  ...   3.893
+14  befacdb1-a7b9-4c1f-81c9-7a7179405ea1  ...   3.895
+15  71bd9cdd-1bb6-4d12-9d28-9467c777fdcf  ...   3.897
+16  3572941c-3d39-41a8-96ca-79e373e93897  ...   3.903
+17  592772f3-e864-4465-bf6a-b43c9b61d7c1  ...   3.905
+18  5343f902-10af-42d4-ad67-0bd48d6d9fcb  ...   3.911
+19  c5c2397a-7ede-4d74-8314-e92c4984ae39  ...   3.912
+20  cb8e22de-d6c6-48ed-909c-f7482ea4d766  ...   3.912
+21  0dde1039-2a21-4469-ad72-3a487eebc55e  ...   3.914
+22  34774484-64a7-4333-83f4-1b341da6b3c3  ...   3.918
+23  3f89ee84-3ddd-47fb-88f6-3a2458d791b3  ...   3.918
+24  9cd6bf96-e014-469b-9c94-b9ce114df6b0  ...   3.924
+25  bbc41362-d93c-4e52-b569-98658adb46ae  ...   3.927
+26  4fd9cf6c-1435-4908-a410-1e9a82fc96af  ...   3.929
+
+[54 rows x 4 columns]
+All configuration files have finished executing...
+Running Python program with argument: real/fluid
