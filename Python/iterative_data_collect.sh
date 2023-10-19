@@ -2,9 +2,9 @@
 
 # Define programs
 
-arguments=( "real/fluid" "real/linear" "real/compress" "imaginary/integrate" "imaginary/primes" "spectral/gcd" "real/smallpt")
+arguments=( "real/cacheprof" "real/sorting" "real/grep")
 # "parallel/nbody"
-threaded_programs=("parallel/parfib" "parallel/nbody")
+threaded_programs=("parallel/parfib")
 
 
 
@@ -26,13 +26,13 @@ done
 if [ "$threaded_flag" = true ]; then
 	for arg in "${threaded_programs[@]}"; do
 		echo "Running threaded program: $arg"
-		python3 run_benchmarks.py --iterative  --threaded -f "$arg" --fast --name "EXPLORE"
+		python3 run_benchmarks.py --iterative  --threaded -f "$arg" --fast --name "BigTest"
 	done
 fi
 
  # Loop through the arguments and run the Python program
  for arg in "${arguments[@]}"; do
 	     echo "Running Python program with argument: $arg"
-	         python3 run_benchmarks.py --iterative  -f "$arg" --fast --name "EXPLORE"
+	         python3 run_benchmarks.py --iterative  -f "$arg" --fast --name "BigTest"
  done
 

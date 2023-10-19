@@ -2,9 +2,9 @@
 
 # Define programs
 
-arguments=("real/grep" "real/fluid" "real/cacheprof"   "spectral/sorting")
+arguments=("real/grep" "real/cacheprof"   "spectral/sorting")
 
-# threaded_programs=("parallel/nbody")
+threaded_programs=("parallel/parfib")
 
 
 
@@ -26,13 +26,13 @@ done
 if [ "$threaded_flag" = true ]; then
 	for arg in "${threaded_programs[@]}"; do
 		echo "Running threaded program: $arg"
-		python3 run_benchmarks.py --genetic --norm --threaded -f "$arg"  --fast
+		python3 run_benchmarks.py --genetic --threaded -f "$arg"  --fast --name "BigTest"
 	done
 fi
 
  # Loop through the arguments and run the Python program
  for arg in "${arguments[@]}"; do
 	     echo "Running Python program with argument: $arg"
-	         python3 run_benchmarks.py --genetic --norm -f "$arg" --fast
+	         python3 run_benchmarks.py --genetic -f "$arg" --fast --name "BigTest"
  done
 
