@@ -194,8 +194,6 @@ class Optimizer(ABC):
 
         complete_table = complete_table.drop_duplicates(keep='first', subset=["ID", "Mode"])
 
-        print(complete_table)
-
         if not os.path.exists(f'{self.analysis_dir}/{self.test_name}'):
             os.mkdir(f'{self.analysis_dir}/{self.test_name}')
 
@@ -294,6 +292,8 @@ class IterativeOptimizer(Optimizer, ABC):
 
     def write_results(self):
         complete_table = super().write_results()
+
+        print(complete_table)
 
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-{self.label}-{self.optimizer_number}.csv')
@@ -515,7 +515,7 @@ class GeneticOptimizer(Optimizer, ABC):
         return chromosomes
 
     def configure_baseline(self, mode):
-        baseline_flags = ["-01", "-02"]
+        baseline_flags = ["-O0", "-O2"]
 
         for f in baseline_flags:
             log_file_name = f'{self.test_name}-genetic-{mode}{f}-nofib-log'
@@ -667,6 +667,8 @@ class GeneticOptimizer(Optimizer, ABC):
         complete_table = super().write_results()
 
         complete_table = complete_table[complete_table["Fitness"] >= 0]
+
+        print(complete_table)
 
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Genetic-{self.label}-{self.optimizer_number}.csv')

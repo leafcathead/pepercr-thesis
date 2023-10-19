@@ -26,8 +26,8 @@ settings:
 iterative_settings:
     num_of_presets: 50 # DEFAULT 300
 genetic_settings: # FOGA Paper
-    max_iterations: 10 # DEFAULT 100
-    population_size: 25 # DEFAULT 277
+    max_iterations: 20 # DEFAULT 100
+    population_size: 10 # DEFAULT 277
     mutation_prob: 0.287
     elitism_ratio: 0.147
     crossover_prob: 0.120
@@ -35,7 +35,7 @@ genetic_settings: # FOGA Paper
     num_of_segments: 3 # Change later?
     mutation_type: guass_by_center
     selection_type: linear_ranking
-    max_iter_without_improvement: 3 # Default 45
+    max_iter_without_improvement: 5 # Default 45
 boca_settings:
     initial_set: 10 # 100
     num_of_impactful_optimizations: 2 # 10
