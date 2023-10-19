@@ -341,3 +341,343 @@ No improvement threshold reached... Terminating
 [54 rows x 4 columns]
 All configuration files have finished executing...
 Running Python program with argument: real/cacheprof
+Main Function Call
+Genetic Optimization Selected...
+Apply Preset Task to: real/cacheprof
+Iteration: 0
+Baseline Configured...
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Iteration: 1
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Iteration: 2
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Iteration: 3
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Applying command to real/cacheprof
+Iteration: 4
+No improvement threshold reached... Terminating
+Iteration: 0
+No improvement threshold reached... Terminating
+                                      ID  ... Fitness
+0                                    -01  ...   -----
+1                                    -02  ...   -----
+2   61b68585-c9ee-45be-88cd-a8f2797403ef  ...      -1
+3   cfc29ad9-8ad4-4759-bf22-1ba5bfd5d028  ...      -1
+4   4f2a3ef6-9134-4519-a161-6f38bc5875a1  ...      -1
+5   69c1dfca-5289-49ea-a004-c067bdf0b470  ...      -1
+6   7a242d1f-058f-4d35-8d04-6ece8548a542  ...      -1
+7   a76fe55f-b746-44ad-bb5b-2473ec4ea936  ...   3.884
+8   98bb9c18-8d1a-4009-8202-e79a5ba5758a  ...   3.887
+9   0915639b-c2f6-441d-9c30-a6653beb7927  ...   3.892
+10  ec308934-8eed-47ea-9cee-a69fabfdd06f  ...   3.892
+11  2e1fe2ee-05e4-4541-80af-eeeeaa1503bc  ...     3.9
+12  634ed1fd-07a4-46c4-8910-65981b68d1b8  ...   3.902
+13  300d1110-bccf-453f-9656-16021e728a57  ...   3.903
+14  9cafa4d3-5529-4bc0-8994-3235c13fa83f  ...   3.914
+15  a137e1c8-8be3-4f7e-8f69-92d7f94e8d98  ...   3.918
+16  f1ed202d-f7bd-4119-b967-ec3e3fa37190  ...   3.921
+17  a344cebf-2f13-4e8c-ac94-704694a7feb5  ...   3.923
+18  4a6f864c-782f-4e10-9699-8637e70e351a  ...   3.924
+19  26459aa1-4506-41f7-9d96-1bc8d5962d7a  ...   3.925
+20  59a5c34a-1e39-442f-a374-97e008a904b9  ...   3.926
+21  8b61b105-05c1-4b39-8034-73a9a34afb8b  ...   3.933
+22  80c61f58-86f6-4fa0-91d8-98e6813f4369  ...   3.942
+23  b7fead20-beb5-40ae-838c-313d62f92285  ...   3.951
+24  3761f973-ca1a-4ef1-a7e2-a9136fcc0e3a  ...   3.962
+25  91e43474-5116-4281-9480-542da6957caf  ...   3.966
+26  c0070bf5-91aa-4738-b5c3-fc9c37ab8f97  ...   3.975
+0                                    -01  ...   -----
+1                                    -02  ...   -----
+2   61b68585-c9ee-45be-88cd-a8f2797403ef  ...      -1
+3   cfc29ad9-8ad4-4759-bf22-1ba5bfd5d028  ...      -1
+4   4f2a3ef6-9134-4519-a161-6f38bc5875a1  ...      -1
+5   69c1dfca-5289-49ea-a004-c067bdf0b470  ...      -1
+6   7a242d1f-058f-4d35-8d04-6ece8548a542  ...      -1
+7   a76fe55f-b746-44ad-bb5b-2473ec4ea936  ...   3.884
+8   98bb9c18-8d1a-4009-8202-e79a5ba5758a  ...   3.887
+9   0915639b-c2f6-441d-9c30-a6653beb7927  ...   3.892
+10  ec308934-8eed-47ea-9cee-a69fabfdd06f  ...   3.892
+11  2e1fe2ee-05e4-4541-80af-eeeeaa1503bc  ...     3.9
+12  634ed1fd-07a4-46c4-8910-65981b68d1b8  ...   3.902
+13  300d1110-bccf-453f-9656-16021e728a57  ...   3.903
+14  9cafa4d3-5529-4bc0-8994-3235c13fa83f  ...   3.914
+15  a137e1c8-8be3-4f7e-8f69-92d7f94e8d98  ...   3.918
+16  f1ed202d-f7bd-4119-b967-ec3e3fa37190  ...   3.921
+17  a344cebf-2f13-4e8c-ac94-704694a7feb5  ...   3.923
+18  4a6f864c-782f-4e10-9699-8637e70e351a  ...   3.924
+19  26459aa1-4506-41f7-9d96-1bc8d5962d7a  ...   3.925
+20  59a5c34a-1e39-442f-a374-97e008a904b9  ...   3.926
+21  8b61b105-05c1-4b39-8034-73a9a34afb8b  ...   3.933
+22  80c61f58-86f6-4fa0-91d8-98e6813f4369  ...   3.942
+23  b7fead20-beb5-40ae-838c-313d62f92285  ...   3.951
+24  3761f973-ca1a-4ef1-a7e2-a9136fcc0e3a  ...   3.962
+25  91e43474-5116-4281-9480-542da6957caf  ...   3.966
+26  c0070bf5-91aa-4738-b5c3-fc9c37ab8f97  ...   3.975
+
+[54 rows x 4 columns]
+Running Python program with argument: spectral/sorting
+Main Function Call
+Genetic Optimization Selected...
+Apply Preset Task to: spectral/sorting
+Iteration: 0
+Baseline Configured...
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Iteration: 1
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Iteration: 2
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Iteration: 3
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Applying command to spectral/sorting
+Iteration: 4
+No improvement threshold reached... Terminating
+Iteration: 0
+No improvement threshold reached... Terminating
+                                      ID  ... Fitness
+0                                    -01  ...   2.753
+1                                    -02  ...   2.736
+2   00cf925b-387c-4cdf-8fc6-ea7da7289c64  ...  -1.000
+3   c54127c5-9fec-4575-9498-e47a3024dd10  ...  -1.000
+4   c5d5d018-9b36-4056-9485-41ac3e7a3fe7  ...  -1.000
+5   0c4b68f2-3b1d-4586-90a8-9b069364d3a0  ...  -1.000
+6   a563b902-7897-46e9-b74f-c946490fd3db  ...  -1.000
+7   04cd942e-e883-4d8a-90ef-831fdb55647d  ...   2.721
+8   22037b1e-daa6-4b7b-89fe-24ec9ddd17da  ...   2.733
+9   c9516d4a-a75a-4877-9ebd-f5ab521adf44  ...   2.734
+10  1ddbc035-86c9-49b2-83a9-c959461b1619  ...   2.742
+11  bf918f5f-1c8a-431b-8fcb-4834a834983a  ...   2.742
+12  b49eab5d-2179-4444-a407-80707d2c6bb0  ...   2.743
+13  a36977e8-de63-45fd-9c2e-4a038e90fcd3  ...   2.744
+14  ff34f6ec-094d-405c-9980-4b1ed0035262  ...   2.750
+15  d8938556-fde9-46b8-a1be-d7f23ccd6e40  ...   2.750
+16  8854b4ba-90de-44a8-94fc-07717bb7db08  ...   2.754
+17  a365c536-e6f6-4aba-bbfb-27318c955bec  ...   2.754
+18  6aea93a7-d8b4-40de-b447-732dd43cfc5c  ...   2.757
+19  e93eebcf-23ae-4f06-85bf-b80c46727038  ...   2.758
+20  4e19bc52-eea5-4d7b-9e09-f84364af58bc  ...   2.759
+21  0adf027d-b67b-4536-83af-e104481e9b1a  ...   2.763
+22  5ca5358b-d09c-4038-982d-9228bc161760  ...   2.766
+23  3ab7a75f-3c6a-4390-8f13-838b224ac61f  ...   2.770
+24  cbb605ab-f109-4514-9267-bd1d741c88fd  ...   2.774
+25  11b227bc-d66d-4916-ae59-9dbff2ac9994  ...   2.781
+26  9cdb5453-bb8c-4650-afbc-58a66d26f03a  ...   2.803
+0                                    -01  ...   2.753
+1                                    -02  ...   2.736
+2   00cf925b-387c-4cdf-8fc6-ea7da7289c64  ...  -1.000
+3   c54127c5-9fec-4575-9498-e47a3024dd10  ...  -1.000
+4   c5d5d018-9b36-4056-9485-41ac3e7a3fe7  ...  -1.000
+5   0c4b68f2-3b1d-4586-90a8-9b069364d3a0  ...  -1.000
+6   a563b902-7897-46e9-b74f-c946490fd3db  ...  -1.000
+7   04cd942e-e883-4d8a-90ef-831fdb55647d  ...   2.721
+8   22037b1e-daa6-4b7b-89fe-24ec9ddd17da  ...   2.733
+9   c9516d4a-a75a-4877-9ebd-f5ab521adf44  ...   2.734
+10  1ddbc035-86c9-49b2-83a9-c959461b1619  ...   2.742
+11  bf918f5f-1c8a-431b-8fcb-4834a834983a  ...   2.742
+12  b49eab5d-2179-4444-a407-80707d2c6bb0  ...   2.743
+13  a36977e8-de63-45fd-9c2e-4a038e90fcd3  ...   2.744
+14  ff34f6ec-094d-405c-9980-4b1ed0035262  ...   2.750
+15  d8938556-fde9-46b8-a1be-d7f23ccd6e40  ...   2.750
+16  8854b4ba-90de-44a8-94fc-07717bb7db08  ...   2.754
+17  a365c536-e6f6-4aba-bbfb-27318c955bec  ...   2.754
+18  6aea93a7-d8b4-40de-b447-732dd43cfc5c  ...   2.757
+19  e93eebcf-23ae-4f06-85bf-b80c46727038  ...   2.758
+20  4e19bc52-eea5-4d7b-9e09-f84364af58bc  ...   2.759
+21  0adf027d-b67b-4536-83af-e104481e9b1a  ...   2.763
+22  5ca5358b-d09c-4038-982d-9228bc161760  ...   2.766
+23  3ab7a75f-3c6a-4390-8f13-838b224ac61f  ...   2.770
+24  cbb605ab-f109-4514-9267-bd1d741c88fd  ...   2.774
+25  11b227bc-d66d-4916-ae59-9dbff2ac9994  ...   2.781
+26  9cdb5453-bb8c-4650-afbc-58a66d26f03a  ...   2.803
+
+[54 rows x 4 columns]
+All configuration files have finished executing...
