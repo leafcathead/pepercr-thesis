@@ -1,0 +1,27 @@
+,ID,Flags,Mode,Runtime,Elapsed_Time
+0,-O0,['-O0'],fast,0.438,0.438
+1,-O2,['-O2'],fast,0.439,0.439
+2,815203ef-0ca4-4462-b4d4-177dc5930605,"['-O0' '-fworker-wrapper' '-funfolding-keeness-factor=1.5' '-fstrictness'
+ '-fcase-merge' '-ffun-to-thunk' '-fcpr-anal' '-fstrictness'
+ '-fpedantic-bottoms' '-funfolding-creation-threshold=750'
+ '-fmax-inline-alloc-size=128' '-fcse' '-fvectorisation-avoidance'
+ '-fvectorise' '-fignore-asserts' '-fsimpl-tick-factor=100' '-fregs-graph'
+ '-fdicts-cheap' '-fcmm-elim-common-blocks' '-fcmm-sink' '-floopification'
+ '-funfolding-dict-discount=30' '-fmax-relevant-binds=6' '-fomit-yields'
+ '-fignore-interface-pragmas' '-fstrictness' '-fworker-wrapper'
+ '-funfolding-use-threshold=60' '-fexcess-precision' '-fspec-constr'
+ '-funbox-small-strict-fields' '-fno-opt-coercion' '-fspecialise'
+ '-fvectorise' '-fdo-lambda-eta-expansion' '-fspec-constr']",fast,0.444,0.444
+3,6ee25cf0-4b2f-4b05-bdbc-a8ebe67b2ece,"['-O0' '-fomit-interface-pragmas' '-fmax-relevant-binds=6' '-fvectorise'
+ '-fcpr-anal' '-fdicts-cheap' '-fliberate-case-threshold=2000'
+ '-fpedantic-bottoms' '-funfolding-keeness-factor=1.5' '-fspecialise'
+ '-fspec-constr-count=3' '-fdicts-strict' '-fmax-inline-memset-insns=32'
+ '-fno-opt-coercion' '-fpedantic-bottoms' '-fstrictness'
+ '-fregs-iterative' '-fmax-inline-memset-insns=32' '-fno-pre-inlining'
+ '-fdo-eta-reduction' '-funfolding-dict-discount=30' '-fregs-iterative'
+ '-foptimal-applicative-do' '-fspec-constr-count=3' '-fmax-worker-args=10'
+ '-fstatic-argument-transformation' '-fmax-worker-args=10' '-fcall-arity'
+ '-fspec-constr-threshold=2000' '-funfolding-keeness-factor=1.5'
+ '-flate-dmd-anal' '-funfolding-keeness-factor=1.5'
+ '-fstrictness-before=1' '-fsimpl-tick-factor=100' '-fsimplifier-phases=2'
+ '-fdicts-cheap']",fast,0.441,0.441

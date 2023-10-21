@@ -1,0 +1,14 @@
+,ID,Flags,Mode,Runtime,Elapsed_Time
+0,-O0,['-O0'],fast,0.314,0.314
+1,-O2,['-O2'],fast,0.313,0.313
+2,e1b89e50-91f8-4d00-a370-17384ec89bf5,"['-O0' '-fstatic-argument-transformation' '-fno-opt-coercion'
+ '-fno-pre-inlining' '-funfolding-fun-discount=60' '-fignore-asserts'
+ '-fdicts-strict' '-fexcess-precision' '-fomit-interface-pragmas'
+ '-fno-state-hack' '-funfolding-use-threshold=60' '-fmax-worker-args=10'
+ '-ffun-to-thunk' '-ffloat-in' '-fspec-constr' '-feager-blackholing'
+ '-fworker-wrapper']",fast,0.316,0.316
+3,908cabe3-4364-4e41-9469-1c89a3733bab,"['-O0' '-fstrictness' '-funfolding-dict-discount=30' '-feager-blackholing'
+ '-funbox-small-strict-fields' '-fspec-constr' '-fspecialise'
+ '-fexpose-all-unfoldings' '-fmax-relevant-binds=6' '-ffull-laziness'
+ '-ffloat-in' '-fcall-arity' '-fstrictness' '-funfolding-use-threshold=60'
+ '-fignore-interface-pragmas' '-fvectorise' '-fsimpl-tick-factor=100']",fast,0.316,0.316
