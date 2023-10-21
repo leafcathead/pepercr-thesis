@@ -6,6 +6,7 @@ import numpy as np
 import subprocess
 import uuid
 import pandas as pd
+from scipy.stats import norm
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
 from Genetics import crossover_chromosomes
@@ -301,11 +302,15 @@ class IterativeOptimizer(Optimizer, ABC):
 
 class BOCAOptimization:
 
+    iteration = 0
+
     def __init__(self, flags, flag_b):
         self.id = uuid.uuid4()
         self.flags = flags
         self.flag_bits = flag_b
         self.runtime = -1
+        self.expected_improvement = 0
+        self.iteration_created = BOCAOptimization.iteration
 
 
 class BOCAOptimizer(Optimizer, ABC):
@@ -322,6 +327,8 @@ class BOCAOptimizer(Optimizer, ABC):
         self.offset = cfg["boca_settings"]["offset"]
         self.scale = cfg["boca_settings"]["scale"]
         self.iterations = 0
+        self.best_candidate = None
+        self.optimizer_number = BOCAOptimizer.optimizer_number
 
     def __generate_training_set(self, set_size):
         init_set = []
@@ -333,16 +340,47 @@ class BOCAOptimizer(Optimizer, ABC):
                 BOCAOptimization(["-O0"] + random_choices, bit_random_choices))
         return init_set
 
+    def __boca_to_df(self, mode):
+        boca_table = pd.DataFrame(columns=["ID", "Mode", "Flags", "Runtime", "Iteration", "Best"])
+        for entry in self.baseline_set:
+            # chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
+            boca_table.loc[len(boca_table.index)] = [entry, mode, entry,
+                                                     self.baseline_set[entry]["Runtime"].iloc[0], 0, False]
+
+        for b in self.training_set:
+            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.flags, b.runtime, b.iteration_created, (lambda x: x is self.best_candidate)(b)]
+
+        return boca_table
+
     def configure_baseline(self, mode):
+
+        baseline_flags = ["-O0", "-O2"]
+
+        for f in baseline_flags:
+            log_file_name = f'{self.test_name}-genetic-{mode}{f}-nofib-log'
+            command = super()._build_individual_test_command(super()._setup_preset_task([f]),
+                                                             f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                             mode)
+            result = subprocess.run(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.nofib_exec_path,
+                text=True)
+
+            str1 = ""
+            self.log_dictionary[log_file_name] = {"BOCA": BOCAOptimization([f], str1.zfill(len(self.flags))),
+                                                  "mode": mode, "id": f}
+            table = self._run_analysis_tool(mode)
+            self.log_dictionary.clear()
+            self.baseline_set[f] = table
+
         print("Baseline Configured...")
 
     def optimize(self, mode):
         print("Beginning Optimization")
         print(f"Iteration: {self.iterations}")
-
-        if self.iterations == self.max_iterations:
-            self.iterations = 0
-            return
 
         if self.iterations == 0:
             self.configure_baseline(mode)
@@ -355,7 +393,7 @@ class BOCAOptimizer(Optimizer, ABC):
 
             log_file_name = f'{self.test_name}-BOCA-{mode}-{b.id}-nofib-log'
 
-            if self.log_dictionary.get(log_file_name) is None:
+            if self.log_dictionary.get(log_file_name) is None and b.runtime == -1:
                 # Set up command to run benchmark for each BOCA Optimization
                 command = super()._build_individual_test_command(super()._setup_preset_task(b.flags),
                                                                  f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
@@ -382,13 +420,18 @@ class BOCAOptimizer(Optimizer, ABC):
         merged_table = super()._run_analysis_tool(mode)
         merged_table = merged_table.set_index("ID")
 
-        print(merged_table)
-
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
             b.runtime = row["Runtime"].iloc[0]  # Store fitness value from table into Chromosome
 
-        print("Analysis Done")
+        self.best_candidate = min(self.training_set, key=lambda x: x.runtime)
+        print("Current Best Candidate: ", self.best_candidate)
+
+        if self.iterations == self.max_iterations:
+            print("Max Iterations reached...")
+            self.iterations = 0
+            self.tables[mode] = self.__boca_to_df(mode)
+            return
 
         rf = RandomForestRegressor()
         X_train = list(map(lambda x: x.flag_bits, self.training_set))
@@ -413,12 +456,10 @@ class BOCAOptimizer(Optimizer, ABC):
         # Determine Importance Opts
 
         important_optimizations = self.__get_important_optimizations(rf, importance)
-        print(important_optimizations)
 
         # Determine Unimportant Opts
 
         unimportant_optimizations = list(set(self.flags) - set(important_optimizations))
-        print(unimportant_optimizations)
 
         # Do Decay Stuff
 
@@ -426,27 +467,48 @@ class BOCAOptimizer(Optimizer, ABC):
 
         for index, optimization in enumerate(important_optimizations):
             C = self.__normal_decay(self.iterations)
-            new_candidate_flags = [optimization] + list(np.random.choice(unimportant_optimizations, size=int(C), replace=False))
-            all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
+            new_candidate_flags = [optimization] + list(
+                np.random.choice(unimportant_optimizations, size=int(C), replace=False))
+            all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(
+                map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
 
-        print(all_candidates)
 
         # Predict
 
         for index, candidate in enumerate(all_candidates):
             # candidate = (lambda A, B, e: B[A.index(e)] if e in A else None)(self.flags,)
-            result = rf.predict(np.array(candidate.flag_bits).reshape(1,-1)) # Breaks with the paper. Paper has mean and std
-            print(f'Result: {result}')
+            results = []
+            trees = rf.estimators_
+            for t in trees:
+                result = t.predict(np.array(candidate.flag_bits).reshape(1, -1))
+                results.append(result)
+            # rf.predict(np.array(candidate.flag_bits).reshape(1,-1)) # Breaks with the paper. Paper has mean and std
+            # print(f'Result: {result}')
+            candidate.expected_improvement = self.__get_expected_improvement(results)
 
         # Find Best Candidate
+        all_candidates = list(
+            filter(lambda x: x.flag_bits not in list(map(lambda y: y.flag_bits, self.training_set)), all_candidates))
 
-        # Add to training set
+        if len(all_candidates) > 0:
+            best_candidate = max(all_candidates, key=lambda x: x.expected_improvement)
+            # Add to training set
+            self.training_set.append(best_candidate)
+
+        else:
+            print("No unique candidate found. Should probably error or stop here. I'm not sure which one.")
+
+        print("Analysis Done")
 
         # Re-run optimize
 
+        BOCAOptimization.iteration += 1
+        self.iterations += 1
+        self.optimize(mode)
+
     def __normal_decay(self, iterations):
-        sigma = -((self.scale ** 2)/(2*math.log2(self.decay))) # Assuming it's log2, since this is CS afterall lol.
-        C = self.__c1*math.exp(-((max(0, iterations - self.offset)**2)/2*(sigma ** 2)))
+        sigma = -((self.scale ** 2) / (2 * math.log2(self.decay)))  # Assuming it's log2, since this is CS afterall lol.
+        C = self.__c1 * math.exp(-((max(0, iterations - self.offset) ** 2) / 2 * (sigma ** 2)))
 
         return C
 
@@ -461,14 +523,43 @@ class BOCAOptimizer(Optimizer, ABC):
             for t in decision_trees:
                 impact += t.feature_importances_[index]
             impact /= len(decision_trees)
-            importance.append((impact, gini_tuple[0], gini_tuple[1])) # FORMAT: (Impact, Gini, Flag)
+            importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
 
         importance.sort(key=lambda x: x[0], reverse=True)
 
-        return list(map(lambda x:x[2], importance[0:self.num_of_K]))
+        return list(map(lambda x: x[2], importance[0:self.num_of_K]))
+
+    def __get_expected_improvement(self, pred):
+        pred = np.array(pred).transpose(1, 0)
+        m = np.mean(pred, axis=1)
+        s = np.std(pred, axis=1)
+
+        def calculate_f():
+            z = (self.best_candidate.runtime - m) / s
+            return (self.best_candidate.runtime - m) * norm.cdf(z) + s * norm.pdf(z)
+
+        if np.any(s == 0.0):
+            s_copy = np.copy(s)
+            s[s_copy == 0.0] = 1.0
+            f = calculate_f()
+            f[s_copy == 0.0] = 0.0
+        else:
+            f = calculate_f()
+
+        return f
 
     def write_results(self):
-        pass
+        complete_table = super().write_results()
+
+        complete_table = complete_table[complete_table["Runtime"] >= 0]
+
+        print(complete_table)
+        print(f"Best Candidate: \n"
+              + f"   Runtime: {self.best_candidate.runtime} \n"
+              + f"   Flags: {self.best_candidate.flags} \n")
+
+        complete_table.to_csv(
+            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-BOCA-{self.label}-{self.optimizer_number}.csv')
 
 
 class GeneticOptimizer(Optimizer, ABC):
