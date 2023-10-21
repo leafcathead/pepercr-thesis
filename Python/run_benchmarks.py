@@ -67,8 +67,11 @@ def apply_optimizer_task_one(optimizer_list, test, modes):
             optimizer.optimize("norm")
         if modes[2]:
             optimizer.optimize("fast")
-
-        optimizer.write_results()
+        
+        try:
+            optimizer.write_results()
+        except IOError as e:
+            print(e)
 
 def main():
     flag_presets = []
