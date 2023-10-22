@@ -72,7 +72,7 @@ class Optimizer(ABC):
             logs_string += " logs/" + log
 
         # Can use the --normalise="none" flag to get raw values instead of percentages from the baseline.
-        command_string =  f'nofib-analyse/nofib-analyse --normalise="none" --csv={table} {logs_string}'
+        command_string =  f'nofib-analyse/nofib-analyse --normalise=none --csv={table} {logs_string}'
         # print(command_string.split())
         return (command_string.split(), f'{self.analysis_dir}/{csv_name}')
         # return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
@@ -119,7 +119,7 @@ class Optimizer(ABC):
                     stderr=subprocess.PIPE,
                     cwd=self.nofib_exec_path,
                     text=True)
-            # print(result)
+                # print(result)
         
         print("All analysis files written...")
 
@@ -198,7 +198,6 @@ class Optimizer(ABC):
     def write_results(self):
         # Take the tables in the dictionary and concat them together!
         print("Beginning table write...")
-        
 
         tables = self.tables.values()
         complete_table = pd.concat(tables)
