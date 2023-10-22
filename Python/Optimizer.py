@@ -62,7 +62,8 @@ class Optimizer(ABC):
         return extra_flags
 
     def _build_individual_test_command(self, flag_string, log_name, mode):
-        return f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} mode={mode} 2>&1 | tee {log_name}'
+        command_string = f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} mode={mode} 2>&1 | tee {log_name}'
+        return command_string
 
     def _build_individual_analyze_commands(self, log_list, table, csv_name):
         command_string_list = []
@@ -71,7 +72,9 @@ class Optimizer(ABC):
             logs_string += " logs/" + log
 
         # Can use the --normalise="none" flag to get raw values instead of percentages from the baseline.
-        return f'nofib-analyse/nofib-analyse --normalise="none" --csv={table} {logs_string} > analysis/{csv_name}'
+        command_string =  f'nofib-analyse/nofib-analyse --normalise="none" --csv={table} {logs_string}'
+        # print(command_string.split())
+        return (command_string.split(), f'{self.analysis_dir}/{csv_name}')
         # return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
 
     def _run_analysis_tool(self, mode):
@@ -102,18 +105,23 @@ class Optimizer(ABC):
         elapsed_csv_name = f'{self.test_name}-elapsed-{mode}-{output_id}.csv'
         self.csv_dictionary[elapsed_csv_name] = output_id
         command_list.append(self._build_individual_analyze_commands(logs_list, "Elapsed", elapsed_csv_name))
+        
+        
+        
 
         # Launch the analysis program and export to CSV
         for c in command_list:
             # print("Running Command: " + c)
-            result = subprocess.run(
-                c,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=self.nofib_exec_path,
-                text=True)
+            with open(c[1], "w") as output_file:
+                result = subprocess.run(
+                    c[0],
+                    stdout=output_file,
+                    stderr=subprocess.PIPE,
+                    cwd=self.nofib_exec_path,
+                    text=True)
             # print(result)
+        
+        print("All analysis files written...")
 
         # Re-Import that CSV and re-configure it the way we want
 
@@ -189,6 +197,8 @@ class Optimizer(ABC):
     @abstractmethod
     def write_results(self):
         # Take the tables in the dictionary and concat them together!
+        print("Beginning table write...")
+        
 
         tables = self.tables.values()
         complete_table = pd.concat(tables)
@@ -250,8 +260,8 @@ class IterativeOptimizer(Optimizer, ABC):
             command_list.append(command)
             self.log_dictionary[log_file_name] = {"preset": preset[0], "mode": mode, "id": run_id}
 
-        for c in command_list:
-            print(fr'Applying command to {self.test_path}')
+        for index, c in enumerate(command_list):
+            print(fr'Applying preset {index} command to {self.test_path}')
             result = subprocess.run(
                 c,
                 shell=True,
@@ -259,7 +269,7 @@ class IterativeOptimizer(Optimizer, ABC):
                 stderr=subprocess.PIPE,
                 cwd=self.nofib_exec_path,
                 text=True)
-            print(result)
+            print(result.stderr)
 
         self.optimal_preset = self._analyze(mode)
 

@@ -71,6 +71,7 @@ def apply_optimizer_task_one(optimizer_list, test, modes):
         try:
             optimizer.write_results()
         except IOError as e:
+            print("Error writing results to file...")
             print(e)
 
 def main():
@@ -158,10 +159,11 @@ def main():
         #     pool.close()
         #     pool.join()
 
-    except IOError:
+    except IOError as e:
         print("Unable to open flag preset file...")
-
-        print("All threads have finished executing...")
+        print(e)
+    
+    print("All threads have finished executing...")
 
     print("All configuration files have finished executing...")
 
