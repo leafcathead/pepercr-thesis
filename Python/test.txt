@@ -1,0 +1,101 @@
+Main Function Call
+Iterative Optimization Selected...
+Iterative Optimizer
+Apply Preset Task to: real/grep
+Configuring baseline... -O0, -O2
+Applying command to real/grep
+CompletedProcess(args='make -C real/grep EXTRA_HC_OPTS="-O0 "   NoFibRuns=5 mode=fast 2>&1 | tee logs//grep-iterative-O0-fast-nofib-log', returncode=0, stdout="make: Entering directory '/home/pepercr/Documents/pepercr-thesis/nofib/real/grep'\nHC = /usr/bin/ghc\nHC_OPTS = -Wno-tabs -Rghc-timing -H32m -hisuf hi -O0 -rtsopts\nRUNTEST_OPTS = -ghc-timing +RTS -V0 -RTS\n==nofib== grep: size of grep follows...\n   text\t   data\t    bss\t    dec\t    hex\tfilename\n 872135\t  61864\t  16200\t 950199\t  e7fb7\tgrep\n==nofib== grep: time to run grep follows...\n../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;   ../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;   ../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;   ../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;   ../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;\n0.31user 0.00system 0:00.32elapsed 99%CPU (0avgtext+0avgdata 5888maxresident)k\n0inputs+16outputs (0major+751minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.263 MUT (0.263 elapsed), 0.056 GC (0.056 elapsed), 0.056 GC(0) (0.055 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\n0.32user 0.00system 0:00.32elapsed 99%CPU (0avgtext+0avgdata 5888maxresident)k\n0inputs+16outputs (0major+748minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.265 MUT (0.265 elapsed), 0.058 GC (0.058 elapsed), 0.058 GC(0) (0.058 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\n0.30user 0.01system 0:00.32elapsed 100%CPU (0avgtext+0avgdata 5760maxresident)k\n0inputs+16outputs (0major+748minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.259 MUT (0.259 elapsed), 0.059 GC (0.059 elapsed), 0.059 GC(0) (0.059 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\n0.31user 0.00system 0:00.32elapsed 99%CPU (0avgtext+0avgdata 5888maxresident)k\n0inputs+16outputs (0major+750minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.263 MUT (0.263 elapsed), 0.056 GC (0.056 elapsed), 0.056 GC(0) (0.056 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\n0.30user 0.00system 0:00.31elapsed 100%CPU (0avgtext+0avgdata 5888maxresident)k\n0inputs+16outputs (0major+750minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.258 MUT (0.258 elapsed), 0.056 GC (0.056 elapsed), 0.056 GC(0) (0.056 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\nmake: Leaving directory '/home/pepercr/Documents/pepercr-thesis/nofib/real/grep'\n", stderr='')
+Applying command to real/grep
+CompletedProcess(args='make -C real/grep EXTRA_HC_OPTS="-O2 "   NoFibRuns=5 mode=fast 2>&1 | tee logs//grep-iterative-O2-fast-nofib-log', returncode=0, stdout="make: Entering directory '/home/pepercr/Documents/pepercr-thesis/nofib/real/grep'\nHC = /usr/bin/ghc\nHC_OPTS = -Wno-tabs -Rghc-timing -H32m -hisuf hi -O2 -rtsopts\nRUNTEST_OPTS = -ghc-timing +RTS -V0 -RTS\n==nofib== grep: size of grep follows...\n   text\t   data\t    bss\t    dec\t    hex\tfilename\n 872135\t  61864\t  16200\t 950199\t  e7fb7\tgrep\n==nofib== grep: time to run grep follows...\n../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;   ../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;   ../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;   ../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;   ../../runstdtest/runstdtest ./grep -i  grep.faststdin -o1 grep.faststdout -o1 grep.stdout  -ghc-timing +RTS -V0 -RTS    100 .*:..*;\n0.30user 0.01system 0:00.31elapsed 100%CPU (0avgtext+0avgdata 5760maxresident)k\n0inputs+16outputs (0major+749minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.259 MUT (0.259 elapsed), 0.056 GC (0.056 elapsed), 0.056 GC(0) (0.056 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\n0.31user 0.00system 0:00.32elapsed 100%CPU (0avgtext+0avgdata 5760maxresident)k\n0inputs+16outputs (0major+747minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.261 MUT (0.261 elapsed), 0.056 GC (0.056 elapsed), 0.056 GC(0) (0.056 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\n0.30user 0.01system 0:00.31elapsed 100%CPU (0avgtext+0avgdata 5888maxresident)k\n0inputs+16outputs (0major+748minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.259 MUT (0.259 elapsed), 0.057 GC (0.057 elapsed), 0.056 GC(0) (0.056 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\n0.31user 0.00system 0:00.32elapsed 100%CPU (0avgtext+0avgdata 5888maxresident)k\n0inputs+16outputs (0major+749minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.263 MUT (0.263 elapsed), 0.056 GC (0.056 elapsed), 0.056 GC(0) (0.056 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\n0.31user 0.00system 0:00.31elapsed 100%CPU (0avgtext+0avgdata 5888maxresident)k\n0inputs+16outputs (0major+748minor)pagefaults 0swaps\n<<ghc: 1042858944 bytes, 937 GCs (935 + 2), 0/181456 avg/max bytes residency (2 samples), 44958328 bytes GC work, 0M in use, 0.000 INIT (0.000 elapsed), 0.258 MUT (0.258 elapsed), 0.056 GC (0.056 elapsed), 0.056 GC(0) (0.056 elapsed), 0.000 GC(1) (0.000 elapsed), 1 balance :ghc>>\nmake: Leaving directory '/home/pepercr/Documents/pepercr-thesis/nofib/real/grep'\n", stderr='')
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Found a match!
+Applying preset 0 command to real/grep
+
+Applying preset 1 command to real/grep
+
+Applying preset 2 command to real/grep
+
+Applying preset 3 command to real/grep
+
+Applying preset 4 command to real/grep
+
+Applying preset 5 command to real/grep
+
+Applying preset 6 command to real/grep
+
+Applying preset 7 command to real/grep
+
+Applying preset 8 command to real/grep
+
+Applying preset 9 command to real/grep
+
+Applying preset 10 command to real/grep
+
+Applying preset 11 command to real/grep
+
+Applying preset 12 command to real/grep
+
+Applying preset 13 command to real/grep
+
+Applying preset 14 command to real/grep
+
+[(['nofib-analyse/nofib-analyse', '--normalise=none', '--csv=Runtime', 'logs/grep-iterative-O0-fast-nofib-log', 'logs/grep-iterative-O2-fast-nofib-log', 'logs/grep-iterative-fast--O0-nofib-log'], '../nofib/analysis/grep-runtime-fast-99c71f94-0e35-430c-a770-092cc113bf8e.csv-0'), (['nofib-analyse/nofib-analyse', '--normalise=none', '--csv=Elapsed', 'logs/grep-iterative-O0-fast-nofib-log', 'logs/grep-iterative-O2-fast-nofib-log', 'logs/grep-iterative-fast--O0-nofib-log'], '../nofib/analysis/grep-elapsed-fast-99c71f94-0e35-430c-a770-092cc113bf8e.csv-0')]
+All analysis files written...
+../nofib/analysis/grep-runtime-fast-99c71f94-0e35-430c-a770-092cc113bf8e.csv-0
+Read Runtime files...
+[  Program  ...  grep-iterative-fast--O0-nofib-log
+0    grep  ...                              0.316
+
+[1 rows x 4 columns]]
+Read Elapsed files...
+[  Program  ...  grep-iterative-fast--O0-nofib-log
+0    grep  ...                              0.316
+
+[1 rows x 4 columns]]
+t:   Program  ...  grep-iterative-fast--O0-nofib-log
+0    grep  ...                              0.316
+
+[1 rows x 4 columns]
+c: Program
+c: grep-iterative-O0-fast-nofib-log
+r_id = -O0 
+mode = fast 
+r = 0.319
+
+c: grep-iterative-O2-fast-nofib-log
+r_id = -O2 
+mode = fast 
+r = 0.316
+
+c: grep-iterative-fast--O0-nofib-log
+r_id = -O0 
+mode = fast 
+r = 0.316
+
+Beginning table write...
+dict_values([None, None,     ID  Flags  Mode  Runtime Elapsed_Time
+0  -O0  [-O0]  fast    0.319        0.316
+1  -O2  [-O2]  fast    0.316        0.316
+2  -O0  [-O0]  fast    0.316        0.316])
+    ID  Flags  Mode  Runtime Elapsed_Time
+0  -O0  [-O0]  fast    0.319        0.316
+1  -O2  [-O2]  fast    0.316        0.316
+2  -O0  [-O0]  fast    0.316        0.316
+    ID  Flags  Mode  Runtime Elapsed_Time
+0  -O0  [-O0]  fast    0.319        0.316
+1  -O2  [-O2]  fast    0.316        0.316
+All threads have finished executing...
+All configuration files have finished executing...
