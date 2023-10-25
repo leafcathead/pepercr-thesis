@@ -6,7 +6,6 @@ import numpy as np
 import subprocess
 import uuid
 import pandas as pd
-import glob
 from scipy.stats import norm
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
@@ -67,32 +66,15 @@ class Optimizer(ABC):
         return command_string
 
     def _build_individual_analyze_commands(self, log_list, table, csv_name):
-        output_file_list = []
         command_string_list = []
-
-        i = 0
-        while i < len(log_list):
-            logs_string = ""
-            if i + 10 < len(log_list):
-                for log in log_list[i:i+10]:
-                    logs_string += " logs/" + log
-            else:
-                for log in log_list[i:]:
-                    logs_string += " logs/" + log
-            command_string =  f'nofib-analyse/nofib-analyse --normalise=none --csv={table} {logs_string}'
-            output_file = f'{self.analysis_dir}/{csv_name}-{int(i/10)}'
-            command_string_list.append((command_string.split(), output_file))
-            i += 10
-        #logs_string = ""
-        #for log in log_list:
-         #   logs_string += " logs/" + log
+        logs_string = ""
+        for log in log_list:
+            logs_string += " logs/" + log
 
         # Can use the --normalise="none" flag to get raw values instead of percentages from the baseline.
-
-        #command_string =  f'nofib-analyse/nofib-analyse --normalise=none --csv={table} {logs_string}'
-        #output_file = csv_name
+        command_string = f'nofib-analyse/nofib-analyse --normalise="none" --csv={table} {logs_string}'
         # print(command_string.split())
-        return command_string_list
+        return (command_string.split(), f'{self.analysis_dir}/{csv_name}')
         # return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
 
     def _run_analysis_tool(self, mode):
@@ -112,8 +94,7 @@ class Optimizer(ABC):
 
         # Runtime
         self.csv_dictionary[runtime_csv_name] = output_id
-        runtime_commands = self._build_individual_analyze_commands(logs_list, "Runtime", runtime_csv_name)
-        command_list.extend(list(map(lambda x: x, runtime_commands)))
+        command_list.append(self._build_individual_analyze_commands(logs_list, "Runtime", runtime_csv_name))
 
         # Compile Time
         # compiletime_csv_name = f'{self.test_name}-compiletime-{mode}-{output_id}.csv'
@@ -123,11 +104,8 @@ class Optimizer(ABC):
         # Elapsed Time
         elapsed_csv_name = f'{self.test_name}-elapsed-{mode}-{output_id}.csv'
         self.csv_dictionary[elapsed_csv_name] = output_id
-        elapsed_commands = self._build_individual_analyze_commands(logs_list, "Elapsed", elapsed_csv_name)
-        command_list.extend(list(map(lambda x: x, elapsed_commands)))
-        
-        
-        
+        command_list.append(self._build_individual_analyze_commands(logs_list, "Elapsed", elapsed_csv_name))
+
         # Launch the analysis program and export to CSV
         for c in command_list:
             # print("Running Command: " + c)
@@ -138,8 +116,8 @@ class Optimizer(ABC):
                     stderr=subprocess.PIPE,
                     cwd=self.nofib_exec_path,
                     text=True)
-                # print(result)
-        
+            # print(result)
+
         print("All analysis files written...")
 
         # Re-Import that CSV and re-configure it the way we want
@@ -152,28 +130,11 @@ class Optimizer(ABC):
 
         # print(headers_real)
 
-        all_files = glob.glob(os.path.join(self.analysis_dir + "/", f'{runtime_csv_name}*'))
-
-
-        run_times = []
-        for index, fn in enumerate(all_files):
-            run_times.append(pd.read_csv(fn, header=None, names=headers_real[10*index:]))
+        run_times = pd.read_csv(self.analysis_dir + "/" + runtime_csv_name, header=None, names=headers_real)
         # compile_times = pd.read_csv(self.analysis_dir + "/" + self.csv_dictionary[compiletime_csv_name])
-        print("Read Runtime files...")
-        
-        all_files = glob.glob(os.path.join(self.analysis_dir + "/", f'{elapsed_csv_name}*'))
+        elapsed_times = pd.read_csv(self.analysis_dir + "/" + elapsed_csv_name, header=None, names=headers_real)
 
-        elapsed_times = []
-        for fn in all_files:
-            elapsed_times.append(pd.read_csv(fn, header=None, names=headers_real[10*index:]))
-        
-        print("Read Elapsed files...")
-
-
-        tables_to_merge = []
-        tables_to_merge.extend(run_times)
-        tables_to_merge.extend(elapsed_times)
-    
+        tables_to_merge = [run_times, elapsed_times]
 
         # Create the Custom Pandas table
 
@@ -183,45 +144,34 @@ class Optimizer(ABC):
 
         # print(self.log_dictionary)
 
-
         # print typeof
-        for t in run_times:
-            #print(t.to_string())
-            print("Joining table...")
-            for c in t.columns:
-                if not (c == "Program"):
-                    if isinstance(self, IterativeOptimizer):
-                        r_id = self.log_dictionary[c]["id"]
-                        flags = self.log_dictionary[c]["preset"]
-                        m = self.log_dictionary[c]["mode"]
-                        r = t[c].max()
-                    elif isinstance(self, GeneticOptimizer):
-                        r_id = self.log_dictionary[c]["id"]
-                        flags = self.log_dictionary[c]["chromosome"].get_active_genes()
-                        m = self.log_dictionary[c]["mode"]
-                        r = t[c].max()
-                    elif isinstance(self, BOCAOptimizer):
-                        r_id = self.log_dictionary[c]["id"]
-                        flags = self.log_dictionary[c]["BOCA"].flags
-                        m = self.log_dictionary[c]["mode"]
-                        r = t[c].max()
-                    else:
-                        raise TypeError("What other type of optimizer is there?")
-                   # print(f'r_id = {r_id} \nmode = {m} \nr = {r}\n')
-                    #if merged_table[merged_table["ID"] == r_id].empty:
-                    merged_table.loc[len(merged_table.index)] = [r_id, flags, m, r, None]
-                    #else:
-                     #   merged_table = merged_table.at[merged_table['ID'] == r_id, "ID"] = str(r_id)
-                      #  merged_table = merged_table.at[merged_table['ID'] == r_id, "Flags"] = flags
-                       # merged_table = merged_table.at[merged_table['ID'] == r_id, "Mode"] = m
-                       # merged_table = merged_table.at[merged_table['ID'] == r_id, "Runtime"] = r
-                        
-        #for t in elapsed_times:
-         #   for c in t.columns:
-          #      if not (c == "Program"):
-           #         r_id = str(self.log_dictionary[c]["id"])
-            #        e = t[c].max()
-             #       merged_table.loc[merged_table["ID"] == r_id, 'Elapsed_Time'] = e
+
+        for c in run_times.columns:
+            if not (c == "Program"):
+                if isinstance(self, IterativeOptimizer):
+                    r_id = self.log_dictionary[c]["id"]
+                    flags = self.log_dictionary[c]["preset"]
+                    m = self.log_dictionary[c]["mode"]
+                    r = run_times[c].max()
+                elif isinstance(self, GeneticOptimizer):
+                    r_id = self.log_dictionary[c]["id"]
+                    flags = self.log_dictionary[c]["chromosome"].get_active_genes()
+                    m = self.log_dictionary[c]["mode"]
+                    r = run_times[c].max()
+                elif isinstance(self, BOCAOptimizer):
+                    r_id = self.log_dictionary[c]["id"]
+                    flags = self.log_dictionary[c]["BOCA"].flags
+                    m = self.log_dictionary[c]["mode"]
+                    r = run_times[c].max()
+                else:
+                    raise TypeError("What other type of optimizer is there?")
+                merged_table.loc[len(merged_table.index)] = [r_id, flags, m, r, None]
+
+        for c in elapsed_times.columns:
+            if not (c == "Program"):
+                r_id = self.log_dictionary[c]["id"]
+                e = run_times[c].max()
+                merged_table.loc[merged_table["ID"] == r_id, 'Elapsed_Time'] = e
 
         # for t in tables_to_merge:
         #     for c in t.columns:
@@ -236,6 +186,7 @@ class Optimizer(ABC):
         #             merged_table.loc[len(merged_table.index)] = [r_id, flags, m, r, e]
         #             print(merged_table)
         #             print("---------------------------------------------------\n")
+
         self.tables[mode] = merged_table
 
         return merged_table
@@ -244,14 +195,11 @@ class Optimizer(ABC):
     def write_results(self):
         # Take the tables in the dictionary and concat them together!
         print("Beginning table write...")
-        
 
         tables = self.tables.values()
         complete_table = pd.concat(tables)
 
-        # complete_table = complete_table.drop_duplicates(keep='first', subset=["ID", "Mode"])
-        
-        complete_table = complete_table.groupby("ID").first().reset_index()
+        complete_table = complete_table.drop_duplicates(keep='first', subset=["ID", "Mode"])
 
         if not os.path.exists(f'{self.analysis_dir}/{self.test_name}'):
             os.mkdir(f'{self.analysis_dir}/{self.test_name}')
@@ -359,7 +307,6 @@ class IterativeOptimizer(Optimizer, ABC):
 
 
 class BOCAOptimization:
-
     iteration = 0
 
     def __init__(self, flags, flag_b):
@@ -406,7 +353,8 @@ class BOCAOptimizer(Optimizer, ABC):
                                                      self.baseline_set[entry]["Runtime"].iloc[0], 0, False]
 
         for b in self.training_set:
-            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.flags, b.runtime, b.iteration_created, (lambda x: x is self.best_candidate)(b)]
+            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.flags, b.runtime, b.iteration_created,
+                                                     (lambda x: x is self.best_candidate)(b)]
 
         return boca_table
 
@@ -529,7 +477,6 @@ class BOCAOptimizer(Optimizer, ABC):
                 np.random.choice(unimportant_optimizations, size=int(C), replace=False))
             all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(
                 map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
-
 
         # Predict
 
