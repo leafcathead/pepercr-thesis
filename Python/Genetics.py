@@ -15,6 +15,7 @@ class Chromosome:
         # 0 - flag is disabled in chromosome
         self.__build_sequence(active_genes)
         self.fitness = -1
+        self.need_run = True
 
     def __build_sequence(self, active_genes):
 

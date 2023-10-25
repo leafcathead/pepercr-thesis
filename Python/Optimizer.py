@@ -62,8 +62,7 @@ class Optimizer(ABC):
         return extra_flags
 
     def _build_individual_test_command(self, flag_string, log_name, mode):
-        command_string = f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} mode={mode} 2>&1 | tee {log_name}'
-        return command_string
+        return f'make -C {self.test_path} {flag_string}  NoFibRuns={self.CFG["settings"]["nofib_runs"]} mode={mode} 2>&1 | tee {log_name}'
 
     def _build_individual_analyze_commands(self, log_list, table, csv_name):
         command_string_list = []
@@ -72,9 +71,7 @@ class Optimizer(ABC):
             logs_string += " logs/" + log
 
         # Can use the --normalise="none" flag to get raw values instead of percentages from the baseline.
-        command_string = f'nofib-analyse/nofib-analyse --normalise="none" --csv={table} {logs_string}'
-        # print(command_string.split())
-        return (command_string.split(), f'{self.analysis_dir}/{csv_name}')
+        return f'nofib-analyse/nofib-analyse --normalise="none" --csv={table} {logs_string} > analysis/{csv_name}'
         # return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
 
     def _run_analysis_tool(self, mode):
@@ -109,16 +106,14 @@ class Optimizer(ABC):
         # Launch the analysis program and export to CSV
         for c in command_list:
             # print("Running Command: " + c)
-            with open(c[1], "w") as output_file:
-                result = subprocess.run(
-                    c[0],
-                    stdout=output_file,
-                    stderr=subprocess.PIPE,
-                    cwd=self.nofib_exec_path,
-                    text=True)
+            result = subprocess.run(
+                c,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.nofib_exec_path,
+                text=True)
             # print(result)
-
-        print("All analysis files written...")
 
         # Re-Import that CSV and re-configure it the way we want
 
@@ -194,7 +189,6 @@ class Optimizer(ABC):
     @abstractmethod
     def write_results(self):
         # Take the tables in the dictionary and concat them together!
-        print("Beginning table write...")
 
         tables = self.tables.values()
         complete_table = pd.concat(tables)
@@ -256,8 +250,8 @@ class IterativeOptimizer(Optimizer, ABC):
             command_list.append(command)
             self.log_dictionary[log_file_name] = {"preset": preset[0], "mode": mode, "id": run_id}
 
-        for index, c in enumerate(command_list):
-            print(fr'Applying preset {index} command to {self.test_path}')
+        for c in command_list:
+            print(fr'Applying command to {self.test_path}')
             result = subprocess.run(
                 c,
                 shell=True,
@@ -265,7 +259,7 @@ class IterativeOptimizer(Optimizer, ABC):
                 stderr=subprocess.PIPE,
                 cwd=self.nofib_exec_path,
                 text=True)
-            print(result.stderr)
+            print(result)
 
         self.optimal_preset = self._analyze(mode)
 
@@ -307,6 +301,7 @@ class IterativeOptimizer(Optimizer, ABC):
 
 
 class BOCAOptimization:
+
     iteration = 0
 
     def __init__(self, flags, flag_b):
@@ -353,8 +348,7 @@ class BOCAOptimizer(Optimizer, ABC):
                                                      self.baseline_set[entry]["Runtime"].iloc[0], 0, False]
 
         for b in self.training_set:
-            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.flags, b.runtime, b.iteration_created,
-                                                     (lambda x: x is self.best_candidate)(b)]
+            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.flags, b.runtime, b.iteration_created, (lambda x: x is self.best_candidate)(b)]
 
         return boca_table
 
@@ -477,6 +471,7 @@ class BOCAOptimizer(Optimizer, ABC):
                 np.random.choice(unimportant_optimizations, size=int(C), replace=False))
             all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(
                 map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
+
 
         # Predict
 
@@ -656,12 +651,15 @@ class GeneticOptimizer(Optimizer, ABC):
 
         # Set up command to run benchmark for each chromosome
         for c in self.chromosomes:
-            log_file_name = f'{self.test_name}-genetic-{mode}-{c.genetic_id}-{self.iterations}-nofib-log'
-            command = super()._build_individual_test_command(super()._setup_preset_task(c.get_active_genes()),
-                                                             f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
-                                                             mode)
-            command_list.append(command)
-            self.log_dictionary[log_file_name] = {"chromosome": c, "mode": mode, "id": c.genetic_id}
+
+            if c.need_run:
+                log_file_name = f'{self.test_name}-genetic-{mode}-{c.genetic_id}-{self.iterations}-nofib-log'
+                command = super()._build_individual_test_command(super()._setup_preset_task(c.get_active_genes()),
+                                                                 f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                                 mode)
+                command_list.append(command)
+                self.log_dictionary[log_file_name] = {"chromosome": c, "mode": mode, "id": c.genetic_id}
+                c.need_run = False
 
         # Run each command
         for c in command_list:
@@ -680,7 +678,7 @@ class GeneticOptimizer(Optimizer, ABC):
     def _analyze(self, mode):
 
         merged_table = super()._run_analysis_tool(mode)
-        self.log_dictionary.clear()
+        # self.log_dictionary.clear()
 
         merged_table = merged_table.set_index("ID")
 
@@ -708,6 +706,8 @@ class GeneticOptimizer(Optimizer, ABC):
         # Get the highest performing values that are not 'Elite'
 
         selected_list = self.__select_via_linear_ranking(non_elite_chromosomes)
+        for c in selected_list:
+            c.need_run = True
 
         # Crossover by Segment Based Crossover
 
