@@ -1,0 +1,25 @@
+,ID,Flags,Mode,Runtime,Elapsed_Time
+0,-O0,['-O0'],fast,0.441,0.441
+1,-O2,['-O2'],fast,0.437,0.437
+2,f37417af-c56d-47d8-8310-1e83936e4a27,"['-O0' '-fspecialise' '-fcmm-elim-common-blocks' '-fspecialise'
+ '-fstatic-argument-transformation' '-fdo-lambda-eta-expansion'
+ '-fmax-inline-alloc-size=128' '-fomit-interface-pragmas'
+ '-fdmd-tx-dict-sel' '-fdo-lambda-eta-expansion'
+ '-funfolding-fun-discount=60']",fast,0.439,0.439
+3,501f3e2a-a158-4b2f-bcc1-bd1220640190,"['-O0' '-fliberate-case' '-fcmm-elim-common-blocks' '-feager-blackholing'
+ '-fcmm-sink' '-fomit-yields' '-fcse' '-fomit-yields' '-fpedantic-bottoms'
+ '-fdicts-strict' '-fcmm-elim-common-blocks']",fast,0.446,0.446
+4,5251f678-72f9-4616-be89-f621b6169b10,"['-O0' '-fstrictness' '-funfolding-fun-discount=60'
+ '-fexpose-all-unfoldings' '-fcmm-elim-common-blocks'
+ '-funbox-small-strict-fields' '-funfolding-keeness-factor=1.5'
+ '-fsimpl-tick-factor=100' '-funfolding-creation-threshold=750'
+ '-funfolding-keeness-factor=1.5' '-fspec-constr-threshold=2000']",fast,0.441,0.441
+5,2427f46c-85f3-438a-b557-9cc2ea9d9bd4,"['-O0' '-fmax-inline-memset-insns=32' '-fspec-constr'
+ '-fcross-module-specialise' '-fvectorisation-avoidance'
+ '-fworker-wrapper' '-fignore-interface-pragmas'
+ '-fmax-simplifier-iterations=4' '-fno-opt-coercion' '-fexcess-precision'
+ '-fspecialise']",fast,0.44,0.44
+6,cae2b261-7670-4f9e-a2de-23b879a3401f,"['-O0' '-fcase-merge' '-fspec-constr' '-fworker-wrapper'
+ '-fmax-worker-args=10' '-fregs-iterative' '-fexpose-all-unfoldings'
+ '-funbox-strict-fields' '-fsimplifier-phases=2'
+ '-funfolding-creation-threshold=750' '-fno-opt-coercion']",fast,0.439,0.439

@@ -186,7 +186,8 @@ class Optimizer(ABC):
 
         # print typeof
         for t in run_times:
-            print(t.to_string())
+            #print(t.to_string())
+            print("Joining table...")
             for c in t.columns:
                 if not (c == "Program"):
                     if isinstance(self, IterativeOptimizer):
@@ -206,7 +207,7 @@ class Optimizer(ABC):
                         r = t[c].max()
                     else:
                         raise TypeError("What other type of optimizer is there?")
-                    print(f'r_id = {r_id} \nmode = {m} \nr = {r}\n')
+                   # print(f'r_id = {r_id} \nmode = {m} \nr = {r}\n')
                     #if merged_table[merged_table["ID"] == r_id].empty:
                     merged_table.loc[len(merged_table.index)] = [r_id, flags, m, r, None]
                     #else:
