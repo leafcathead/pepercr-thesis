@@ -81,7 +81,7 @@ class Optimizer(ABC):
             logs_string += " logs/" + log
 
         # Can use the --normalise="none" flag to get raw values instead of percentages from the baseline.
-        return f'nofib-analyse/nofib-analyse --normalise="none" --csv={table} {logs_string} > analysis/{csv_name}'
+        return (f'echo {logs_string}', f'xargs nofib-analyse/nofib-analyse --normalise="none" --csv={table}', f"{csv_name}")
         # return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
 
     def _run_analysis_tool(self, mode):
@@ -116,14 +116,29 @@ class Optimizer(ABC):
         # Launch the analysis program and export to CSV
         for c in command_list:
             # print("Running Command: " + c)
-            result = subprocess.run(
-                c,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=self.nofib_exec_path,
-                text=True)
-            # print(result)
+            with open(f"logs_tmp.txt", "w") as f:
+                result = subprocess.run(
+                   c[0],
+                    shell=True,
+                    stdout=f,
+                    stderr=subprocess.PIPE,
+                    cwd=self.nofib_exec_path,
+                    text=True)
+            with open(f"logs_tmp.txt", "r") as f:
+                with open(f"{self.analysis_dir}/{c[2]}", "w") as output_csv:
+                    result2 = subprocess.run(
+                       c[1],
+                        shell=True,
+                        stdin=f,
+                        stdout=output_csv,
+                        stderr=subprocess.PIPE,
+                        cwd=self.nofib_exec_path,
+                        text=True)
+
+            #p1.stdout.close()
+            #output = result #p2.communicate()[0]
+            print(f"Result1: {result}")
+            print(f"Result2: {result2}")
 
         # Re-Import that CSV and re-configure it the way we want
 
