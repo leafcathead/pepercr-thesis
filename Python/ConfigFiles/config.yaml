@@ -4,6 +4,7 @@ locations:
     nofib_logs_dir: ..\nofib\logs
     nofib_analysis_dir: ../nofib/analysis
     nofib_analysis_exec: ..\nofib\nofib-analyse
+    log_location: PythonLogs
     optimal_presets: ..\optimal_presets
 settings:
     nofib_runs: 5 # DEFAULT 30
@@ -23,11 +24,12 @@ settings:
     multicore_cores: 4
     log_output_loc: logs/
     num_of_optimizer_runs: 1
+    run_allowance: 20000
 iterative_settings:
-    num_of_presets: 500 # DEFAULT 300
+    num_of_presets: 5 # DEFAULT 300
 genetic_settings: # FOGA Paper
-    max_iterations: 50 # 2 DEFAULT 100
-    population_size: 50 # 40 DEFAULT 277
+    max_iterations: 5 # 2 DEFAULT 100
+    population_size: 5 # 40 DEFAULT 277
     mutation_prob: 0.287
     elitism_ratio: 0.147
     crossover_prob: 0.120
@@ -37,9 +39,9 @@ genetic_settings: # FOGA Paper
     selection_type: linear_ranking
     max_iter_without_improvement: 10 # Default 45
 boca_settings:
-    initial_set: 50 # 40 100
+    initial_set: 5 # 40 100
     num_of_impactful_optimizations: 8 # 10
-    iterations: 50 # 50 100
+    iterations: 5 # 50 100
     decay: 0.5
     offset: 20
     scale: 10

@@ -1,10 +1,8 @@
-
 void make10 (int* a) {
 
     *a = 10;
 
 }
-
 
 int main () {
 

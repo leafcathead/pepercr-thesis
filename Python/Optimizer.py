@@ -6,8 +6,10 @@ import numpy as np
 import subprocess
 import uuid
 import pandas as pd
+from eliot import log_call, to_file, log_message, start_action
 from scipy.stats import norm
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from datetime import date
 
 from Genetics import crossover_chromosomes
 from Genetics import Chromosome
@@ -28,12 +30,20 @@ class Optimizer(ABC):
         self.nofib_exec_path = cfg["locations"]["nofib_exec_path"]
         self.analysis_dir = cfg["locations"]["nofib_analysis_dir"]
         self.analysis_exec_path = cfg["locations"]["nofib_analysis_exec"]
+        self.run_allowance = cfg["settings"]["run_allowance"]
         self.test_path = test_path
         self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
         self.log_dictionary = dict()
         self.csv_dictionary = dict()
         self.label = test_desc
         self.tables = {"slow": None, "norm": None, "fast": None}
+        try:
+            to_file(open(f'{cfg["locations"]["log_location"]}/{self.test_name}-{self.label}-{date.today()}.log', "a+"))
+            self.ctx = start_action(action_type="LOG_RESULTS")
+        except IOError as e:
+            print("Unable to open logging file...")
+            print("Optimizer results will not be logged...")
+            print(e)
 
     @abstractmethod
     def configure_baseline(self, mode):
@@ -204,6 +214,7 @@ class Optimizer(ABC):
 class IterativeOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
+    @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
         super().__init__(cfg, test_path, t, test_desc)
         self.num_of_presets = self.CFG["iterative_settings"]["num_of_presets"]
@@ -252,6 +263,7 @@ class IterativeOptimizer(Optimizer, ABC):
 
         for c in command_list:
             print(fr'Applying command to {self.test_path}')
+            self.run_allowance -= 1
             result = subprocess.run(
                 c,
                 shell=True,
@@ -294,7 +306,10 @@ class IterativeOptimizer(Optimizer, ABC):
     def write_results(self):
         complete_table = super().write_results()
 
-        print(complete_table)
+        best_result = (complete_table.sort_values("Runtime", ascending=True).loc[0, "Flags"], complete_table.sort_values("Runtime", ascending=True).loc[0, "Runtime"])
+
+        with start_action(action_type="LOG_RESULTS") as ctx:
+            ctx.log(message_type="INFO", optimizer="RIO", no=f"{self.optimizer_number}", best_result=best_result, run_allowance=self.run_allowance, iterations=self.num_of_presets)
 
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-{self.label}-{self.optimizer_number}.csv')
@@ -316,6 +331,7 @@ class BOCAOptimization:
 class BOCAOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
+    @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
         super().__init__(cfg, test_path, t, test_desc)
         self.__c1 = cfg["boca_settings"]["initial_set"]
@@ -403,6 +419,7 @@ class BOCAOptimizer(Optimizer, ABC):
 
         # Run each command
         for c in command_list:
+            self.run_allowance -= 1
             print(fr'Applying command to {self.test_path}')
             result = subprocess.run(
                 c,
@@ -427,7 +444,7 @@ class BOCAOptimizer(Optimizer, ABC):
         self.best_candidate = min(self.training_set, key=lambda x: x.runtime)
         print("Current Best Candidate: ", self.best_candidate)
 
-        if self.iterations == self.max_iterations:
+        if (self.iterations == self.max_iterations) or (self.run_allowance <= 0):
             print("Max Iterations reached...")
             self.iterations = 0
             self.tables[mode] = self.__boca_to_df(mode)
@@ -558,6 +575,9 @@ class BOCAOptimizer(Optimizer, ABC):
               + f"   Runtime: {self.best_candidate.runtime} \n"
               + f"   Flags: {self.best_candidate.flags} \n")
 
+        with start_action(action_type="LOG_RESULTS") as ctx:
+            ctx.log(message_type="INFO", optimizer="BOCA", no=f"{self.optimizer_number}", best_result=(self.best_candidate.flags, self.best_candidate.runtime), run_allowance=self.run_allowance, iterations=self.iterations)
+
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-BOCA-{self.label}-{self.optimizer_number}.csv')
 
@@ -565,6 +585,7 @@ class BOCAOptimizer(Optimizer, ABC):
 class GeneticOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
+    @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
         super().__init__(cfg, test_path, t, test_desc)
         Chromosome.genes = self.CFG["settings"]["flags"]
@@ -633,7 +654,7 @@ class GeneticOptimizer(Optimizer, ABC):
 
         self.csv_dictionary.clear()
 
-        if self.iterations >= self.max_iterations:
+        if (self.iterations >= self.max_iterations) or (self.run_allowance <= 0):
             print("Max Iterations Reached... Terminating")
             self.iterations = 0
             self.tables[mode] = self.__chromosomes_to_df(mode)
@@ -663,6 +684,7 @@ class GeneticOptimizer(Optimizer, ABC):
 
         # Run each command
         for c in command_list:
+            self.run_allowance -= 1
             print(fr'Applying command to {self.test_path}')
             result = subprocess.run(
                 c,
@@ -764,7 +786,13 @@ class GeneticOptimizer(Optimizer, ABC):
 
         complete_table = complete_table[complete_table["Fitness"] >= 0]
 
+        best_candidate = max(self.chromosomes, key= lambda x: x.fitness)
+
         print(complete_table)
+
+
+        with start_action(action_type="LOG_RESULTS") as ctx:
+            ctx.log(message_type="INFO", optimizer="GA", no=f"{self.optimizer_number}", best_result=(best_candidate.genes, best_candidate.fitness), run_allowance=self.run_allowance, iterations=self.iterations)
 
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Genetic-{self.label}-{self.optimizer_number}.csv')
