@@ -1,15 +1,18 @@
-void make10 (int* a) {
+int add (int a, int b) {
 
-    *a = 10;
+    int answer = a + b;
+
+    return answer;
 
 }
 
 int main () {
 
-    int* a;
-    *a = 15;
+    int a = 3;
+    int b = 7;
+    int c;
 
-    if (*a == 15) make10(a);
+    c = add(a, b);
 
-    return *a;
+    return c;
 }

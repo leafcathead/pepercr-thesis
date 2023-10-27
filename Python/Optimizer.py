@@ -81,7 +81,8 @@ class Optimizer(ABC):
             logs_string += " logs/" + log
 
         # Can use the --normalise="none" flag to get raw values instead of percentages from the baseline.
-        return (f'echo {logs_string}', f'xargs nofib-analyse/nofib-analyse --normalise="none" --csv={table}', f"{csv_name}")
+        return (
+            f'echo {logs_string}', f'xargs nofib-analyse/nofib-analyse --normalise="none" --csv={table}', f"{csv_name}")
         # return f'nofib-analyse/nofib-analyse --csv={table} {logs_string} > analysis/{csv_name}'
 
     def _run_analysis_tool(self, mode):
@@ -118,7 +119,7 @@ class Optimizer(ABC):
             # print("Running Command: " + c)
             with open(f"logs_tmp.txt", "w") as f:
                 result = subprocess.run(
-                   c[0],
+                    c[0],
                     shell=True,
                     stdout=f,
                     stderr=subprocess.PIPE,
@@ -127,7 +128,7 @@ class Optimizer(ABC):
             with open(f"logs_tmp.txt", "r") as f:
                 with open(f"{self.analysis_dir}/{c[2]}", "w") as output_csv:
                     result2 = subprocess.run(
-                       c[1],
+                        c[1],
                         shell=True,
                         stdin=f,
                         stdout=output_csv,
@@ -135,8 +136,8 @@ class Optimizer(ABC):
                         cwd=self.nofib_exec_path,
                         text=True)
 
-            #p1.stdout.close()
-            #output = result #p2.communicate()[0]
+            # p1.stdout.close()
+            # output = result #p2.communicate()[0]
             print(f"Result1: {result}")
             print(f"Result2: {result2}")
 
@@ -207,7 +208,10 @@ class Optimizer(ABC):
         #             print(merged_table)
         #             print("---------------------------------------------------\n")
 
-        self.tables[mode] = merged_table
+        if (self.tables[mode] is None):
+            self.tables[mode] = merged_table
+        else:
+            self.tables[mode] = pd.concat([self.tables[mode], merged_table])
 
         return merged_table
 
@@ -321,17 +325,18 @@ class IterativeOptimizer(Optimizer, ABC):
     def write_results(self):
         complete_table = super().write_results()
 
-        best_result = (complete_table.sort_values("Runtime", ascending=True).loc[0, "Flags"], complete_table.sort_values("Runtime", ascending=True).loc[0, "Runtime"])
+        best_result = (complete_table.sort_values("Runtime", ascending=True).loc[0, "Flags"],
+                       complete_table.sort_values("Runtime", ascending=True).loc[0, "Runtime"])
 
         with start_action(action_type="LOG_RESULTS") as ctx:
-            ctx.log(message_type="INFO", optimizer="RIO", no=f"{self.optimizer_number}", best_result=best_result, run_allowance=self.run_allowance, iterations=self.num_of_presets)
+            ctx.log(message_type="INFO", optimizer="RIO", no=f"{self.optimizer_number}", best_result=best_result,
+                    run_allowance=self.run_allowance, iterations=self.num_of_presets)
 
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Iterative-{self.label}-{self.optimizer_number}.csv')
 
 
 class BOCAOptimization:
-
     iteration = 0
 
     def __init__(self, flags, flag_b):
@@ -379,7 +384,8 @@ class BOCAOptimizer(Optimizer, ABC):
                                                      self.baseline_set[entry]["Runtime"].iloc[0], 0, False]
 
         for b in self.training_set:
-            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.flags, b.runtime, b.iteration_created, (lambda x: x is self.best_candidate)(b)]
+            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.flags, b.runtime, b.iteration_created,
+                                                     (lambda x: x is self.best_candidate)(b)]
 
         return boca_table
 
@@ -417,6 +423,7 @@ class BOCAOptimizer(Optimizer, ABC):
             self.configure_baseline(mode)
 
         self.csv_dictionary.clear()
+        self.log_dictionary.clear()
 
         command_list = []
 
@@ -504,7 +511,6 @@ class BOCAOptimizer(Optimizer, ABC):
             all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(
                 map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
 
-
         # Predict
 
         for index, candidate in enumerate(all_candidates):
@@ -591,7 +597,9 @@ class BOCAOptimizer(Optimizer, ABC):
               + f"   Flags: {self.best_candidate.flags} \n")
 
         with start_action(action_type="LOG_RESULTS") as ctx:
-            ctx.log(message_type="INFO", optimizer="BOCA", no=f"{self.optimizer_number}", best_result=(self.best_candidate.flags, self.best_candidate.runtime), run_allowance=self.run_allowance, iterations=self.iterations)
+            ctx.log(message_type="INFO", optimizer="BOCA", no=f"{self.optimizer_number}",
+                    best_result=(self.best_candidate.flags, self.best_candidate.runtime),
+                    run_allowance=self.run_allowance, iterations=self.iterations)
 
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-BOCA-{self.label}-{self.optimizer_number}.csv')
@@ -668,6 +676,7 @@ class GeneticOptimizer(Optimizer, ABC):
         print(f"Iteration: {self.iterations}")
 
         self.csv_dictionary.clear()
+        self.log_dictionary.clear()
 
         if (self.iterations >= self.max_iterations) or (self.run_allowance <= 0):
             print("Max Iterations Reached... Terminating")
@@ -801,13 +810,14 @@ class GeneticOptimizer(Optimizer, ABC):
 
         complete_table = complete_table[complete_table["Fitness"] >= 0]
 
-        best_candidate = max(self.chromosomes, key= lambda x: x.fitness)
+        best_candidate = max(self.chromosomes, key=lambda x: x.fitness)
 
         print(complete_table)
 
-
         with start_action(action_type="LOG_RESULTS") as ctx:
-            ctx.log(message_type="INFO", optimizer="GA", no=f"{self.optimizer_number}", best_result=(best_candidate.genes, best_candidate.fitness), run_allowance=self.run_allowance, iterations=self.iterations)
+            ctx.log(message_type="INFO", optimizer="GA", no=f"{self.optimizer_number}",
+                    best_result=(best_candidate.genes, best_candidate.fitness), run_allowance=self.run_allowance,
+                    iterations=self.iterations)
 
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Genetic-{self.label}-{self.optimizer_number}.csv')
