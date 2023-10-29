@@ -91,6 +91,8 @@ class Optimizer(ABC):
         command_list = []
         logs_list = []
 
+        print(f"Log Dictionary: {self.log_dictionary}")
+
         for entry in self.log_dictionary:
             if self.log_dictionary[entry]["mode"] == mode:
                 logs_list.append(entry)
@@ -194,6 +196,9 @@ class Optimizer(ABC):
                 e = run_times[c].max()
                 merged_table.loc[merged_table["ID"] == r_id, 'Elapsed_Time'] = e
 
+        
+        print(f"Merged_table: {merged_table}")
+
         # for t in tables_to_merge:
         #     for c in t.columns:
         #         print (c)
@@ -212,8 +217,9 @@ class Optimizer(ABC):
             self.tables[mode] = merged_table
         else:
             self.tables[mode] = pd.concat([self.tables[mode], merged_table])
+            self.tables[mode].drop_duplicates(subset=["ID"], keep="last", inplace=True)
 
-        return merged_table
+        return self.tables[mode]
 
     @abstractmethod
     def write_results(self):
@@ -341,6 +347,11 @@ class BOCAOptimization:
 
     def __init__(self, flags, flag_b):
         self.id = uuid.uuid4()
+        if not isinstance(flags, list):
+            raise ValueError("BOCA flags must be of type LIST")
+        for f in flags:
+            if not isinstance(f, str):
+                raise ValueError(f"BOCA flag must be of type STRING. Received {f} which is type {type(f)}")
         self.flags = flags
         self.flag_bits = flag_b
         self.runtime = -1
@@ -433,6 +444,8 @@ class BOCAOptimizer(Optimizer, ABC):
 
             if self.log_dictionary.get(log_file_name) is None and b.runtime == -1:
                 # Set up command to run benchmark for each BOCA Optimization
+
+
                 command = super()._build_individual_test_command(super()._setup_preset_task(b.flags),
                                                                  f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
                                                                  mode)
@@ -458,6 +471,8 @@ class BOCAOptimizer(Optimizer, ABC):
 
         merged_table = super()._run_analysis_tool(mode)
         merged_table = merged_table.set_index("ID")
+
+        print(merged_table)
 
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
@@ -501,13 +516,16 @@ class BOCAOptimizer(Optimizer, ABC):
         unimportant_optimizations = list(set(self.flags) - set(important_optimizations))
 
         # Do Decay Stuff
-
+        important_settings = [obj for obj in self.training_set if any(item in obj.flags for item in important_optimizations)]
+        important_settings = list(map(lambda boca_obj: boca_obj.flags , list(set(important_settings))))
+        ##print("Important Settings: ", important_settings)
         all_candidates = []
 
-        for index, optimization in enumerate(important_optimizations):
+        for index, optimization in enumerate(important_settings):
             C = self.__normal_decay(self.iterations)
-            new_candidate_flags = [optimization] + list(
-                np.random.choice(unimportant_optimizations, size=int(C), replace=False))
+        #    if C > len(unimportant_optimizations):
+         #       C = len(unimportant_optimizations)
+            new_candidate_flags = optimization + list(np.random.choice(unimportant_optimizations, size=int(C), replace=False))
             all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(
                 map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
 
@@ -535,6 +553,9 @@ class BOCAOptimizer(Optimizer, ABC):
 
         else:
             print("No unique candidate found. Should probably error or stop here. I'm not sure which one.")
+            with start_action(action_type="ERROR_CANDIDATE") as ctx:
+                ctx.log(message_type="ERROR", optimizer="BOCA", message="No unique candidate found.", iteration=self.iterations, all_candidates=all_candidates)
+
 
         print("Analysis Done")
 
@@ -546,7 +567,13 @@ class BOCAOptimizer(Optimizer, ABC):
 
     def __normal_decay(self, iterations):
         sigma = -((self.scale ** 2) / (2 * math.log2(self.decay)))  # Assuming it's log2, since this is CS afterall lol.
-        C = self.__c1 * math.exp(-((max(0, iterations - self.offset) ** 2) / 2 * (sigma ** 2)))
+        #C = self.__c1 * math.exp(-((max(0, iterations - self.offset) ** 2) / 2 * (sigma ** 2)))
+
+        C = self.__c1 * math.exp(-max(0, (self.__c1 + iterations) - self.offset) ** 2 / (2 * sigma ** 2))
+
+
+        with start_action(action_type="LOG_DECAY") as ctx:
+                        ctx.log(message_type="INFO", iteration=iterations, C=C, C_1=self.__c1)
 
         return C
 
