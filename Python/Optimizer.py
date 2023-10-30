@@ -91,7 +91,6 @@ class Optimizer(ABC):
         command_list = []
         logs_list = []
 
-        print(f"Log Dictionary: {self.log_dictionary}")
 
         for entry in self.log_dictionary:
             if self.log_dictionary[entry]["mode"] == mode:
@@ -526,6 +525,7 @@ class BOCAOptimizer(Optimizer, ABC):
         #    if C > len(unimportant_optimizations):
          #       C = len(unimportant_optimizations)
             new_candidate_flags = optimization + list(np.random.choice(unimportant_optimizations, size=int(C), replace=False))
+            new_candidate_flags = list(set(new_candidate_flags))
             all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(
                 map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
 
@@ -572,8 +572,8 @@ class BOCAOptimizer(Optimizer, ABC):
         C = self.__c1 * math.exp(-max(0, (self.__c1 + iterations) - self.offset) ** 2 / (2 * sigma ** 2))
 
 
-        with start_action(action_type="LOG_DECAY") as ctx:
-                        ctx.log(message_type="INFO", iteration=iterations, C=C, C_1=self.__c1)
+        #with start_action(action_type="LOG_DECAY") as ctx:
+         #               ctx.log(message_type="INFO", iteration=iterations, C=C, C_1=self.__c1)
 
         return C
 
@@ -703,7 +703,20 @@ class GeneticOptimizer(Optimizer, ABC):
         print(f"Iteration: {self.iterations}")
 
         self.csv_dictionary.clear()
+        
+        tmp_dict = dict()
+
+        print("Length of Chromosome List: ", len(self.chromosomes))
+
+        for log_name, log_listing in self.log_dictionary.items():
+            for c in self.chromosomes:
+                if c == log_listing["chromosome"]:
+                    tmp_dict[log_name] = log_listing
+                
+
         self.log_dictionary.clear()
+        self.log_dictionary.update(tmp_dict)
+
 
         if (self.iterations >= self.max_iterations) or (self.run_allowance <= 0):
             print("Max Iterations Reached... Terminating")

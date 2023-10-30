@@ -60,6 +60,7 @@ def apply_optimizer_task_one(optimizer_list, test, modes):
     tests = []
     print(f'Apply Preset Task to: {test}')
 
+
     for optimizer in optimizer_list:
         if modes[0]:
             optimizer.optimize("slow")
