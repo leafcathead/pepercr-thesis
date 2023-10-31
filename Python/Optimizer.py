@@ -530,7 +530,7 @@ class BOCAOptimizer(Optimizer, ABC):
             C = self.__normal_decay(self.iterations)
         #    if C > len(unimportant_optimizations):
          #       C = len(unimportant_optimizations)
-            new_candidate_flags = optimization + list(np.random.choice(unimportant_optimizations, size=int(C), replace=False))
+            new_candidate_flags = optimization + list(np.random.choice(unimportant_optimizations, size=random.randint(0, int(C)), replace=False))
             new_candidate_flags = list(set(new_candidate_flags))
             all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(
                 map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
