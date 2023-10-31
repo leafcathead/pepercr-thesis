@@ -375,6 +375,8 @@ class BOCAOptimizer(Optimizer, ABC):
         self.iterations = 0
         self.best_candidate = None
         self.optimizer_number = BOCAOptimizer.optimizer_number
+        self.runs_without_improvement_allowance = cfg["boca_settings"]["max_without_improvement"]
+
 
     def __generate_training_set(self, set_size):
         init_set = []
@@ -477,10 +479,14 @@ class BOCAOptimizer(Optimizer, ABC):
             row = merged_table.loc[[b.id]]
             b.runtime = row["Runtime"].iloc[0]  # Store fitness value from table into Chromosome
 
+
+        if (self.best_candidate == min(self.training_set, key=lambda x: x.runtime)):
+                self.runs_without_improvement_allowance -= 0
+
         self.best_candidate = min(self.training_set, key=lambda x: x.runtime)
         print("Current Best Candidate: ", self.best_candidate)
 
-        if (self.iterations == self.max_iterations) or (self.run_allowance <= 0):
+        if (self.iterations == self.max_iterations) or (self.run_allowance <= 0 ) or (self.runs_without_improvement_allowance == 0):
             print("Max Iterations reached...")
             self.iterations = 0
             self.tables[mode] = self.__boca_to_df(mode)
@@ -553,6 +559,7 @@ class BOCAOptimizer(Optimizer, ABC):
 
         else:
             print("No unique candidate found. Should probably error or stop here. I'm not sure which one.")
+            self.runs_without_improvement_allowance -= 1
             with start_action(action_type="ERROR_CANDIDATE") as ctx:
                 ctx.log(message_type="ERROR", optimizer="BOCA", message="No unique candidate found.", iteration=self.iterations, all_candidates=all_candidates)
 
