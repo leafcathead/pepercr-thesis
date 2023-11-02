@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define programs
-arguments=("spectral/sorting" "real/grep" "real/cacheprof")
+arguments=("spectral/sorting" "real/grep" "real/cacheprof" "real/fulsom" "real/reptile" "real/maillist" "real/hidden" "real/symalg")
 threaded_programs=("parallel/parfib")
 
 threaded_flag=false
