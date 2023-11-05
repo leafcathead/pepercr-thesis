@@ -23,13 +23,13 @@ settings:
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     multicore_cores: 4
     log_output_loc: logs/
-    num_of_optimizer_runs: 1
-    run_allowance: 500
+    num_of_optimizer_runs: 20
+    run_allowance: 10000
 iterative_settings:
     num_of_presets: 500 # DEFAULT 300
 genetic_settings: # FOGA Paper
     max_iterations: 100 # 2 DEFAULT 100
-    population_size: 200 # 40 DEFAULT 277
+    population_size: 120 # 40 DEFAULT 277
     mutation_prob: 0.287
     elitism_ratio: 0.147
     crossover_prob: 0.120
@@ -39,10 +39,10 @@ genetic_settings: # FOGA Paper
     selection_type: linear_ranking
     max_iter_without_improvement: 45 # Default 45
 boca_settings:
-    initial_set: 6 # 40 100
+    initial_set: 50 # 40 100
     num_of_impactful_optimizations: 6 # 10
-    iterations: 250 # 50 100
-    max_without_improvement: 10
-    decay: 0.9 # 0.5
+    iterations: 1000 # 50 100
+    max_without_improvement: 250
+    decay: 0.76 # 0.5
     offset: 10 # 20
-    scale: 5 # 10
+    scale: 14 # 10

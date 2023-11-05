@@ -139,8 +139,8 @@ class Optimizer(ABC):
 
             # p1.stdout.close()
             # output = result #p2.communicate()[0]
-            print(f"Result1: {result}")
-            print(f"Result2: {result2}")
+            #print(f"Result1: {result}")
+            #print(f"Result2: {result2}")
 
         # Re-Import that CSV and re-configure it the way we want
 
@@ -481,14 +481,13 @@ class BOCAOptimizer(Optimizer, ABC):
 
 
         if (self.best_candidate == min(self.training_set, key=lambda x: x.runtime)):
-                self.runs_without_improvement_allowance -= 0
+                self.runs_without_improvement_allowance -= 1
 
         self.best_candidate = min(self.training_set, key=lambda x: x.runtime)
         print("Current Best Candidate: ", self.best_candidate)
 
-        if (self.iterations == self.max_iterations) or (self.run_allowance <= 0 ) or (self.runs_without_improvement_allowance == 0):
+        if (self.iterations == self.max_iterations) or (self.run_allowance <= 0 ) or (self.runs_without_improvement_allowance <= 0):
             print("Max Iterations reached...")
-            self.iterations = 0
             self.tables[mode] = self.__boca_to_df(mode)
             return
 
@@ -528,13 +527,13 @@ class BOCAOptimizer(Optimizer, ABC):
 
         for index, optimization in enumerate(important_settings):
             C = self.__normal_decay(self.iterations)
+            print("C: ", C)
         #    if C > len(unimportant_optimizations):
          #       C = len(unimportant_optimizations)
             new_candidate_flags = optimization + list(np.random.choice(unimportant_optimizations, size=random.randint(0, int(C)), replace=False))
             new_candidate_flags = list(set(new_candidate_flags))
             all_candidates.append(BOCAOptimization(["-O0"] + new_candidate_flags, list(
                 map(lambda x: 1 if x in new_candidate_flags else 0, self.flags))))
-
         # Predict
 
         for index, candidate in enumerate(all_candidates):
@@ -551,6 +550,8 @@ class BOCAOptimizer(Optimizer, ABC):
         # Find Best Candidate
         all_candidates = list(
             filter(lambda x: x.flag_bits not in list(map(lambda y: y.flag_bits, self.training_set)), all_candidates))
+
+    
 
         if len(all_candidates) > 0:
             best_candidate = max(all_candidates, key=lambda x: x.expected_improvement)
@@ -573,11 +574,12 @@ class BOCAOptimizer(Optimizer, ABC):
         self.optimize(mode)
 
     def __normal_decay(self, iterations):
-        sigma = -((self.scale ** 2) / (2 * math.log2(self.decay)))  # Assuming it's log2, since this is CS afterall lol.
+        sigma = -self.scale ** 2 / (2 * math.log(self.decay))
+        # sigma = -((self.scale ** 2) / (2 * math.log2(self.decay)))  # Assuming it's log2, since this is CS afterall lol.
         #C = self.__c1 * math.exp(-((max(0, iterations - self.offset) ** 2) / 2 * (sigma ** 2)))
 
+        #C = self.__c1 * math.exp(-max(0, (self.__c1 + iterations) - self.offset) ** 2 / (2 * sigma ** 2))
         C = self.__c1 * math.exp(-max(0, (self.__c1 + iterations) - self.offset) ** 2 / (2 * sigma ** 2))
-
 
         #with start_action(action_type="LOG_DECAY") as ctx:
          #               ctx.log(message_type="INFO", iteration=iterations, C=C, C_1=self.__c1)
@@ -727,12 +729,10 @@ class GeneticOptimizer(Optimizer, ABC):
 
         if (self.iterations >= self.max_iterations) or (self.run_allowance <= 0):
             print("Max Iterations Reached... Terminating")
-            self.iterations = 0
             self.tables[mode] = self.__chromosomes_to_df(mode)
             return
         elif self.iterations_with_no_improvement >= self.no_improvement_threshold:
             print("No improvement threshold reached... Terminating")
-            self.iterations = 0
             self.tables[mode] = self.__chromosomes_to_df(mode)
             return
 
