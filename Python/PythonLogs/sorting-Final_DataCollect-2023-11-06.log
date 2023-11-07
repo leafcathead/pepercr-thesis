@@ -1,0 +1,6 @@
+{"test_path": "spectral/sorting", "test_desc": "Final_DataCollect", "action_status": "started", "timestamp": 1699310845.3919032, "task_uuid": "37139b61-d895-41f5-8a86-aac3d1976602", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1699310845.3923585, "task_uuid": "37139b61-d895-41f5-8a86-aac3d1976602", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1699310845.3993242, "task_uuid": "37139b61-d895-41f5-8a86-aac3d1976602", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1699312071.7762616, "task_uuid": "697fa1e5-275d-40f1-b8c7-fecacf92b429", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "BOCA", "no": "0", "best_result": [["-O0", "-ffun-to-thunk", "-fstatic-argument-transformation", "-fcall-arity", "-fcse", "-feager-blackholing", "-funfolding-keeness-factor=1.5", "-funfolding-creation-threshold=750", "-funbox-strict-fields", "-fexpose-all-unfoldings"], 0.205], "run_allowance": 9700, "iterations": 250, "timestamp": 1699312071.776427, "task_uuid": "697fa1e5-275d-40f1-b8c7-fecacf92b429", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1699312071.7765114, "task_uuid": "697fa1e5-275d-40f1-b8c7-fecacf92b429", "action_type": "LOG_RESULTS", "task_level": [3]}

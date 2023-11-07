@@ -1,0 +1,1303 @@
+,ID,Flags,Mode,Runtime,Elapsed_Time
+0,-O0,['-O0'],fast,0.44,0.44
+1,-O2,['-O2'],fast,0.444,0.444
+2,9825782e-37db-46af-b40f-b499f106f872,"['-O0' '-fmax-inline-alloc-size=128' '-fcross-module-specialise'
+ '-fdicts-cheap' '-fcase-merge' '-fcmm-elim-common-blocks'
+ '-fpedantic-bottoms']",fast,0.439,0.439
+3,cab4b531-7777-4c74-a974-0498db19e14e,"['-O0' '-fstrictness-before=1' '-fmax-relevant-binds=6' '-fspec-constr'
+ '-fno-state-hack' '-fcross-module-specialise' '-fspec-constr-count=3']",fast,0.444,0.444
+4,3f57e56a-6994-4060-94df-2597520db2f4,"['-O0' '-fdicts-strict' '-fsimpl-tick-factor=100'
+ '-fstatic-argument-transformation' '-fregs-iterative' '-floopification'
+ '-fdmd-tx-dict-sel']",fast,0.442,0.442
+5,6df9e927-776f-49eb-a7a3-9e4ab66f6134,"['-O0' '-fdo-lambda-eta-expansion' '-fignore-asserts'
+ '-funbox-strict-fields' '-fspec-constr-threshold=2000'
+ '-funbox-strict-fields' '-fomit-yields']",fast,0.442,0.442
+6,7cf6bfab-3042-4005-814d-6254516d6a66,"['-O0' '-fspec-constr' '-fomit-interface-pragmas' '-fdo-eta-reduction'
+ '-fenable-rewrite-rules' '-fpedantic-bottoms' '-fregs-graph']",fast,0.444,0.444
+7,2378210e-0074-4584-95d1-4a93b8d0d530,"['-O0' '-fomit-interface-pragmas' '-funbox-strict-fields'
+ '-fmax-inline-memset-insns=32' '-ffloat-in' '-fspec-constr-count=3'
+ '-fvectorisation-avoidance']",fast,0.439,0.439
+8,871dd77b-18d8-4349-8c88-f02659f6297f,"['-O0' '-fexpose-all-unfoldings' '-fcmm-sink' '-fworker-wrapper'
+ '-fmax-inline-memset-insns=32' '-funfolding-dict-discount=30'
+ '-fpedantic-bottoms']",fast,0.442,0.442
+9,4220cdba-427b-4b05-9ba4-3a6245384148,"['-O0' '-fmax-inline-alloc-size=128' '-fignore-asserts' '-fcmm-sink'
+ '-fstrictness' '-fexcess-precision' '-fcmm-sink']",fast,0.446,0.446
+10,564f3478-7970-4a1a-a788-1a49395ad2e2,"['-O0' '-fcmm-sink' '-fvectorise' '-fcross-module-specialise' '-fcpr-anal'
+ '-foptimal-applicative-do' '-fenable-rewrite-rules']",fast,0.439,0.439
+11,6d1ef843-de1a-4c33-9b8a-554d2f5ce8ab,"['-O0' '-fexcess-precision' '-fdicts-strict'
+ '-fmax-inline-memcpy-insns=32' '-ffun-to-thunk'
+ '-funfolding-keeness-factor=1.5' '-fomit-yields']",fast,0.444,0.444
+12,e22dd32d-ef54-4693-9148-a03d2d22b681,"['-O0' '-fexcess-precision' '-fsimpl-tick-factor=100'
+ '-fsimpl-tick-factor=100' '-funfolding-fun-discount=60' '-fdicts-cheap'
+ '-fvectorise']",fast,0.442,0.442
+13,670bc49b-3a85-4239-89d9-92831ed76d1d,"['-O0' '-fstrictness' '-fspec-constr' '-fmax-inline-alloc-size=128'
+ '-fignore-interface-pragmas' '-fno-pre-inlining'
+ '-fcmm-elim-common-blocks']",fast,0.441,0.441
+14,2454d689-eee3-49d3-8d04-eccbc36fbbd2,"['-O0' '-fcmm-elim-common-blocks' '-fcase-merge'
+ '-fignore-interface-pragmas' '-fmax-simplifier-iterations=4'
+ '-fvectorisation-avoidance' '-fcpr-anal']",fast,0.44,0.44
+15,60914380-4200-4683-a02e-5ec234e1a4c1,"['-O0' '-fworker-wrapper' '-foptimal-applicative-do' '-fdo-eta-reduction'
+ '-fspec-constr-count=3' '-fdicts-strict' '-fcse']",fast,0.438,0.438
+16,bfb33799-9966-4851-b0a7-cabddbefeb32,"['-O0' '-flate-dmd-anal' '-flate-dmd-anal' '-fignore-asserts'
+ '-fdicts-cheap' '-fdicts-cheap' '-fcpr-anal']",fast,0.445,0.445
+17,45d628c1-ffcb-4cf3-b3da-35030c6d9067,"['-O0' '-fstatic-argument-transformation' '-fliberate-case'
+ '-ffun-to-thunk' '-flate-dmd-anal' '-fcse' '-flate-dmd-anal']",fast,0.442,0.442
+18,e8c0e55b-d9cd-4530-94f1-feba42e04483,"['-O0' '-fcse' '-fvectorisation-avoidance' '-fdmd-tx-dict-sel'
+ '-fdmd-tx-dict-sel' '-fexpose-all-unfoldings' '-fdmd-tx-dict-sel']",fast,0.442,0.442
+19,00356573-fb57-4975-9604-63bbd902c297,"['-O0' '-fcpr-anal' '-fdo-lambda-eta-expansion' '-foptimal-applicative-do'
+ '-fdo-lambda-eta-expansion' '-fspecialise' '-feager-blackholing']",fast,0.443,0.443
+20,51a02212-11d6-4952-9549-3fe83f7a36d3,"['-O0' '-funfolding-dict-discount=30' '-fignore-asserts'
+ '-fmax-inline-alloc-size=128' '-fexcess-precision' '-fno-state-hack'
+ '-fcase-merge']",fast,0.442,0.442
+21,f9f07faa-6255-41d0-a005-13eb7a72514e,"['-O0' '-fcall-arity' '-fdicts-strict' '-feager-blackholing'
+ '-fomit-interface-pragmas' '-fliberate-case' '-fcall-arity']",fast,0.445,0.445
+22,3552788c-c0df-4a43-97fc-d82c86264436,"['-O0' '-funfolding-use-threshold=60' '-fignore-asserts' '-fcase-merge'
+ '-fcpr-anal' '-fliberate-case-threshold=2000' '-fcmm-sink']",fast,0.445,0.445
+23,6d2e5d05-9f5f-402e-b7df-e0f70c86ab36,"['-O0' '-funbox-strict-fields' '-fdicts-cheap' '-fdo-eta-reduction'
+ '-fvectorisation-avoidance' '-fno-pre-inlining'
+ '-fspec-constr-threshold=2000']",fast,0.443,0.443
+24,ced8070d-0755-4f44-89c9-e6172c693483,"['-O0' '-fcase-merge' '-fmax-inline-memcpy-insns=32' '-fomit-yields'
+ '-fsimpl-tick-factor=100' '-fvectorise' '-fmax-worker-args=10']",fast,0.441,0.441
+25,05f957b5-8cbb-4f70-ad74-288be1466652,"['-O0' '-fmax-relevant-binds=6' '-funfolding-fun-discount=60'
+ '-flate-dmd-anal' '-feager-blackholing' '-fcmm-elim-common-blocks'
+ '-fmax-inline-memset-insns=32']",fast,0.442,0.442
+26,265c711e-449c-42f3-bdfe-1a26effd23e4,"['-O0' '-fno-state-hack' '-fno-pre-inlining'
+ '-funfolding-keeness-factor=1.5' '-fmax-inline-alloc-size=128'
+ '-funfolding-creation-threshold=750' '-fexcess-precision']",fast,0.446,0.446
+27,35187a99-e3b2-49d3-aecf-efdfd4ba02f9,"['-O0' '-fspec-constr' '-ffloat-in' '-fspec-constr-threshold=2000'
+ '-fdo-eta-reduction' '-fstatic-argument-transformation'
+ '-fexcess-precision']",fast,0.442,0.442
+28,8821fe9e-b577-4d62-a963-4e76d0f4ae1e,"['-O0' '-foptimal-applicative-do' '-fworker-wrapper'
+ '-fmax-worker-args=10' '-fomit-yields' '-funfolding-dict-discount=30'
+ '-fmax-simplifier-iterations=4']",fast,0.443,0.443
+29,d5f6d00c-0220-4673-bc0d-af2a6adfa42a,"['-O0' '-funbox-small-strict-fields' '-fsimplifier-phases=2'
+ '-fexpose-all-unfoldings' '-fcross-module-specialise'
+ '-funfolding-dict-discount=30' '-fsimpl-tick-factor=100']",fast,0.445,0.445
+30,909e2bc1-86bc-49ef-b11c-8f76daa85c36,"['-O0' '-funfolding-dict-discount=30' '-ffloat-in' '-fregs-graph'
+ '-fdicts-cheap' '-fignore-asserts' '-fomit-interface-pragmas']",fast,0.443,0.443
+31,9e9906c6-00c8-4262-8ebc-cd76361bb875,"['-O0' '-fomit-interface-pragmas' '-foptimal-applicative-do'
+ '-fmax-simplifier-iterations=4' '-fvectorisation-avoidance' '-fvectorise'
+ '-fliberate-case']",fast,0.441,0.441
+32,8ee65ca2-cb09-4fd9-a95e-8893c9a883a0,"['-O0' '-fspecialise' '-fno-state-hack' '-ffull-laziness'
+ '-fmax-worker-args=10' '-ffun-to-thunk' '-fcall-arity']",fast,0.443,0.443
+33,a7e53333-f10c-429f-80d9-5eac0812c02a,"['-O0' '-ffloat-in' '-fignore-asserts' '-fdicts-cheap' '-ffull-laziness'
+ '-fmax-worker-args=10' '-feager-blackholing']",fast,0.444,0.444
+34,31f22584-aa12-4480-9808-371f1c19495e,"['-O0' '-fexcess-precision' '-fcase-merge'
+ '-funfolding-creation-threshold=750' '-fvectorise'
+ '-fignore-interface-pragmas' '-fregs-iterative']",fast,0.442,0.442
+35,3db369c5-e056-40ab-9738-93ef5f2fb3cf,"['-O0' '-fregs-graph' '-fspecialise' '-fignore-asserts'
+ '-fdo-eta-reduction' '-fmax-worker-args=10' '-fcall-arity']",fast,0.444,0.444
+36,0cead6c6-0fcd-4c5f-8005-a4d7e4a629a1,"['-O0' '-fenable-rewrite-rules' '-flate-dmd-anal' '-fworker-wrapper'
+ '-funfolding-use-threshold=60' '-flate-dmd-anal' '-fpedantic-bottoms']",fast,0.447,0.447
+37,826d5627-070d-4883-92c4-ee56571f5879,"['-O0' '-fworker-wrapper' '-funfolding-use-threshold=60' '-fvectorise'
+ '-ffull-laziness' '-fexpose-all-unfoldings' '-fworker-wrapper']",fast,0.44,0.44
+38,bc7c5e4d-b069-4074-bb1b-dc77e47fe66e,"['-O0' '-fdicts-cheap' '-fstatic-argument-transformation'
+ '-fpedantic-bottoms' '-fdicts-cheap' '-ffloat-in' '-floopification']",fast,0.442,0.442
+39,6e110fca-4c3a-4c9b-a55c-ea28de65527d,"['-O0' '-fstatic-argument-transformation' '-fmax-inline-memcpy-insns=32'
+ '-fsimpl-tick-factor=100' '-fvectorise' '-fdo-lambda-eta-expansion'
+ '-funfolding-fun-discount=60']",fast,0.439,0.439
+40,53e89bcc-b4dc-41bd-a575-1efa8f782fe3,"['-O0' '-funfolding-dict-discount=30' '-fno-opt-coercion'
+ '-ffull-laziness' '-fcmm-elim-common-blocks' '-foptimal-applicative-do'
+ '-fcmm-sink']",fast,0.438,0.438
+41,6f0b97cf-632c-4a51-8d0e-23fccb974bd0,"['-O0' '-fignore-asserts' '-fpedantic-bottoms' '-fignore-asserts'
+ '-fcpr-anal' '-funfolding-keeness-factor=1.5' '-fignore-asserts']",fast,0.443,0.443
+42,d0f325bd-8846-430f-9491-dc9a3b26f6d2,"['-O0' '-fno-pre-inlining' '-fcmm-elim-common-blocks'
+ '-funfolding-creation-threshold=750' '-ffloat-in'
+ '-fexpose-all-unfoldings' '-fcse']",fast,0.442,0.442
+43,4fc26083-29bd-4664-9a6a-4ff2ca1789b2,"['-O0' '-fdmd-tx-dict-sel' '-fmax-inline-memcpy-insns=32'
+ '-fliberate-case-threshold=2000' '-fcpr-anal' '-floopification'
+ '-fdicts-cheap']",fast,0.446,0.446
+44,d0a81a8b-eb78-445d-b57c-08fa22ede08b,"['-O0' '-fliberate-case' '-ffun-to-thunk'
+ '-funfolding-creation-threshold=750' '-fmax-inline-memset-insns=32'
+ '-fdicts-strict' '-funfolding-dict-discount=30']",fast,0.443,0.443
+45,a620f40d-ee7c-4a6d-a2a1-5e19029d3e72,"['-O0' '-fdicts-strict' '-funfolding-keeness-factor=1.5'
+ '-funbox-strict-fields' '-funbox-small-strict-fields'
+ '-fmax-worker-args=10' '-fmax-worker-args=10']",fast,0.442,0.442
+46,5f53c389-b98c-4bbd-a150-8bc0e26f538f,"['-O0' '-fdicts-strict' '-floopification' '-fomit-interface-pragmas'
+ '-fregs-iterative' '-fliberate-case' '-fomit-interface-pragmas']",fast,0.441,0.441
+47,af86913b-6103-4184-a905-c319b31b1f79,"['-O0' '-fcase-merge' '-fsimpl-tick-factor=100' '-fcmm-sink'
+ '-foptimal-applicative-do' '-fcmm-sink' '-fno-opt-coercion']",fast,0.44,0.44
+48,19469f25-b37b-40ee-ade6-390085c90801,"['-O0' '-fmax-inline-memcpy-insns=32' '-fignore-asserts' '-fcse'
+ '-fdo-eta-reduction' '-fvectorise' '-fmax-inline-memcpy-insns=32']",fast,0.445,0.445
+49,805c0463-04fb-4152-8e09-502865330e05,"['-O0' '-funfolding-dict-discount=30' '-fpedantic-bottoms'
+ '-fno-opt-coercion' '-fstrictness-before=1' '-fno-state-hack'
+ '-fmax-worker-args=10']",fast,0.442,0.442
+50,4e0fba82-b507-4aec-ad8e-1b560fea1a54,"['-O0' '-fspec-constr' '-fvectorise' '-fstrictness-before=1'
+ '-funfolding-keeness-factor=1.5' '-funfolding-dict-discount=30'
+ '-floopification']",fast,0.439,0.439
+51,b089ebb2-9679-4b20-80c6-95cb51516a4f,"['-O0' '-fvectorisation-avoidance' '-fstatic-argument-transformation'
+ '-fregs-iterative' '-fspec-constr' '-fomit-interface-pragmas'
+ '-fspec-constr']",fast,0.442,0.442
+52,58faadd9-fdfa-40b2-9332-3d03db926b3c,"['-O0' '-funfolding-keeness-factor=1.5' '-fspec-constr-count=3'
+ '-fcmm-sink' '-foptimal-applicative-do' '-ffun-to-thunk' '-fvectorise']",fast,0.44,0.44
+53,e1aed6b9-1b5e-45c5-80a3-cf2bedb44eaf,"['-O0' '-fliberate-case' '-fmax-simplifier-iterations=4'
+ '-fdmd-tx-dict-sel' '-fignore-interface-pragmas'
+ '-fcmm-elim-common-blocks' '-fmax-worker-args=10']",fast,0.448,0.448
+54,1943a179-0385-4ac9-9bc3-b3b8cdf79e53,"['-O0' '-fliberate-case-threshold=2000' '-fspec-constr' '-fcall-arity'
+ '-feager-blackholing' '-fcpr-anal' '-fspec-constr']",fast,0.437,0.437
+55,44f58f41-4cf5-48a5-a0a1-da5c3de1064c,"['-O0' '-floopification' '-fcall-arity' '-fpedantic-bottoms'
+ '-fno-opt-coercion' '-fomit-interface-pragmas' '-foptimal-applicative-do']",fast,0.444,0.444
+56,65ab8ad2-d0e8-4bb5-8012-c228e70ef4b1,"['-O0' '-flate-dmd-anal' '-floopification' '-fmax-worker-args=10'
+ '-fomit-yields' '-fmax-inline-memcpy-insns=32' '-fdicts-cheap']",fast,0.443,0.443
+57,1ef859cb-6898-4b6e-81af-fbee6c5f280f,"['-O0' '-fomit-interface-pragmas' '-funfolding-creation-threshold=750'
+ '-fcall-arity' '-fdo-eta-reduction' '-fmax-inline-alloc-size=128'
+ '-fdmd-tx-dict-sel']",fast,0.445,0.445
+58,6b20b0f6-afed-401f-ad35-f2aef125c511,"['-O0' '-fmax-relevant-binds=6' '-fignore-interface-pragmas'
+ '-fdicts-strict' '-fno-pre-inlining' '-fcall-arity'
+ '-fmax-relevant-binds=6']",fast,0.439,0.439
+59,aca8f65b-8de2-4d36-a393-83af437c9704,"['-O0' '-foptimal-applicative-do' '-fstrictness-before=1' '-ffloat-in'
+ '-fmax-simplifier-iterations=4' '-fdicts-cheap'
+ '-fmax-inline-memset-insns=32']",fast,0.441,0.441
+60,405a2271-9e5c-4746-95ec-ec503b5eb54c,"['-O0' '-ffull-laziness' '-fspecialise' '-funfolding-keeness-factor=1.5'
+ '-fmax-relevant-binds=6' '-fdicts-strict' '-fvectorisation-avoidance']",fast,0.444,0.444
+61,f389afb3-416a-4b9f-975d-bf697ccc890d,"['-O0' '-fpedantic-bottoms' '-fomit-yields' '-fomit-interface-pragmas'
+ '-fomit-interface-pragmas' '-funfolding-creation-threshold=750'
+ '-fignore-asserts']",fast,0.44,0.44
+62,74d2344f-4603-44ae-abcc-2299a05cd2fb,"['-O0' '-fregs-iterative' '-fignore-interface-pragmas' '-floopification'
+ '-fcpr-anal' '-fdicts-cheap' '-ffun-to-thunk']",fast,0.441,0.441
+63,419ede5a-7c13-48bb-86ac-6a74daa0495f,"['-O0' '-funfolding-creation-threshold=750' '-fregs-iterative'
+ '-fmax-inline-memcpy-insns=32' '-fpedantic-bottoms' '-fignore-asserts'
+ '-fignore-interface-pragmas']",fast,0.442,0.442
+64,a1b2aa2a-2527-49ab-82cd-7eba324e75c5,"['-O0' '-fmax-inline-memcpy-insns=32' '-fdo-eta-reduction'
+ '-ffull-laziness' '-fcross-module-specialise'
+ '-funbox-small-strict-fields' '-fcse']",fast,0.44,0.44
+65,d7a777a4-ecaa-4e33-a8b5-f31aa7b6af03,"['-O0' '-fno-opt-coercion' '-fignore-interface-pragmas'
+ '-fliberate-case-threshold=2000' '-ffull-laziness'
+ '-funfolding-creation-threshold=750' '-fvectorisation-avoidance']",fast,0.438,0.438
+66,54ecbdc8-d6a7-4393-89fd-17ab1d53c11a,"['-O0' '-foptimal-applicative-do' '-funfolding-keeness-factor=1.5'
+ '-fstrictness-before=1' '-fdo-eta-reduction'
+ '-fmax-inline-memset-insns=32' '-fmax-inline-memset-insns=32']",fast,0.442,0.442
+67,a76ec3c7-b36c-486e-b1ec-f62dc2b622f4,"['-O0' '-fstrictness' '-fpedantic-bottoms' '-funfolding-dict-discount=30'
+ '-fdicts-strict' '-feager-blackholing' '-fspec-constr-count=3']",fast,0.436,0.436
+68,23366d41-416d-4b98-bfd7-72d292f4d4a2,"['-O0' '-fspecialise' '-fcmm-sink' '-fno-state-hack' '-fdicts-cheap'
+ '-fexcess-precision' '-ffull-laziness']",fast,0.443,0.443
+69,85ac070d-e080-4667-bda1-57fbb6678ec0,"['-O0' '-fno-opt-coercion' '-fdo-eta-reduction' '-ffloat-in'
+ '-fmax-relevant-binds=6' '-fstatic-argument-transformation'
+ '-fno-state-hack']",fast,0.443,0.443
+70,0ed6a4cf-4372-4426-b690-d7ae630e17bc,"['-O0' '-fno-pre-inlining' '-fignore-interface-pragmas'
+ '-fmax-inline-memset-insns=32' '-fomit-yields'
+ '-fignore-interface-pragmas' '-fno-state-hack']",fast,0.443,0.443
+71,300c049f-1af2-48b3-9436-5593546f4ad6,"['-O0' '-fmax-inline-memset-insns=32' '-feager-blackholing'
+ '-fsimpl-tick-factor=100' '-fregs-graph' '-fignore-interface-pragmas'
+ '-fcmm-sink']",fast,0.444,0.444
+72,0ad47429-5b94-455d-895a-21962f8b5f7b,"['-O0' '-fcase-merge' '-fdicts-strict' '-fpedantic-bottoms' '-fstrictness'
+ '-fvectorise' '-fmax-worker-args=10']",fast,0.44,0.44
+73,922e796d-bc27-46ad-b832-6232e74357f3,"['-O0' '-funbox-strict-fields' '-fexcess-precision' '-fno-opt-coercion'
+ '-funbox-strict-fields' '-fcase-merge' '-fsimpl-tick-factor=100']",fast,0.44,0.44
+74,462b9ce9-6bce-450d-852c-9687c02473da,"['-O0' '-fspec-constr-threshold=2000' '-funfolding-dict-discount=30'
+ '-fmax-inline-memset-insns=32' '-floopification' '-fregs-graph'
+ '-fmax-inline-memcpy-insns=32']",fast,0.446,0.446
+75,a9cb8211-07ea-41bc-80a1-0be928d0d48b,"['-O0' '-fignore-asserts' '-fregs-iterative' '-fregs-graph'
+ '-fmax-inline-memset-insns=32' '-fmax-inline-alloc-size=128'
+ '-fcase-merge']",fast,0.446,0.446
+76,fc9d7ab9-bf3b-4668-b3f9-7da389f7b243,"['-O0' '-fspec-constr-count=3' '-fvectorise' '-fspec-constr-count=3'
+ '-fpedantic-bottoms' '-fcpr-anal' '-fstrictness-before=1']",fast,0.438,0.438
+77,3aec8871-dfff-49ee-87b8-dd345e539d10,"['-O0' '-fdo-eta-reduction' '-fcall-arity' '-fspec-constr-count=3'
+ '-fmax-inline-alloc-size=128' '-fno-state-hack' '-ffun-to-thunk']",fast,0.44,0.44
+78,c9f95a55-2c0f-4501-963b-874f975a5c0d,"['-O0' '-fmax-inline-alloc-size=128' '-fcmm-elim-common-blocks'
+ '-fomit-yields' '-funfolding-keeness-factor=1.5' '-ffull-laziness'
+ '-fworker-wrapper']",fast,0.442,0.442
+79,17c932c9-30e9-47a9-a9a9-abf26da18473,"['-O0' '-fspec-constr-count=3' '-fspecialise' '-funbox-strict-fields'
+ '-fmax-simplifier-iterations=4' '-funfolding-fun-discount=60'
+ '-fspec-constr-threshold=2000']",fast,0.443,0.443
+80,7592c1f8-daff-4268-b6f8-35739ad6eb49,"['-O0' '-fpedantic-bottoms' '-fcmm-sink' '-fdicts-strict' '-fspec-constr'
+ '-fcase-merge' '-fdmd-tx-dict-sel']",fast,0.445,0.445
+81,fe8b8e3b-cf80-4584-8ad9-ddc3780555a9,"['-O0' '-fmax-inline-alloc-size=128' '-funfolding-fun-discount=60'
+ '-fexcess-precision' '-fignore-asserts' '-fvectorisation-avoidance'
+ '-fomit-yields']",fast,0.445,0.445
+82,de01f786-8243-4e84-847f-012818ca5951,"['-O0' '-funfolding-creation-threshold=750' '-fdmd-tx-dict-sel'
+ '-ffull-laziness' '-fliberate-case' '-fcall-arity'
+ '-fdo-lambda-eta-expansion']",fast,0.44,0.44
+83,7dcd0c6b-c406-4b73-971e-923bcde5391c,"['-O0' '-fmax-simplifier-iterations=4' '-ffull-laziness'
+ '-fdmd-tx-dict-sel' '-fmax-worker-args=10' '-fcse' '-fregs-graph']",fast,0.443,0.443
+84,e2c5736e-85e4-4cbc-a374-3186952e76d5,"['-O0' '-fliberate-case-threshold=2000' '-fno-opt-coercion'
+ '-fdo-eta-reduction' '-fcall-arity' '-fstrictness'
+ '-funfolding-use-threshold=60']",fast,0.443,0.443
+85,c5e1c994-f29c-4c63-9db9-a82b5272a799,"['-O0' '-fpedantic-bottoms' '-fdo-eta-reduction' '-fmax-relevant-binds=6'
+ '-fstatic-argument-transformation' '-fignore-asserts' '-fregs-graph']",fast,0.444,0.444
+86,1a4df982-2f6f-404e-8e23-2b516c75fd9a,"['-O0' '-fdo-lambda-eta-expansion' '-fmax-inline-memset-insns=32'
+ '-fstrictness-before=1' '-fcmm-elim-common-blocks' '-fpedantic-bottoms'
+ '-fcmm-sink']",fast,0.438,0.438
+87,68f6a8af-b00e-4c01-9bc6-b216f84e4c5b,"['-O0' '-fmax-inline-memcpy-insns=32' '-funbox-small-strict-fields'
+ '-fvectorisation-avoidance' '-funfolding-creation-threshold=750'
+ '-ffull-laziness' '-flate-dmd-anal']",fast,0.443,0.443
+88,febee3fe-59e2-4993-9593-186abe0870eb,"['-O0' '-fsimpl-tick-factor=100' '-fstatic-argument-transformation'
+ '-fexpose-all-unfoldings' '-funfolding-use-threshold=60'
+ '-fno-state-hack' '-fliberate-case']",fast,0.44,0.44
+89,30a12870-31e1-44f1-b031-91d830eed5e0,"['-O0' '-fexpose-all-unfoldings' '-funfolding-keeness-factor=1.5'
+ '-funbox-strict-fields' '-fexpose-all-unfoldings' '-fliberate-case'
+ '-fsimpl-tick-factor=100']",fast,0.443,0.443
+90,062051b3-bdf5-4ca1-94b9-c2a15cbca9ef,"['-O0' '-fmax-simplifier-iterations=4' '-fspec-constr-count=3'
+ '-fpedantic-bottoms' '-funfolding-keeness-factor=1.5' '-fomit-yields'
+ '-fenable-rewrite-rules']",fast,0.444,0.444
+91,e95ed6ab-39ad-4644-a911-f214ab0714d9,"['-O0' '-fliberate-case' '-funfolding-use-threshold=60'
+ '-fspec-constr-threshold=2000' '-funbox-strict-fields'
+ '-fspec-constr-count=3' '-funbox-strict-fields']",fast,0.444,0.444
+92,77d6b91d-a017-4b28-9c8f-7bf46f389dd3,"['-O0' '-fworker-wrapper' '-fsimplifier-phases=2' '-flate-dmd-anal'
+ '-fcross-module-specialise' '-fomit-yields'
+ '-funfolding-keeness-factor=1.5']",fast,0.444,0.444
+93,6e9457fc-2458-489d-8a99-2c78af1cb85b,"['-O0' '-fstatic-argument-transformation' '-fstrictness' '-fno-state-hack'
+ '-funbox-small-strict-fields' '-funfolding-use-threshold=60'
+ '-fdicts-strict']",fast,0.444,0.444
+94,b7ba95bb-171a-4562-b3d7-1fe6c152e47d,"['-O0' '-fspec-constr' '-fcse' '-fspec-constr-threshold=2000'
+ '-ffun-to-thunk' '-ffun-to-thunk' '-fignore-asserts']",fast,0.44,0.44
+95,5d11b3ab-4dae-4d6a-b23a-eef027697ec8,"['-O0' '-floopification' '-fstrictness-before=1'
+ '-fmax-inline-memset-insns=32' '-fstrictness' '-fmax-worker-args=10'
+ '-fexpose-all-unfoldings']",fast,0.446,0.446
+96,8095b3e8-1266-44ee-afbf-a30c6356b5bb,"['-O0' '-fomit-interface-pragmas' '-fspec-constr'
+ '-fmax-inline-alloc-size=128' '-fdo-lambda-eta-expansion'
+ '-fexpose-all-unfoldings' '-funfolding-fun-discount=60']",fast,0.443,0.443
+97,6e86eb85-ad68-41a5-bf31-014d4a2c1f49,"['-O0' '-flate-dmd-anal' '-fliberate-case' '-fdo-eta-reduction'
+ '-funfolding-keeness-factor=1.5' '-fno-pre-inlining'
+ '-fcmm-elim-common-blocks']",fast,0.443,0.443
+98,65a9a2a4-8683-4a7d-87d4-c81090c2ac03,"['-O0' '-fdicts-cheap' '-funbox-small-strict-fields'
+ '-fcmm-elim-common-blocks' '-flate-dmd-anal' '-feager-blackholing'
+ '-fdicts-strict']",fast,0.441,0.441
+99,837006d9-f04c-4ca6-bbe0-9c741a6ddcb0,"['-O0' '-fsimpl-tick-factor=100' '-fvectorise'
+ '-fmax-inline-memcpy-insns=32' '-funfolding-dict-discount=30'
+ '-ffloat-in' '-fpedantic-bottoms']",fast,0.446,0.446
+100,4ad588ba-2956-4735-aab8-d6870277d96e,"['-O0' '-funfolding-dict-discount=30' '-foptimal-applicative-do'
+ '-fmax-inline-memcpy-insns=32' '-fcall-arity'
+ '-funfolding-use-threshold=60' '-fcpr-anal']",fast,0.449,0.449
+101,ac4ca5e5-040f-4871-a4d7-c7ea0c174c0a,"['-O0' '-fsimplifier-phases=2' '-fstrictness-before=1'
+ '-fdo-eta-reduction' '-fliberate-case' '-fomit-interface-pragmas'
+ '-fno-pre-inlining']",fast,0.448,0.448
+102,b8cb559b-aa04-49ac-81d7-97770520c2c2,"['-O0' '-fdicts-cheap' '-fexcess-precision' '-ffloat-in'
+ '-fignore-asserts' '-fmax-simplifier-iterations=4'
+ '-fsimpl-tick-factor=100']",fast,0.457,0.457
+103,130ca9b7-6b0d-4839-8d5d-566a5168b473,"['-O0' '-fcross-module-specialise' '-fmax-simplifier-iterations=4'
+ '-fworker-wrapper' '-fdicts-strict' '-funbox-small-strict-fields'
+ '-fmax-simplifier-iterations=4']",fast,0.444,0.444
+104,348ff528-7d71-41bb-80e2-92cce73088b3,"['-O0' '-fno-state-hack' '-funfolding-creation-threshold=750'
+ '-fspec-constr' '-fdicts-strict' '-fregs-iterative' '-fno-pre-inlining']",fast,0.439,0.439
+105,db264aac-6136-4c2f-afb5-cbc5b15da66c,"['-O0' '-ffull-laziness' '-fstatic-argument-transformation'
+ '-foptimal-applicative-do' '-fsimpl-tick-factor=100'
+ '-fomit-interface-pragmas' '-fdicts-strict']",fast,0.443,0.443
+106,8e31115a-02e2-4a38-93bc-84679bbabccb,"['-O0' '-fdicts-strict' '-fliberate-case-threshold=2000' '-fcse'
+ '-fmax-simplifier-iterations=4' '-fdicts-cheap' '-fspec-constr-count=3']",fast,0.439,0.439
+107,f3fe7dbf-bd74-4224-8ed8-0f96e9011f41,"['-O0' '-fsimplifier-phases=2' '-fdicts-strict' '-fdicts-strict'
+ '-fomit-interface-pragmas' '-fcpr-anal' '-fno-state-hack']",fast,0.437,0.437
+108,3c3e1523-6d41-49dc-abd3-800dc1100613,"['-O0' '-fmax-inline-alloc-size=128' '-fspec-constr-count=3'
+ '-funbox-small-strict-fields' '-fspec-constr' '-fcase-merge'
+ '-flate-dmd-anal']",fast,0.441,0.441
+109,41af5df4-2c85-4172-b11b-f0337fc548ba,"['-O0' '-fcase-merge' '-fstrictness-before=1'
+ '-funfolding-fun-discount=60' '-fmax-worker-args=10'
+ '-fmax-worker-args=10' '-fstatic-argument-transformation']",fast,0.442,0.442
+110,3999ad29-f646-4e52-b426-c861bef74f68,"['-O0' '-ffull-laziness' '-floopification' '-fspec-constr-threshold=2000'
+ '-fstrictness' '-fdo-lambda-eta-expansion' '-fno-state-hack']",fast,0.442,0.442
+111,cc01a696-cc51-42e6-a03a-b4d95b6c392d,"['-O0' '-funfolding-use-threshold=60' '-fworker-wrapper'
+ '-fmax-simplifier-iterations=4' '-fmax-inline-alloc-size=128'
+ '-fmax-inline-memcpy-insns=32' '-floopification']",fast,0.443,0.443
+112,634f702b-3cca-498c-acb9-2064362ebb19,"['-O0' '-fignore-asserts' '-fvectorisation-avoidance'
+ '-feager-blackholing' '-fregs-iterative' '-fcmm-sink' '-fregs-graph']",fast,0.448,0.448
+113,b3a63016-4ab2-4bcb-87b8-53e485aafd55,"['-O0' '-ffull-laziness' '-funfolding-fun-discount=60' '-fstrictness'
+ '-fspec-constr' '-fno-pre-inlining' '-fspec-constr']",fast,0.444,0.444
+114,3d31b931-fe58-4c57-81d7-2b969243d859,"['-O0' '-fcmm-elim-common-blocks' '-fcross-module-specialise' '-fcmm-sink'
+ '-fspec-constr-threshold=2000' '-funfolding-creation-threshold=750'
+ '-fsimpl-tick-factor=100']",fast,0.439,0.439
+115,2ca57290-0539-4dfa-b1aa-4427307a3d85,"['-O0' '-fcmm-sink' '-funfolding-keeness-factor=1.5'
+ '-fmax-relevant-binds=6' '-funbox-small-strict-fields'
+ '-fstrictness-before=1' '-fmax-inline-memset-insns=32']",fast,0.453,0.453
+116,26d0057d-8cf7-4036-aa31-5615fb20e2e2,"['-O0' '-fvectorisation-avoidance' '-fcross-module-specialise'
+ '-fregs-graph' '-fexpose-all-unfoldings' '-fworker-wrapper' '-fcpr-anal']",fast,0.446,0.446
+117,cffb749b-e8d5-45d0-841d-cb63c35ba177,"['-O0' '-funfolding-fun-discount=60' '-funfolding-use-threshold=60'
+ '-fregs-iterative' '-fvectorise' '-fstatic-argument-transformation'
+ '-fdo-lambda-eta-expansion']",fast,0.444,0.444
+118,d7a2a567-81d8-4b0f-b6f8-c67b379f2192,"['-O0' '-fvectorise' '-fstatic-argument-transformation'
+ '-fsimplifier-phases=2' '-fno-opt-coercion' '-fcross-module-specialise'
+ '-fmax-inline-memset-insns=32']",fast,0.443,0.443
+119,f6d4a808-746f-4bf4-8205-88b9c6f41f7a,"['-O0' '-fdicts-cheap' '-fmax-inline-memcpy-insns=32'
+ '-fmax-worker-args=10' '-fsimpl-tick-factor=100'
+ '-fcmm-elim-common-blocks' '-funbox-small-strict-fields']",fast,0.444,0.444
+120,cc950e8a-db3b-47d9-af0d-8183dbf862ef,"['-O0' '-fcse' '-fworker-wrapper' '-floopification'
+ '-fspec-constr-threshold=2000' '-fignore-asserts'
+ '-fmax-simplifier-iterations=4']",fast,0.442,0.442
+121,9d4cab78-759c-46c1-8089-0057d715561a,"['-O0' '-fdicts-strict' '-fspec-constr' '-fmax-simplifier-iterations=4'
+ '-fpedantic-bottoms' '-fspec-constr-threshold=2000'
+ '-fmax-worker-args=10']",fast,0.439,0.439
+122,a7b6863a-5b81-4845-9bfb-e6f1027a6280,"['-O0' '-ffloat-in' '-fmax-inline-memcpy-insns=32'
+ '-fomit-interface-pragmas' '-fvectorise' '-fno-state-hack'
+ '-funfolding-use-threshold=60']",fast,0.44,0.44
+123,44f6b242-49b7-4101-accf-16278e8e6452,"['-O0' '-fmax-inline-memset-insns=32' '-fstrictness-before=1'
+ '-fsimpl-tick-factor=100' '-fstrictness-before=1'
+ '-fvectorisation-avoidance' '-ffull-laziness']",fast,0.443,0.443
+124,83d1635d-628c-4a18-90a5-fb77e76ec633,"['-O0' '-fregs-iterative' '-fspec-constr-threshold=2000'
+ '-fstatic-argument-transformation' '-fignore-interface-pragmas'
+ '-fignore-asserts' '-fvectorisation-avoidance']",fast,0.445,0.445
+125,602419e8-b06c-4b43-816e-ce2d5c03eebc,"['-O0' '-fexpose-all-unfoldings' '-funfolding-use-threshold=60'
+ '-fomit-yields' '-fpedantic-bottoms' '-fsimplifier-phases=2'
+ '-fignore-interface-pragmas']",fast,0.442,0.442
+126,c551d806-74b5-41fa-a7d3-9c746dbd9f05,"['-O0' '-foptimal-applicative-do' '-fmax-inline-alloc-size=128'
+ '-fsimpl-tick-factor=100' '-fcmm-sink' '-fexpose-all-unfoldings'
+ '-fdo-eta-reduction']",fast,0.446,0.446
+127,2b9b83a4-29e0-4658-bfa3-b5455a77a21e,"['-O0' '-fdo-lambda-eta-expansion' '-fdmd-tx-dict-sel'
+ '-funfolding-use-threshold=60' '-funfolding-dict-discount=30'
+ '-fexcess-precision' '-ffull-laziness']",fast,0.443,0.443
+128,b2341a9c-12fc-410b-86a9-b585c0dcd344,"['-O0' '-fmax-relevant-binds=6' '-funfolding-creation-threshold=750'
+ '-fno-state-hack' '-fvectorisation-avoidance' '-fcpr-anal'
+ '-fliberate-case-threshold=2000']",fast,0.446,0.446
+129,0ee4dfa3-f8e3-414a-9b44-33456d846b9a,"['-O0' '-fomit-interface-pragmas' '-ffun-to-thunk' '-fno-pre-inlining'
+ '-ffull-laziness' '-fdo-lambda-eta-expansion'
+ '-fmax-simplifier-iterations=4']",fast,0.445,0.445
+130,b67e2676-8df0-4a0a-9eb4-d73e11090906,"['-O0' '-fcross-module-specialise' '-fomit-yields' '-fstrictness'
+ '-fdicts-strict' '-funbox-strict-fields' '-fmax-simplifier-iterations=4']",fast,0.447,0.447
+131,fa7cb977-9265-4060-8a3a-f816ea5fff12,"['-O0' '-fdo-eta-reduction' '-fomit-interface-pragmas'
+ '-fdo-eta-reduction' '-fstatic-argument-transformation' '-floopification'
+ '-fmax-simplifier-iterations=4']",fast,0.443,0.443
+132,36262e3a-fe93-4d42-a6be-319cb11008f8,"['-O0' '-fworker-wrapper' '-fspec-constr-count=3'
+ '-funfolding-creation-threshold=750' '-fcse' '-fregs-graph'
+ '-funbox-strict-fields']",fast,0.452,0.452
+133,9c105f8b-2f7e-4c00-97b8-f6ca4c5db029,"['-O0' '-fexpose-all-unfoldings' '-fregs-graph' '-fomit-yields'
+ '-ffull-laziness' '-flate-dmd-anal' '-fcall-arity']",fast,0.443,0.443
+134,15935c1a-1794-4e33-bf19-67c07fab0d17,"['-O0' '-fsimplifier-phases=2' '-fliberate-case-threshold=2000'
+ '-fignore-interface-pragmas' '-fstatic-argument-transformation'
+ '-fspec-constr' '-fliberate-case']",fast,0.44,0.44
+135,7006ffdb-9d8e-46f4-b7df-3ba4e66e3601,"['-O0' '-fmax-inline-memset-insns=32' '-fdmd-tx-dict-sel'
+ '-fstrictness-before=1' '-fstrictness' '-fmax-inline-alloc-size=128'
+ '-fregs-graph']",fast,0.443,0.443
+136,1308ca90-530d-40ad-8658-bfba4fdc865c,"['-O0' '-ffull-laziness' '-funbox-strict-fields' '-fstrictness-before=1'
+ '-fvectorisation-avoidance' '-funfolding-dict-discount=30'
+ '-fignore-interface-pragmas']",fast,0.442,0.442
+137,ba3baed9-b3df-4c59-ab00-29e7f50b2043,"['-O0' '-fignore-asserts' '-fliberate-case-threshold=2000'
+ '-fliberate-case-threshold=2000' '-fmax-inline-alloc-size=128'
+ '-ffloat-in' '-funfolding-creation-threshold=750']",fast,0.448,0.448
+138,306b5588-c384-4ffb-9402-33551eb6830c,"['-O0' '-fignore-interface-pragmas' '-fdo-eta-reduction' '-fliberate-case'
+ '-fvectorisation-avoidance' '-fspec-constr-count=3'
+ '-fmax-inline-alloc-size=128']",fast,0.443,0.443
+139,0b01c412-4468-46ee-a332-ebc1a8e28dce,"['-O0' '-fcall-arity' '-fspec-constr' '-fliberate-case-threshold=2000'
+ '-fcross-module-specialise' '-fregs-graph' '-funfolding-dict-discount=30']",fast,0.439,0.439
+140,fdd570ef-5f6d-4365-a648-c0c68aea4f07,"['-O0' '-fspec-constr' '-fdicts-cheap' '-fcase-merge'
+ '-fsimpl-tick-factor=100' '-fmax-inline-alloc-size=128' '-fcse']",fast,0.443,0.443
+141,5f7e250a-d572-415b-be59-23375397e7f4,"['-O0' '-fstatic-argument-transformation' '-funbox-strict-fields'
+ '-fmax-inline-memcpy-insns=32' '-fignore-interface-pragmas'
+ '-ffull-laziness' '-ffun-to-thunk']",fast,0.451,0.451
+142,8fcc75f2-80d3-4c62-bea6-8d20591fdf4e,"['-O0' '-ffull-laziness' '-feager-blackholing' '-fcase-merge'
+ '-ffull-laziness' '-fstrictness' '-floopification']",fast,0.445,0.445
+143,806f37a3-3ed0-4460-9270-96627e64f072,"['-O0' '-funbox-strict-fields' '-fvectorisation-avoidance' '-fcall-arity'
+ '-funfolding-use-threshold=60' '-fomit-yields' '-fomit-yields']",fast,0.441,0.441
+144,fc053423-3caf-4047-b50f-729b327de4f8,"['-O0' '-fmax-inline-memset-insns=32' '-fdo-lambda-eta-expansion'
+ '-fno-state-hack' '-fdicts-strict' '-ffloat-in'
+ '-funfolding-keeness-factor=1.5']",fast,0.447,0.447
+145,46449b0c-beb3-444b-8a30-aef99454d917,"['-O0' '-funfolding-dict-discount=30' '-funfolding-creation-threshold=750'
+ '-funbox-small-strict-fields' '-fdicts-strict' '-fexcess-precision'
+ '-fcross-module-specialise']",fast,0.445,0.445
+146,e215082e-b35b-4dfd-b871-5e1ace2d5459,"['-O0' '-fstatic-argument-transformation' '-fignore-interface-pragmas'
+ '-funfolding-use-threshold=60' '-fregs-graph' '-fpedantic-bottoms'
+ '-fdmd-tx-dict-sel']",fast,0.445,0.445
+147,bd320e0d-13b4-42f5-81a4-fff85839b334,"['-O0' '-fenable-rewrite-rules' '-fmax-inline-memset-insns=32'
+ '-fno-pre-inlining' '-fworker-wrapper' '-fspec-constr-threshold=2000'
+ '-funbox-strict-fields']",fast,0.442,0.442
+148,d30e7b05-982d-45c8-82f8-d348d64a6a9f,"['-O0' '-fworker-wrapper' '-fworker-wrapper'
+ '-funfolding-dict-discount=30' '-fignore-asserts'
+ '-fspec-constr-threshold=2000' '-fliberate-case']",fast,0.448,0.448
+149,49bdac84-15e8-46d9-b6ad-13403cc94107,"['-O0' '-fliberate-case' '-funfolding-creation-threshold=750'
+ '-fcross-module-specialise' '-ffull-laziness' '-fstrictness-before=1'
+ '-fomit-yields']",fast,0.441,0.441
+150,a0332501-5717-492a-88ff-7ced5a1bbfa7,"['-O0' '-fliberate-case-threshold=2000' '-fmax-inline-memset-insns=32'
+ '-fregs-graph' '-fcse' '-fspec-constr-threshold=2000' '-fno-state-hack']",fast,0.443,0.443
+151,8072f9e4-6290-4fb3-9f4b-fd1f6a02f8fa,"['-O0' '-fspec-constr-count=3' '-fignore-interface-pragmas'
+ '-fexcess-precision' '-foptimal-applicative-do'
+ '-fliberate-case-threshold=2000' '-funfolding-keeness-factor=1.5']",fast,0.443,0.443
+152,8f70291c-7061-4147-9a56-5c66c3c65d3e,"['-O0' '-fstrictness' '-fdo-lambda-eta-expansion'
+ '-fvectorisation-avoidance' '-fpedantic-bottoms'
+ '-fcmm-elim-common-blocks' '-fsimpl-tick-factor=100']",fast,0.44,0.44
+153,17ea155e-cde4-4724-aa9b-81756cec6e85,"['-O0' '-fregs-graph' '-funfolding-keeness-factor=1.5' '-fregs-graph'
+ '-fcall-arity' '-fno-opt-coercion' '-fomit-interface-pragmas']",fast,0.45,0.45
+154,e450ed6e-3216-4a80-b7ba-c5181370c168,"['-O0' '-fcpr-anal' '-funfolding-keeness-factor=1.5' '-fpedantic-bottoms'
+ '-foptimal-applicative-do' '-fvectorisation-avoidance'
+ '-fstrictness-before=1']",fast,0.446,0.446
+155,396456d7-6092-4d30-a3f7-7a573e5f15cd,"['-O0' '-foptimal-applicative-do' '-funfolding-keeness-factor=1.5'
+ '-funbox-strict-fields' '-fcall-arity' '-fexpose-all-unfoldings'
+ '-floopification']",fast,0.447,0.447
+156,1460fd5f-c7ff-4e1e-b585-cb9dd70a5435,"['-O0' '-funfolding-use-threshold=60' '-fomit-yields'
+ '-fstatic-argument-transformation' '-fmax-inline-alloc-size=128'
+ '-fenable-rewrite-rules' '-fmax-inline-memcpy-insns=32']",fast,0.443,0.443
+157,33e9935f-33b1-45c9-86cb-2ef09e49d895,"['-O0' '-fomit-yields' '-fregs-graph' '-fmax-inline-memset-insns=32'
+ '-fomit-yields' '-fomit-yields' '-fmax-simplifier-iterations=4']",fast,0.446,0.446
+158,a1cb0445-22cc-4ab5-adfe-0ae2474dd335,"['-O0' '-fmax-worker-args=10' '-fstrictness' '-fexcess-precision'
+ '-fsimpl-tick-factor=100' '-fdmd-tx-dict-sel' '-fcall-arity']",fast,0.443,0.443
+159,9c7bd6ac-13ae-4c25-ae45-2c7eb7858cc7,"['-O0' '-fstrictness-before=1' '-fmax-worker-args=10' '-fdo-eta-reduction'
+ '-fcse' '-fspec-constr' '-funbox-strict-fields']",fast,0.445,0.445
+160,d2c03f97-efa1-4fab-8a71-b1413e95e1f9,"['-O0' '-fliberate-case' '-fenable-rewrite-rules' '-fdicts-strict'
+ '-funfolding-keeness-factor=1.5' '-funfolding-dict-discount=30'
+ '-fcmm-sink']",fast,0.451,0.451
+161,e142dd15-9b47-46ba-a447-d2c6f622d6cd,"['-O0' '-fsimpl-tick-factor=100' '-fomit-yields' '-fdo-eta-reduction'
+ '-funbox-strict-fields' '-fworker-wrapper' '-fdicts-cheap']",fast,0.44,0.44
+162,785241c8-7512-4cef-8ed9-09e71ba9a56f,"['-O0' '-fspec-constr' '-fomit-interface-pragmas'
+ '-fspec-constr-threshold=2000' '-flate-dmd-anal' '-flate-dmd-anal'
+ '-fmax-inline-alloc-size=128']",fast,0.44,0.44
+163,8721f415-938d-4dac-b011-a4e6af0582fe,"['-O0' '-fno-opt-coercion' '-fsimpl-tick-factor=100'
+ '-fdo-lambda-eta-expansion' '-fspec-constr-threshold=2000'
+ '-ffun-to-thunk' '-fexcess-precision']",fast,0.454,0.454
+164,e555f7f0-a179-4e39-bf88-0ad4534e6de6,"['-O0' '-floopification' '-fstrictness' '-fregs-iterative'
+ '-fcross-module-specialise' '-fmax-inline-alloc-size=128' '-fvectorise']",fast,0.443,0.443
+165,74025d26-1931-4c24-b56a-5f62c2f0bc8f,"['-O0' '-fliberate-case-threshold=2000' '-fcall-arity'
+ '-funfolding-use-threshold=60' '-fdicts-cheap' '-fexpose-all-unfoldings'
+ '-fdicts-cheap']",fast,0.439,0.439
+166,6fd40a5d-462e-46b9-bd8f-7959e7e96666,"['-O0' '-funbox-strict-fields' '-feager-blackholing'
+ '-funfolding-use-threshold=60' '-flate-dmd-anal' '-fdicts-cheap'
+ '-fno-pre-inlining']",fast,0.443,0.443
+167,3e38964c-33af-4882-9494-75598d7affb8,"['-O0' '-ffun-to-thunk' '-fvectorise' '-fcross-module-specialise'
+ '-fcmm-elim-common-blocks' '-fmax-relevant-binds=6' '-fcase-merge']",fast,0.449,0.449
+168,802e35c9-78c2-4ec5-bea1-bfa372689d51,"['-O0' '-fexpose-all-unfoldings' '-fspecialise' '-fspec-constr'
+ '-funbox-strict-fields' '-fdicts-strict' '-fexcess-precision']",fast,0.442,0.442
+169,1583700a-5f94-40c4-91bb-2c0c6066d9a0,"['-O0' '-ffull-laziness' '-funfolding-dict-discount=30' '-fno-state-hack'
+ '-fsimpl-tick-factor=100' '-fworker-wrapper' '-fworker-wrapper']",fast,0.445,0.445
+170,073d01cc-38f0-431d-a512-37a5a9bb72e3,"['-O0' '-fcpr-anal' '-fspec-constr' '-funfolding-keeness-factor=1.5'
+ '-funfolding-fun-discount=60' '-fmax-worker-args=10' '-fdicts-strict']",fast,0.441,0.441
+171,438365db-8e00-4a31-8b35-f6d9290abbba,"['-O0' '-fmax-relevant-binds=6' '-fdo-eta-reduction' '-fcse'
+ '-fvectorisation-avoidance' '-fcmm-sink' '-fmax-inline-memcpy-insns=32']",fast,0.44,0.44
+172,4413f3f8-c55f-46d2-86fc-3effd132a5a3,"['-O0' '-fcpr-anal' '-fregs-graph' '-fcross-module-specialise'
+ '-fcmm-sink' '-fstrictness-before=1' '-ffull-laziness']",fast,0.443,0.443
+173,d0b4c9cd-38bc-4f87-809d-9e69536fcaef,"['-O0' '-ffun-to-thunk' '-fmax-inline-memset-insns=32' '-fcall-arity'
+ '-fregs-graph' '-floopification' '-ffull-laziness']",fast,0.445,0.445
+174,2d552b91-3416-47b5-a235-033361dc775a,"['-O0' '-funfolding-dict-discount=30' '-fpedantic-bottoms'
+ '-fmax-inline-memcpy-insns=32' '-fexcess-precision' '-feager-blackholing'
+ '-fliberate-case-threshold=2000']",fast,0.443,0.443
+175,bf74dcfc-931f-4ada-9ccd-d6a338b50347,"['-O0' '-funfolding-creation-threshold=750' '-ffun-to-thunk'
+ '-fmax-worker-args=10' '-fexpose-all-unfoldings' '-fcse'
+ '-fsimplifier-phases=2']",fast,0.444,0.444
+176,81300d6f-445d-43d2-a4ef-5a860b3a705d,"['-O0' '-fliberate-case-threshold=2000' '-feager-blackholing'
+ '-fmax-worker-args=10' '-fdo-lambda-eta-expansion' '-ffull-laziness'
+ '-fspec-constr-threshold=2000']",fast,0.443,0.443
+177,c83adb30-3527-427c-a45d-a86c98e3c630,"['-O0' '-fomit-interface-pragmas' '-funfolding-use-threshold=60'
+ '-funfolding-dict-discount=30' '-flate-dmd-anal'
+ '-fomit-interface-pragmas' '-feager-blackholing']",fast,0.444,0.444
+178,855da888-6549-4951-ae4a-abcc6f3c64b5,"['-O0' '-fmax-worker-args=10' '-fmax-inline-memcpy-insns=32'
+ '-fcmm-elim-common-blocks' '-fspec-constr-threshold=2000'
+ '-ffull-laziness' '-fexpose-all-unfoldings']",fast,0.448,0.448
+179,4a8d3096-9ff0-422a-9fd9-03ea592a6f3a,"['-O0' '-funfolding-keeness-factor=1.5' '-funbox-strict-fields'
+ '-ffloat-in' '-fdo-lambda-eta-expansion' '-fsimpl-tick-factor=100'
+ '-fexcess-precision']",fast,0.448,0.448
+180,3feca514-7cea-433d-9938-c64dccd06636,"['-O0' '-fdo-eta-reduction' '-fdicts-cheap' '-fvectorisation-avoidance'
+ '-fignore-interface-pragmas' '-fspec-constr-count=3' '-fvectorise']",fast,0.443,0.443
+181,078d237e-7cbb-482d-becd-698e6888230f,"['-O0' '-fcall-arity' '-funfolding-creation-threshold=750' '-fcall-arity'
+ '-fcpr-anal' '-ffloat-in' '-fregs-graph']",fast,0.446,0.446
+182,6caa8013-5bbe-4f06-beed-0630132e7e6f,"['-O0' '-fcpr-anal' '-fdo-eta-reduction' '-fsimpl-tick-factor=100'
+ '-fcross-module-specialise' '-funfolding-use-threshold=60' '-fcse']",fast,0.445,0.445
+183,872c9c9d-ea3b-407f-b3bf-e3926a335b11,"['-O0' '-fworker-wrapper' '-fdicts-strict' '-fmax-worker-args=10'
+ '-floopification' '-flate-dmd-anal' '-foptimal-applicative-do']",fast,0.443,0.443
+184,9d72e48b-766b-424d-9618-d210bd0667b7,"['-O0' '-funfolding-creation-threshold=750' '-feager-blackholing'
+ '-fcross-module-specialise' '-fstatic-argument-transformation'
+ '-feager-blackholing' '-flate-dmd-anal']",fast,0.446,0.446
+185,bdf1bfbb-9a78-45c4-9ea8-e2399a5999ae,"['-O0' '-fno-opt-coercion' '-fstrictness' '-fdicts-cheap'
+ '-funbox-strict-fields' '-foptimal-applicative-do' '-fno-opt-coercion']",fast,0.438,0.438
+186,416d7792-6473-4461-9c08-2547261c2e94,"['-O0' '-fcmm-elim-common-blocks' '-funfolding-keeness-factor=1.5'
+ '-fstrictness' '-fcross-module-specialise' '-fspec-constr-threshold=2000'
+ '-fcase-merge']",fast,0.448,0.448
+187,b8234aa0-0971-465c-8f2a-fdc10a0be0ee,"['-O0' '-fstatic-argument-transformation' '-fcross-module-specialise'
+ '-fignore-asserts' '-funfolding-keeness-factor=1.5' '-fspec-constr'
+ '-fmax-worker-args=10']",fast,0.444,0.444
+188,c60244a6-9d73-4fa9-bae2-5d5b7194958f,"['-O0' '-funfolding-keeness-factor=1.5' '-fcpr-anal'
+ '-fstrictness-before=1' '-fvectorise' '-fworker-wrapper'
+ '-fdo-eta-reduction']",fast,0.444,0.444
+189,11dfa8ec-7114-4607-bba9-5a90626ccc6c,"['-O0' '-fdicts-cheap' '-fmax-worker-args=10' '-fdmd-tx-dict-sel'
+ '-fpedantic-bottoms' '-fignore-asserts' '-fcmm-elim-common-blocks']",fast,0.442,0.442
+190,4d3f8d91-9b0c-404d-bd38-38a6512075e4,"['-O0' '-fcse' '-fno-pre-inlining' '-ffull-laziness' '-fcse'
+ '-funbox-strict-fields' '-fomit-yields']",fast,0.445,0.445
+191,b432883d-6787-46c1-bb91-65c6564af8e7,"['-O0' '-fmax-worker-args=10' '-fmax-inline-memcpy-insns=32'
+ '-floopification' '-fcpr-anal' '-fliberate-case-threshold=2000'
+ '-fdo-eta-reduction']",fast,0.442,0.442
+192,0c38ca07-f612-4d43-b12a-5c1e97b28e07,"['-O0' '-fdicts-cheap' '-funfolding-creation-threshold=750' '-fcmm-sink'
+ '-fspecialise' '-funfolding-fun-discount=60'
+ '-fliberate-case-threshold=2000']",fast,0.444,0.444
+193,68242e90-04cf-479c-a1fa-6e00f4c23af6,"['-O0' '-fmax-inline-memcpy-insns=32' '-fcse' '-fpedantic-bottoms'
+ '-ffloat-in' '-funbox-strict-fields' '-fsimpl-tick-factor=100']",fast,0.443,0.443
+194,e13e31ba-c567-496b-a40a-30779abba7a9,"['-O0' '-fomit-interface-pragmas' '-floopification' '-fregs-iterative'
+ '-ffloat-in' '-fexcess-precision' '-fomit-interface-pragmas']",fast,0.444,0.444
+195,2d05134c-0963-4647-bfb1-e6ed7a6ee657,"['-O0' '-fcase-merge' '-fdo-lambda-eta-expansion'
+ '-fomit-interface-pragmas' '-fspec-constr-threshold=2000'
+ '-fliberate-case' '-fregs-iterative']",fast,0.442,0.442
+196,f07b4b3f-395d-4855-aeef-55464461ed34,"['-O0' '-funfolding-fun-discount=60' '-fdo-eta-reduction'
+ '-fmax-worker-args=10' '-fliberate-case' '-fspec-constr-count=3'
+ '-fdo-lambda-eta-expansion']",fast,0.443,0.443
+197,63cef3de-1095-41e6-b8f1-c16effcf0f3c,"['-O0' '-fsimpl-tick-factor=100' '-funfolding-creation-threshold=750'
+ '-fspec-constr-threshold=2000' '-fmax-simplifier-iterations=4'
+ '-funfolding-dict-discount=30' '-fdicts-cheap']",fast,0.441,0.441
+198,4f0716d3-0fc6-4c80-b8ad-7b150b86a453,"['-O0' '-fomit-yields' '-fdo-lambda-eta-expansion' '-fmax-worker-args=10'
+ '-fmax-inline-alloc-size=128' '-fregs-iterative' '-fworker-wrapper']",fast,0.438,0.438
+199,0b54f314-a6c0-48c9-b40c-5fbfa232c156,"['-O0' '-fomit-yields' '-funfolding-creation-threshold=750'
+ '-funfolding-use-threshold=60' '-feager-blackholing' '-ffull-laziness'
+ '-fcase-merge']",fast,0.437,0.437
+200,9308b0bb-492a-4ed3-a71a-c45b2c8f9ccf,"['-O0' '-flate-dmd-anal' '-funfolding-dict-discount=30'
+ '-fstrictness-before=1' '-fomit-yields' '-fmax-simplifier-iterations=4'
+ '-fliberate-case']",fast,0.445,0.445
+201,0ba1c880-d672-40d8-9a2b-8531adfbe9ca,"['-O0' '-fcse' '-funfolding-dict-discount=30' '-flate-dmd-anal'
+ '-fno-state-hack' '-fmax-worker-args=10' '-fcross-module-specialise']",fast,0.446,0.446
+202,0f15d4a0-53ec-41b6-896e-3d5ef377fc4a,"['-O0' '-fmax-inline-alloc-size=128' '-fmax-simplifier-iterations=4'
+ '-fpedantic-bottoms' '-fcse' '-floopification'
+ '-funfolding-use-threshold=60']",fast,0.446,0.446
+203,8188b6a6-ae3d-442f-b6b9-84c57aefeebe,"['-O0' '-fmax-inline-alloc-size=128' '-funfolding-dict-discount=30'
+ '-fdmd-tx-dict-sel' '-fstrictness-before=1' '-fspecialise'
+ '-fomit-yields']",fast,0.44,0.44
+204,a647a585-5ba0-4a0f-95fc-405cb314d3a9,"['-O0' '-fliberate-case-threshold=2000' '-fenable-rewrite-rules'
+ '-fregs-graph' '-fregs-graph' '-foptimal-applicative-do'
+ '-fdmd-tx-dict-sel']",fast,0.446,0.446
+205,ed94048d-6fa1-4d94-b58b-c01dc0da7e47,"['-O0' '-fmax-inline-memcpy-insns=32' '-fworker-wrapper'
+ '-fcross-module-specialise' '-fregs-iterative' '-fworker-wrapper'
+ '-fno-state-hack']",fast,0.441,0.441
+206,4acafe6f-260a-4815-9e20-367d8be27776,"['-O0' '-fspec-constr-count=3' '-flate-dmd-anal' '-ffull-laziness'
+ '-fcmm-sink' '-fenable-rewrite-rules' '-funbox-small-strict-fields']",fast,0.445,0.445
+207,c0479122-6d42-4d60-8be7-39d3e340d3f3,"['-O0' '-fstrictness-before=1' '-funbox-strict-fields' '-fcmm-sink'
+ '-fliberate-case-threshold=2000' '-fmax-inline-memcpy-insns=32'
+ '-fspecialise']",fast,0.441,0.441
+208,45c2a84c-67a7-40db-b726-1e5d8fe76597,"['-O0' '-fliberate-case-threshold=2000' '-feager-blackholing'
+ '-ffull-laziness' '-fspecialise' '-funfolding-dict-discount=30'
+ '-fliberate-case-threshold=2000']",fast,0.44,0.44
+209,d9528e4d-3a7f-4775-a6ae-17d0b9042a96,"['-O0' '-foptimal-applicative-do' '-funfolding-keeness-factor=1.5'
+ '-ffun-to-thunk' '-fdmd-tx-dict-sel' '-fcpr-anal' '-fcmm-sink']",fast,0.444,0.444
+210,3932d19a-78d4-48f2-bb91-af3608c9910f,"['-O0' '-fno-state-hack' '-fspecialise' '-fmax-inline-memset-insns=32'
+ '-fdicts-strict' '-fdo-lambda-eta-expansion' '-ffloat-in']",fast,0.446,0.446
+211,f36a4853-461d-4ce0-9396-b125f2e08371,"['-O0' '-floopification' '-fstrictness' '-funfolding-dict-discount=30'
+ '-fmax-worker-args=10' '-fno-pre-inlining' '-fmax-worker-args=10']",fast,0.439,0.439
+212,164b34da-9e5c-4b56-923e-1ac29d3f6226,"['-O0' '-fmax-inline-memset-insns=32' '-funfolding-dict-discount=30'
+ '-fvectorise' '-fmax-inline-memcpy-insns=32' '-fsimplifier-phases=2'
+ '-funbox-small-strict-fields']",fast,0.444,0.444
+213,977232c5-57e7-43d7-8702-22ac0c285a13,"['-O0' '-fmax-inline-memcpy-insns=32' '-fdo-lambda-eta-expansion'
+ '-fliberate-case-threshold=2000' '-fvectorisation-avoidance'
+ '-fmax-inline-memcpy-insns=32' '-ffloat-in']",fast,0.446,0.446
+214,b7b4f27d-2a84-4dde-b9ac-d5412014b6fe,"['-O0' '-fspecialise' '-funbox-strict-fields' '-fexcess-precision'
+ '-funfolding-use-threshold=60' '-fspec-constr-count=3' '-fregs-graph']",fast,0.442,0.442
+215,2fd46eb0-c7d2-446a-b5b7-11db2b841f96,"['-O0' '-funfolding-dict-discount=30' '-ffun-to-thunk' '-fno-state-hack'
+ '-funfolding-use-threshold=60' '-fliberate-case'
+ '-fstatic-argument-transformation']",fast,0.44,0.44
+216,55f3bfcf-409c-4511-93d6-96da119580e0,"['-O0' '-floopification' '-fmax-inline-memset-insns=32'
+ '-fenable-rewrite-rules' '-fno-pre-inlining' '-fdo-eta-reduction'
+ '-fignore-interface-pragmas']",fast,0.442,0.442
+217,39e9e310-0e65-4038-8e71-58ff0d48e52e,"['-O0' '-fcse' '-fcse' '-foptimal-applicative-do'
+ '-fmax-inline-memcpy-insns=32' '-fstrictness' '-fomit-interface-pragmas']",fast,0.442,0.442
+218,a38e0fd7-c44b-4113-8ae6-4e42da1293cd,"['-O0' '-fno-opt-coercion' '-funfolding-keeness-factor=1.5'
+ '-fdicts-cheap' '-fcmm-elim-common-blocks' '-fspec-constr'
+ '-fignore-interface-pragmas']",fast,0.447,0.447
+219,6964bcde-bd11-4c1a-8ca5-2fe2011ff03c,"['-O0' '-fenable-rewrite-rules' '-fpedantic-bottoms'
+ '-funfolding-keeness-factor=1.5' '-fmax-relevant-binds=6' '-fcmm-sink'
+ '-fstrictness-before=1']",fast,0.443,0.443
+220,735a4e9a-f04b-4595-84f5-616bf40f2aa6,"['-O0' '-fpedantic-bottoms' '-fmax-relevant-binds=6'
+ '-fmax-worker-args=10' '-funbox-small-strict-fields'
+ '-fenable-rewrite-rules' '-funbox-strict-fields']",fast,0.446,0.446
+221,4034a9eb-b8f8-4f98-b96f-0c4e38da482d,"['-O0' '-fomit-yields' '-fmax-simplifier-iterations=4'
+ '-fspec-constr-threshold=2000' '-fdicts-strict' '-fmax-relevant-binds=6'
+ '-fmax-worker-args=10']",fast,0.441,0.441
+222,9499fc47-e998-4e9a-a3c3-75338947edf6,"['-O0' '-fcall-arity' '-ffun-to-thunk' '-fliberate-case'
+ '-fpedantic-bottoms' '-fno-state-hack' '-fcross-module-specialise']",fast,0.447,0.447
+223,d78ece8b-cbd9-44f5-bef1-132e115064a8,"['-O0' '-fspec-constr-count=3' '-fliberate-case' '-fcall-arity'
+ '-fmax-relevant-binds=6' '-funfolding-fun-discount=60' '-fstrictness']",fast,0.439,0.439
+224,7823a729-71f5-4e57-9ed0-13fff012f9c4,"['-O0' '-fregs-graph' '-fcmm-sink' '-fdmd-tx-dict-sel' '-fregs-graph'
+ '-funfolding-dict-discount=30' '-foptimal-applicative-do']",fast,0.442,0.442
+225,32fb5d71-972a-4b62-b96c-0d9c8c2927e6,"['-O0' '-fsimplifier-phases=2' '-funfolding-keeness-factor=1.5'
+ '-fcmm-elim-common-blocks' '-feager-blackholing'
+ '-funbox-small-strict-fields' '-fmax-relevant-binds=6']",fast,0.442,0.442
+226,51b21e32-d7b9-4cb5-89f9-9bab6e2bb2b1,"['-O0' '-fexcess-precision' '-fcross-module-specialise'
+ '-fmax-inline-memcpy-insns=32' '-fliberate-case' '-ffull-laziness'
+ '-fstrictness']",fast,0.443,0.443
+227,f5681329-27ed-4f0b-ae01-8618e1d46fe6,"['-O0' '-funbox-strict-fields' '-funfolding-use-threshold=60'
+ '-ffun-to-thunk' '-fpedantic-bottoms' '-fspec-constr-count=3'
+ '-fregs-graph']",fast,0.441,0.441
+228,729174c7-dc2a-4516-86e5-5a864a5eb1c6,"['-O0' '-fcmm-sink' '-fexcess-precision' '-fcmm-sink'
+ '-fdo-lambda-eta-expansion' '-funfolding-fun-discount=60'
+ '-fstatic-argument-transformation']",fast,0.44,0.44
+229,4478c811-cc79-42ef-87e2-218b42f7e6ac,"['-O0' '-fignore-asserts' '-funfolding-use-threshold=60'
+ '-funbox-small-strict-fields' '-fliberate-case' '-funbox-strict-fields'
+ '-fvectorisation-avoidance']",fast,0.439,0.439
+230,93cd152f-88af-4530-a579-ba73afecfe96,"['-O0' '-fcmm-sink' '-fno-state-hack' '-funfolding-use-threshold=60'
+ '-fmax-worker-args=10' '-fomit-interface-pragmas'
+ '-funbox-small-strict-fields']",fast,0.441,0.441
+231,b0b286fc-ec4a-494e-8cdd-05d9b5fe4c65,"['-O0' '-fsimplifier-phases=2' '-fvectorise'
+ '-fmax-simplifier-iterations=4' '-fpedantic-bottoms'
+ '-fcross-module-specialise' '-fvectorise']",fast,0.441,0.441
+232,150dc7ff-1986-4241-8087-c63b56cf7086,"['-O0' '-floopification' '-fno-pre-inlining' '-fliberate-case'
+ '-fignore-interface-pragmas' '-funfolding-creation-threshold=750'
+ '-ffull-laziness']",fast,0.438,0.438
+233,f9edb3fc-e1ec-4c55-832f-1b9b236f0bcf,"['-O0' '-fcall-arity' '-fcall-arity' '-fexpose-all-unfoldings'
+ '-fstrictness' '-fcall-arity' '-fcase-merge']",fast,0.438,0.438
+234,ce6cb3f3-e193-4c47-a9f2-32ac691e6557,"['-O0' '-fstatic-argument-transformation' '-fmax-simplifier-iterations=4'
+ '-funfolding-dict-discount=30' '-fregs-graph' '-fcall-arity'
+ '-fdicts-strict']",fast,0.449,0.449
+235,cb62451e-90f8-4d60-9b00-537480f0eae0,"['-O0' '-funfolding-creation-threshold=750'
+ '-fmax-simplifier-iterations=4' '-fmax-relevant-binds=6'
+ '-fomit-interface-pragmas' '-fcpr-anal' '-foptimal-applicative-do']",fast,0.442,0.442
+236,63e437bc-8577-48ee-8746-d01000625c11,"['-O0' '-fvectorise' '-fliberate-case-threshold=2000' '-fcall-arity'
+ '-fcross-module-specialise' '-fmax-worker-args=10'
+ '-fcross-module-specialise']",fast,0.443,0.443
+237,c03432ef-4296-4d57-8ee9-365099622505,"['-O0' '-fregs-graph' '-ffull-laziness' '-fdicts-cheap'
+ '-fexcess-precision' '-fmax-inline-memset-insns=32'
+ '-fignore-interface-pragmas']",fast,0.439,0.439
+238,b18d69c0-ab52-4217-8889-06ffbbbeb3e3,"['-O0' '-fexcess-precision' '-fcpr-anal' '-fcase-merge' '-fliberate-case'
+ '-fworker-wrapper' '-fignore-asserts']",fast,0.438,0.438
+239,a8cce556-25f9-4723-acf1-86d5ab23151b,"['-O0' '-fspecialise' '-fdo-eta-reduction' '-fdo-eta-reduction'
+ '-fsimpl-tick-factor=100' '-fmax-worker-args=10'
+ '-fstatic-argument-transformation']",fast,0.442,0.442
+240,4be21aa2-7745-4631-b91f-ce4bf29d3647,"['-O0' '-fdicts-strict' '-ffloat-in' '-fvectorise' '-fspecialise'
+ '-fliberate-case-threshold=2000' '-fvectorisation-avoidance']",fast,0.44,0.44
+241,c8e0d796-453a-453f-98cd-6afa6ea8ca78,"['-O0' '-fdicts-cheap' '-fspec-constr' '-fomit-yields' '-fvectorise'
+ '-fexpose-all-unfoldings' '-fdicts-cheap']",fast,0.437,0.437
+242,52ca37bf-3667-4495-ab4c-23a0d0cb303c,"['-O0' '-fspecialise' '-fspec-constr-count=3' '-fregs-graph'
+ '-funbox-strict-fields' '-fspec-constr' '-fdicts-strict']",fast,0.44,0.44
+243,dbcfdabb-582e-4cc7-8302-80fe80e6644d,"['-O0' '-funfolding-keeness-factor=1.5' '-floopification'
+ '-fmax-relevant-binds=6' '-fsimpl-tick-factor=100' '-fcall-arity'
+ '-flate-dmd-anal']",fast,0.442,0.442
+244,c743ae4e-3881-4181-9427-d6a65b6c1c91,"['-O0' '-fmax-relevant-binds=6' '-fexcess-precision' '-fregs-graph'
+ '-fomit-yields' '-funfolding-keeness-factor=1.5'
+ '-funfolding-keeness-factor=1.5']",fast,0.437,0.437
+245,1380bbf5-4cd6-41a0-bc3e-7c04fe930b30,"['-O0' '-fvectorise' '-fcmm-elim-common-blocks' '-fmax-worker-args=10'
+ '-funfolding-creation-threshold=750' '-fomit-yields' '-fvectorise']",fast,0.439,0.439
+246,4b1ddb8c-f19e-490a-b233-dfcea744eb96,"['-O0' '-fstatic-argument-transformation' '-fignore-asserts'
+ '-fcall-arity' '-fstrictness' '-fstrictness-before=1'
+ '-fexpose-all-unfoldings']",fast,0.44,0.44
+247,5bfc36b2-aa5c-4120-b578-4283923bd578,"['-O0' '-fmax-inline-memcpy-insns=32' '-fstrictness' '-fregs-graph'
+ '-floopification' '-fcse' '-fvectorise']",fast,0.444,0.444
+248,71becb18-8b29-4612-ab6f-6e7dc9e75bbe,"['-O0' '-fvectorise' '-fdo-eta-reduction' '-fno-opt-coercion'
+ '-fspec-constr' '-funfolding-keeness-factor=1.5' '-fpedantic-bottoms']",fast,0.438,0.438
+249,124b2643-4892-4841-9578-6aff01b6e04a,"['-O0' '-funfolding-use-threshold=60' '-fcall-arity'
+ '-funfolding-fun-discount=60' '-fstatic-argument-transformation'
+ '-fomit-yields' '-fdo-eta-reduction']",fast,0.443,0.443
+250,9b8dffc6-60ad-4bd5-b480-1df2c44f0f31,"['-O0' '-fcall-arity' '-fworker-wrapper' '-ffull-laziness'
+ '-fworker-wrapper' '-fmax-relevant-binds=6' '-fomit-interface-pragmas']",fast,0.442,0.442
+251,167c75d0-d95f-4ac4-a028-938edb342894,"['-O0' '-fregs-iterative' '-fregs-iterative' '-fignore-asserts'
+ '-funfolding-creation-threshold=750' '-fenable-rewrite-rules'
+ '-fmax-inline-memcpy-insns=32']",fast,0.436,0.436
+252,ef9c0115-ab95-4a13-9722-952026c03427,"['-O0' '-fliberate-case-threshold=2000' '-fliberate-case'
+ '-fmax-relevant-binds=6' '-fdo-eta-reduction' '-fdmd-tx-dict-sel'
+ '-fignore-interface-pragmas']",fast,0.441,0.441
+253,5bb880a1-a050-4715-8f95-55dc3f45b2f8,"['-O0' '-fstatic-argument-transformation' '-funfolding-use-threshold=60'
+ '-fcpr-anal' '-fliberate-case' '-funbox-small-strict-fields'
+ '-fcmm-elim-common-blocks']",fast,0.441,0.441
+254,d1b264e4-f099-48b3-9657-619cf0869ac3,"['-O0' '-fcse' '-fsimplifier-phases=2' '-fcpr-anal'
+ '-funfolding-creation-threshold=750' '-fliberate-case'
+ '-fsimplifier-phases=2']",fast,0.441,0.441
+255,7642c24c-c419-4bda-af7d-400c0be86611,"['-O0' '-fmax-inline-alloc-size=128' '-funfolding-keeness-factor=1.5'
+ '-ffull-laziness' '-fdmd-tx-dict-sel' '-fsimplifier-phases=2'
+ '-funbox-strict-fields']",fast,0.444,0.444
+256,0ac40119-c0da-4316-92c2-20e2d64b12a8,"['-O0' '-funbox-strict-fields' '-fvectorisation-avoidance'
+ '-fliberate-case-threshold=2000' '-fdicts-cheap' '-ffloat-in'
+ '-funbox-strict-fields']",fast,0.438,0.438
+257,e7166c0a-252c-4b05-82ea-805733ceaed9,"['-O0' '-fmax-worker-args=10' '-fno-state-hack' '-fstrictness-before=1'
+ '-fvectorisation-avoidance' '-fstrictness-before=1' '-fdicts-cheap']",fast,0.441,0.441
+258,c0079bd3-9b74-4616-b9fc-b0bcc5f1f1b5,"['-O0' '-fdmd-tx-dict-sel' '-fcase-merge' '-fspec-constr'
+ '-fliberate-case' '-fliberate-case-threshold=2000'
+ '-fcmm-elim-common-blocks']",fast,0.444,0.444
+259,8ff6d6fa-41dd-42c8-8a96-420d9d9a7151,"['-O0' '-fomit-yields' '-fstrictness' '-funfolding-creation-threshold=750'
+ '-fmax-simplifier-iterations=4' '-fdicts-strict' '-fno-opt-coercion']",fast,0.438,0.438
+260,bb94e21d-0b16-4fa8-b833-40ffbeccf3be,"['-O0' '-fliberate-case-threshold=2000' '-fignore-asserts'
+ '-flate-dmd-anal' '-fspec-constr-threshold=2000'
+ '-funbox-small-strict-fields' '-fcse']",fast,0.441,0.441
+261,45cba37a-c1e5-4c1c-b635-c8df96c0b5d1,"['-O0' '-fvectorise' '-fspec-constr' '-fignore-interface-pragmas'
+ '-fdicts-strict' '-funfolding-dict-discount=30' '-fexpose-all-unfoldings']",fast,0.442,0.442
+262,d4bbb917-0f65-48dd-95c3-a0330f89004d,"['-O0' '-fenable-rewrite-rules' '-funbox-strict-fields'
+ '-fmax-simplifier-iterations=4' '-fcmm-elim-common-blocks'
+ '-fcmm-elim-common-blocks' '-floopification']",fast,0.443,0.443
+263,8df55d4e-0c7d-409b-bafa-70cbeb51fada,"['-O0' '-fcmm-sink' '-fcross-module-specialise' '-fno-opt-coercion'
+ '-fspec-constr-threshold=2000' '-fcase-merge' '-feager-blackholing']",fast,0.442,0.442
+264,63c6470e-c4df-4cd2-99c7-482a6306b1cf,"['-O0' '-fstrictness' '-funfolding-use-threshold=60' '-ffun-to-thunk'
+ '-fignore-asserts' '-fignore-asserts' '-fcpr-anal']",fast,0.442,0.442
+265,c5e0cdbc-f96b-4493-8a57-7d54a6b688cc,"['-O0' '-fsimpl-tick-factor=100' '-fsimpl-tick-factor=100'
+ '-fdicts-strict' '-fvectorisation-avoidance' '-fregs-iterative'
+ '-fspec-constr-count=3']",fast,0.438,0.438
+266,ea1ddfb6-a8ce-426b-a3b8-217c503bf383,"['-O0' '-fmax-worker-args=10' '-fworker-wrapper' '-fcpr-anal'
+ '-fdo-lambda-eta-expansion' '-fdicts-strict' '-ffun-to-thunk']",fast,0.438,0.438
+267,dff9234f-24e6-4429-81d7-cea7d7d8a550,"['-O0' '-fcpr-anal' '-fdo-lambda-eta-expansion' '-ffun-to-thunk'
+ '-fignore-asserts' '-ffull-laziness' '-fomit-yields']",fast,0.439,0.439
+268,dcd92ad8-9cc4-4d37-915a-7e8a85bf4da5,"['-O0' '-ffull-laziness' '-funfolding-creation-threshold=750'
+ '-funfolding-use-threshold=60' '-fignore-asserts' '-fcall-arity'
+ '-fvectorisation-avoidance']",fast,0.443,0.443
+269,9f4a7353-455c-4877-b614-d40ccd51acd6,"['-O0' '-fcpr-anal' '-fstrictness-before=1'
+ '-fstatic-argument-transformation' '-fcmm-elim-common-blocks'
+ '-fignore-asserts' '-fvectorise']",fast,0.44,0.44
+270,3223eb35-c4b6-41b6-985c-39db3326fdd0,"['-O0' '-fspec-constr-threshold=2000' '-fstrictness-before=1'
+ '-fstrictness-before=1' '-fexpose-all-unfoldings'
+ '-fmax-inline-memset-insns=32' '-fno-pre-inlining']",fast,0.441,0.441
+271,07b6e2bf-4d42-479a-84d7-06ad6b714d03,"['-O0' '-fworker-wrapper' '-ffull-laziness' '-fregs-iterative'
+ '-fvectorisation-avoidance' '-fenable-rewrite-rules' '-fworker-wrapper']",fast,0.44,0.44
+272,bbc83202-1b85-4e19-b6a1-a132b9e92064,"['-O0' '-fsimplifier-phases=2' '-fomit-yields' '-fmax-worker-args=10'
+ '-fcse' '-fvectorisation-avoidance' '-ffloat-in']",fast,0.439,0.439
+273,8ecdadef-8294-4570-aaef-9453822983cf,"['-O0' '-ffull-laziness' '-fvectorise' '-fdicts-strict'
+ '-fdo-eta-reduction' '-ffloat-in' '-fcall-arity']",fast,0.439,0.439
+274,ad359141-4a0f-40cd-a54d-1e4d7d60e77b,"['-O0' '-ffun-to-thunk' '-flate-dmd-anal' '-foptimal-applicative-do'
+ '-fno-state-hack' '-ffull-laziness' '-funfolding-creation-threshold=750']",fast,0.44,0.44
+275,6ee4b0a2-252f-4712-b3ff-83ae48cc6d70,"['-O0' '-funfolding-use-threshold=60' '-fexcess-precision'
+ '-fpedantic-bottoms' '-fdo-lambda-eta-expansion' '-ffloat-in'
+ '-fcmm-sink']",fast,0.438,0.438
+276,ce8e5c0c-a2a0-4c7d-b21a-9544e64c6911,"['-O0' '-fworker-wrapper' '-fdmd-tx-dict-sel' '-foptimal-applicative-do'
+ '-fcse' '-fspec-constr' '-fomit-yields']",fast,0.437,0.437
+277,55f8aaaa-c41c-41ce-bc8e-e6212d9891ce,"['-O0' '-funbox-small-strict-fields' '-fexpose-all-unfoldings'
+ '-fpedantic-bottoms' '-ffloat-in' '-fdo-lambda-eta-expansion'
+ '-fcmm-sink']",fast,0.437,0.437
+278,85b61c7e-52e0-4b3f-9e53-8eead4376e46,"['-O0' '-fpedantic-bottoms' '-fcross-module-specialise' '-fomit-yields'
+ '-fcall-arity' '-funbox-strict-fields' '-floopification']",fast,0.438,0.438
+279,36737c8c-b6d5-4582-97af-e8ee4bbd7b37,"['-O0' '-fignore-asserts' '-fcall-arity' '-fmax-relevant-binds=6'
+ '-ffull-laziness' '-flate-dmd-anal' '-fspecialise']",fast,0.44,0.44
+280,394ba0da-ab2c-484c-82cb-d2a6e6ffc228,"['-O0' '-fspec-constr-count=3' '-feager-blackholing'
+ '-foptimal-applicative-do' '-fstrictness' '-fmax-relevant-binds=6'
+ '-fno-opt-coercion']",fast,0.439,0.439
+281,d2af14f8-ba95-4434-9016-83276a3c8a3b,"['-O0' '-funfolding-use-threshold=60' '-fworker-wrapper'
+ '-fmax-simplifier-iterations=4' '-fexpose-all-unfoldings'
+ '-fdo-eta-reduction' '-fenable-rewrite-rules']",fast,0.438,0.438
+282,01db1cc8-ebb7-4cc8-a4e8-48bf9ed3f371,"['-O0' '-feager-blackholing' '-funbox-small-strict-fields' '-fstrictness'
+ '-fcmm-sink' '-flate-dmd-anal' '-fcmm-elim-common-blocks']",fast,0.435,0.435
+283,5d9e6fec-6a0a-4520-a089-bea867c8eccb,"['-O0' '-funbox-small-strict-fields' '-fdicts-strict' '-fworker-wrapper'
+ '-fignore-interface-pragmas' '-flate-dmd-anal' '-fcase-merge']",fast,0.437,0.437
+284,2e7b2f16-e2b4-44c5-9221-a1b5b8f6ad9e,"['-O0' '-fspec-constr-count=3' '-fstrictness' '-fregs-iterative'
+ '-fliberate-case' '-funbox-small-strict-fields' '-feager-blackholing']",fast,0.442,0.442
+285,5c1df97e-4872-4cd9-b456-d6f535b8a898,"['-O0' '-funfolding-use-threshold=60' '-fmax-inline-memset-insns=32'
+ '-fexcess-precision' '-fexpose-all-unfoldings' '-fsimplifier-phases=2'
+ '-fexpose-all-unfoldings']",fast,0.445,0.445
+286,21a0f4b1-c818-403c-a899-170a8fe5b0ad,"['-O0' '-fcross-module-specialise' '-fno-opt-coercion' '-fworker-wrapper'
+ '-foptimal-applicative-do' '-fmax-worker-args=10' '-fregs-graph']",fast,0.441,0.441
+287,e9263864-4d4e-41ad-b16d-5fd453b7aefc,"['-O0' '-fmax-simplifier-iterations=4' '-fcse' '-fdo-lambda-eta-expansion'
+ '-fliberate-case' '-fdo-eta-reduction' '-fspec-constr-count=3']",fast,0.442,0.442
+288,3c8257af-7b28-4e49-8335-aca7c6255c56,"['-O0' '-fliberate-case' '-fno-state-hack' '-fno-pre-inlining'
+ '-fstrictness' '-fdo-eta-reduction' '-ffloat-in']",fast,0.444,0.444
+289,7b0d5e1e-c1a3-4973-85e9-697411c3d798,"['-O0' '-funfolding-keeness-factor=1.5' '-fmax-simplifier-iterations=4'
+ '-fignore-asserts' '-fliberate-case-threshold=2000'
+ '-fsimplifier-phases=2' '-ffull-laziness']",fast,0.439,0.439
+290,e60903bf-5403-4964-aba8-e17f5dd2ca8e,"['-O0' '-fsimpl-tick-factor=100' '-fpedantic-bottoms' '-flate-dmd-anal'
+ '-fno-pre-inlining' '-fcall-arity' '-fomit-interface-pragmas']",fast,0.446,0.446
+291,fd78efae-baab-4e4e-bb3b-1aafa1702061,"['-O0' '-fvectorise' '-funfolding-dict-discount=30'
+ '-fcmm-elim-common-blocks' '-fpedantic-bottoms' '-fdmd-tx-dict-sel'
+ '-fmax-inline-alloc-size=128']",fast,0.439,0.439
+292,8b52a115-dc50-4753-babc-a96db742739d,"['-O0' '-fcmm-elim-common-blocks' '-fdmd-tx-dict-sel'
+ '-fmax-relevant-binds=6' '-funfolding-fun-discount=60'
+ '-fenable-rewrite-rules' '-fmax-relevant-binds=6']",fast,0.448,0.448
+293,fccba053-efe0-4d28-9437-dc30566fdb7b,"['-O0' '-fdo-eta-reduction' '-fcmm-elim-common-blocks'
+ '-fpedantic-bottoms' '-fworker-wrapper' '-fexcess-precision'
+ '-fregs-iterative']",fast,0.442,0.442
+294,aea9fca6-75d2-4069-8406-6885ede6652c,"['-O0' '-fspec-constr-threshold=2000' '-fsimpl-tick-factor=100'
+ '-foptimal-applicative-do' '-fcmm-elim-common-blocks' '-fcpr-anal'
+ '-fmax-inline-alloc-size=128']",fast,0.439,0.439
+295,b4a3dc3f-cf52-45c9-9f8d-bc2db307195a,"['-O0' '-ffull-laziness' '-fmax-inline-memset-insns=32'
+ '-fspec-constr-threshold=2000' '-fomit-interface-pragmas'
+ '-fno-pre-inlining' '-foptimal-applicative-do']",fast,0.442,0.442
+296,b02e5f10-c125-4541-bc4c-cd7b60a60384,"['-O0' '-fcmm-elim-common-blocks' '-fmax-inline-alloc-size=128'
+ '-fcmm-sink' '-fmax-relevant-binds=6' '-fcase-merge'
+ '-fmax-relevant-binds=6']",fast,0.438,0.438
+297,13eaaeeb-bf50-44a9-a2d9-130de06054b6,"['-O0' '-funbox-strict-fields' '-ffloat-in' '-fdicts-strict'
+ '-fignore-asserts' '-fno-state-hack' '-funbox-small-strict-fields']",fast,0.442,0.442
+298,d3f1b0fc-bcbe-43e0-9d19-3217cada5162,"['-O0' '-fignore-interface-pragmas' '-floopification'
+ '-fexpose-all-unfoldings' '-fspecialise' '-fworker-wrapper'
+ '-fregs-graph']",fast,0.444,0.444
+299,2810137d-e939-4d2d-bdd1-224c9f451669,"['-O0' '-fdicts-cheap' '-fcmm-sink' '-fcmm-elim-common-blocks'
+ '-ffull-laziness' '-fcmm-elim-common-blocks' '-fmax-relevant-binds=6']",fast,0.446,0.446
+300,30bdfe2c-d807-4179-984d-efef4db728ac,"['-O0' '-feager-blackholing' '-fvectorise' '-fmax-inline-memcpy-insns=32'
+ '-funfolding-use-threshold=60' '-fcmm-elim-common-blocks'
+ '-floopification']",fast,0.44,0.44
+301,796b1361-26b9-42f8-a118-06ac5f9e01c8,"['-O0' '-floopification' '-fregs-graph' '-fmax-relevant-binds=6'
+ '-fdicts-strict' '-funbox-strict-fields'
+ '-funfolding-creation-threshold=750']",fast,0.44,0.44
+302,9092b03f-8bb8-4624-82bc-fc059d3a9f72,"['-O0' '-fdo-lambda-eta-expansion' '-fpedantic-bottoms'
+ '-fstatic-argument-transformation' '-fno-state-hack' '-fomit-yields'
+ '-fstrictness']",fast,0.443,0.443
+303,5896d258-6e0f-4a46-879f-3f68093c0545,"['-O0' '-fspec-constr-threshold=2000' '-fomit-interface-pragmas'
+ '-fregs-iterative' '-fdo-eta-reduction' '-ffull-laziness' '-fcse']",fast,0.441,0.441
+304,13890d78-bdd7-4853-8277-38ebc0524d85,"['-O0' '-fsimpl-tick-factor=100' '-funbox-small-strict-fields'
+ '-fno-state-hack' '-fenable-rewrite-rules' '-fno-opt-coercion'
+ '-ffloat-in']",fast,0.443,0.443
+305,dd3592a2-7961-43f5-a45e-9f2175ebcafd,"['-O0' '-fcpr-anal' '-fliberate-case' '-ffull-laziness'
+ '-fmax-inline-memset-insns=32' '-fdicts-cheap'
+ '-fstatic-argument-transformation']",fast,0.439,0.439
+306,2b0b721d-86af-4f92-9a28-86753a157db0,"['-O0' '-fignore-asserts' '-funfolding-fun-discount=60' '-fignore-asserts'
+ '-fomit-yields' '-fcall-arity' '-fcse']",fast,0.442,0.442
+307,13c11b88-425b-4d56-bd1e-125e10a1d676,"['-O0' '-fregs-iterative' '-funfolding-creation-threshold=750'
+ '-ffloat-in' '-fstatic-argument-transformation' '-fspecialise'
+ '-fstatic-argument-transformation']",fast,0.441,0.441
+308,a0bc98ee-7b9d-4453-bc38-83db7cdbb33f,"['-O0' '-funbox-strict-fields' '-fregs-graph' '-fcmm-sink'
+ '-fregs-iterative' '-fdo-lambda-eta-expansion'
+ '-fvectorisation-avoidance']",fast,0.44,0.44
+309,6c89e9cb-b729-4bb2-a00e-2c119fa0e25f,"['-O0' '-fregs-iterative' '-fignore-interface-pragmas' '-fno-pre-inlining'
+ '-ffull-laziness' '-funfolding-creation-threshold=750'
+ '-fdmd-tx-dict-sel']",fast,0.439,0.439
+310,30cbdaa7-3d3f-4c3a-a58e-2d19fb0361d7,"['-O0' '-funbox-strict-fields' '-funfolding-use-threshold=60'
+ '-ffull-laziness' '-fcross-module-specialise' '-fdo-eta-reduction'
+ '-fmax-inline-memcpy-insns=32']",fast,0.439,0.439
+311,e32ab686-09a8-4bc8-ab95-c02f78616ed5,"['-O0' '-funfolding-use-threshold=60' '-fdo-eta-reduction' '-fomit-yields'
+ '-fmax-simplifier-iterations=4' '-funfolding-creation-threshold=750'
+ '-fmax-simplifier-iterations=4']",fast,0.445,0.445
+312,f8341fad-86b6-4e20-bf5f-6311b962d715,"['-O0' '-fsimplifier-phases=2' '-fenable-rewrite-rules' '-fcase-merge'
+ '-fcmm-sink' '-fvectorisation-avoidance' '-fmax-inline-alloc-size=128']",fast,0.439,0.439
+313,da6a9d2e-4d01-45a3-88ad-8dfc18f5eee5,"['-O0' '-fexpose-all-unfoldings' '-fomit-yields' '-flate-dmd-anal'
+ '-fcmm-sink' '-fdicts-cheap' '-fcse']",fast,0.441,0.441
+314,c84d0518-9d33-492f-b609-051bf0286026,"['-O0' '-fmax-inline-memcpy-insns=32' '-fenable-rewrite-rules'
+ '-fcmm-elim-common-blocks' '-fliberate-case' '-fcross-module-specialise'
+ '-fspec-constr-threshold=2000']",fast,0.437,0.437
+315,24930c9d-50e4-4d05-8b58-be9c26f7d6de,"['-O0' '-funfolding-creation-threshold=750' '-foptimal-applicative-do'
+ '-funfolding-use-threshold=60' '-fomit-yields' '-fspec-constr'
+ '-fmax-inline-alloc-size=128']",fast,0.438,0.438
+316,35f2b34c-d85d-442c-9a96-ba6d34a757fa,"['-O0' '-fcross-module-specialise' '-fstatic-argument-transformation'
+ '-fdo-lambda-eta-expansion' '-fcmm-elim-common-blocks'
+ '-feager-blackholing' '-fcse']",fast,0.441,0.441
+317,676f85b2-ec52-4bbd-9948-96092fefa981,"['-O0' '-funfolding-fun-discount=60' '-fmax-inline-memset-insns=32'
+ '-fspecialise' '-fno-pre-inlining' '-fmax-relevant-binds=6'
+ '-fexcess-precision']",fast,0.437,0.437
+318,b9ef9573-497b-4000-8d86-254e949ee255,"['-O0' '-fomit-yields' '-fcall-arity' '-ffloat-in'
+ '-fomit-interface-pragmas' '-flate-dmd-anal' '-fworker-wrapper']",fast,0.443,0.443
+319,dd2a1c34-17f2-4af3-a4bf-e7c0306f0b63,"['-O0' '-fmax-simplifier-iterations=4' '-fdmd-tx-dict-sel'
+ '-fignore-asserts' '-fspec-constr-threshold=2000'
+ '-fmax-relevant-binds=6' '-fdo-lambda-eta-expansion']",fast,0.44,0.44
+320,29192c94-ae16-4756-a0a0-45d59c89f0ba,"['-O0' '-fenable-rewrite-rules' '-fomit-interface-pragmas'
+ '-fmax-simplifier-iterations=4' '-fmax-inline-memset-insns=32'
+ '-fregs-graph' '-fmax-relevant-binds=6']",fast,0.44,0.44
+321,b7cd7821-bca2-48eb-817e-4549f0613239,"['-O0' '-fomit-yields' '-fspecialise' '-funfolding-dict-discount=30'
+ '-fcse' '-fexpose-all-unfoldings' '-fliberate-case']",fast,0.439,0.439
+322,cbea98dd-b368-4be4-894c-7f68c790dd51,"['-O0' '-ffloat-in' '-fdo-eta-reduction'
+ '-funfolding-creation-threshold=750' '-fno-state-hack' '-fdicts-strict'
+ '-fsimpl-tick-factor=100']",fast,0.438,0.438
+323,af1ed0d8-1408-4d4a-b16f-ccf57cdb1c6b,"['-O0' '-ffull-laziness' '-fomit-yields' '-fmax-simplifier-iterations=4'
+ '-fmax-inline-alloc-size=128' '-ffull-laziness'
+ '-fvectorisation-avoidance']",fast,0.439,0.439
+324,b0e6fac8-7456-4f0f-8f47-d6d07ad569be,"['-O0' '-fvectorise' '-fstrictness' '-fliberate-case-threshold=2000'
+ '-fcase-merge' '-ffun-to-thunk' '-fpedantic-bottoms']",fast,0.443,0.443
+325,88784003-6638-4eda-80c3-41b4209ed83a,"['-O0' '-funfolding-creation-threshold=750' '-fworker-wrapper'
+ '-fmax-relevant-binds=6' '-fvectorisation-avoidance' '-fomit-yields'
+ '-foptimal-applicative-do']",fast,0.44,0.44
+326,7cde5efa-be2d-47b1-9a3b-f4b9423578b3,"['-O0' '-fenable-rewrite-rules' '-fdmd-tx-dict-sel'
+ '-fmax-simplifier-iterations=4' '-fstatic-argument-transformation'
+ '-fstatic-argument-transformation' '-funfolding-fun-discount=60']",fast,0.439,0.439
+327,94f377f3-2004-4420-8079-99d426e85f3f,"['-O0' '-fliberate-case-threshold=2000' '-funfolding-keeness-factor=1.5'
+ '-fregs-graph' '-fmax-inline-alloc-size=128' '-fvectorise'
+ '-fno-pre-inlining']",fast,0.442,0.442
+328,79939bd5-0952-4351-9d3d-d47c248983f9,"['-O0' '-funbox-small-strict-fields' '-fspec-constr-threshold=2000'
+ '-fdicts-strict' '-fliberate-case-threshold=2000'
+ '-fcmm-elim-common-blocks' '-fno-pre-inlining']",fast,0.441,0.441
+329,c126f7ae-7120-42e5-a189-019518aefc8b,"['-O0' '-fliberate-case-threshold=2000' '-fstrictness' '-fcmm-sink'
+ '-fcse' '-fworker-wrapper' '-ffloat-in']",fast,0.439,0.439
+330,5eda6df9-5b9d-4884-b938-4f3b2bd4abc7,"['-O0' '-fspecialise' '-fomit-interface-pragmas'
+ '-fdo-lambda-eta-expansion' '-fmax-inline-memset-insns=32'
+ '-funbox-strict-fields' '-funfolding-dict-discount=30']",fast,0.442,0.442
+331,4aa8848f-7b02-4c91-982b-896e7b5853f2,"['-O0' '-fcall-arity' '-fmax-simplifier-iterations=4' '-fworker-wrapper'
+ '-fregs-graph' '-fexpose-all-unfoldings' '-fvectorisation-avoidance']",fast,0.439,0.439
+332,abc0cdae-38b3-4358-95a8-74ea946b4498,"['-O0' '-funbox-strict-fields' '-funfolding-use-threshold=60'
+ '-fsimpl-tick-factor=100' '-funfolding-dict-discount=30'
+ '-fpedantic-bottoms' '-fspecialise']",fast,0.441,0.441
+333,4d9e52ef-1957-4712-bfd0-6813aa9743da,"['-O0' '-fcse' '-ffun-to-thunk' '-funbox-small-strict-fields'
+ '-fliberate-case-threshold=2000' '-fpedantic-bottoms'
+ '-funfolding-dict-discount=30']",fast,0.44,0.44
+334,cb093ac2-447e-4d98-9686-0858d86f8301,"['-O0' '-fno-opt-coercion' '-fstrictness-before=1'
+ '-funfolding-creation-threshold=750' '-fspec-constr'
+ '-foptimal-applicative-do' '-fvectorise']",fast,0.437,0.437
+335,45a0dce7-ec8e-47e3-a34c-27e9c7715252,"['-O0' '-flate-dmd-anal' '-fworker-wrapper' '-funfolding-use-threshold=60'
+ '-ffun-to-thunk' '-fcase-merge' '-fvectorise']",fast,0.436,0.436
+336,60fa1bac-6e05-4476-9a0e-e77fa335444c,"['-O0' '-fexpose-all-unfoldings' '-fcross-module-specialise'
+ '-funbox-small-strict-fields' '-fno-pre-inlining' '-fignore-asserts'
+ '-fno-opt-coercion']",fast,0.442,0.442
+337,d9647e6f-0739-42a3-a8f1-a4438914713e,"['-O0' '-funbox-strict-fields' '-feager-blackholing'
+ '-fmax-inline-memcpy-insns=32' '-fmax-worker-args=10'
+ '-feager-blackholing' '-fno-state-hack']",fast,0.44,0.44
+338,943fc6de-373b-4c6b-b969-0714265b0af9,"['-O0' '-fdo-lambda-eta-expansion' '-fcall-arity' '-fliberate-case'
+ '-fno-opt-coercion' '-fmax-worker-args=10' '-fvectorisation-avoidance']",fast,0.443,0.443
+339,1e7b41ae-c563-44d3-a51a-5a97dd10e8f6,"['-O0' '-fno-pre-inlining' '-fpedantic-bottoms' '-fworker-wrapper'
+ '-fspec-constr' '-fcse' '-fliberate-case']",fast,0.447,0.447
+340,6ccb5862-6ac0-483d-a0a0-71778c5522fd,"['-O0' '-fomit-yields' '-fregs-graph' '-fcpr-anal'
+ '-fmax-inline-alloc-size=128' '-ffloat-in' '-fspec-constr']",fast,0.446,0.446
+341,2fe6fa5b-eb60-47d2-a9d6-5c6c6b2d6e68,"['-O0' '-fenable-rewrite-rules' '-funbox-small-strict-fields' '-fcmm-sink'
+ '-fpedantic-bottoms' '-fcall-arity' '-fomit-yields']",fast,0.444,0.444
+342,3866ca1d-f113-4a10-b358-5334976135a6,"['-O0' '-fignore-interface-pragmas' '-fmax-relevant-binds=6'
+ '-funfolding-use-threshold=60' '-funbox-strict-fields' '-flate-dmd-anal'
+ '-ffull-laziness']",fast,0.443,0.443
+343,f6f6cdef-4bc0-4047-a159-7bd0992120e1,"['-O0' '-fstrictness' '-fexpose-all-unfoldings' '-funbox-strict-fields'
+ '-fcase-merge' '-fomit-interface-pragmas'
+ '-fstatic-argument-transformation']",fast,0.443,0.443
+344,de445b17-19b4-4ac5-a7aa-e64ec0221572,"['-O0' '-fcase-merge' '-fcmm-sink' '-fspec-constr' '-fstrictness-before=1'
+ '-fexpose-all-unfoldings' '-ffull-laziness']",fast,0.444,0.444
+345,a4886ed0-72e0-4cf2-8933-d5d4bf49937e,"['-O0' '-fmax-simplifier-iterations=4' '-ffull-laziness'
+ '-fcmm-elim-common-blocks' '-fomit-interface-pragmas'
+ '-fstrictness-before=1' '-funbox-small-strict-fields']",fast,0.443,0.443
+346,2127bdac-656f-4488-a5c4-36b0f63ab9e5,"['-O0' '-fexpose-all-unfoldings' '-fcpr-anal'
+ '-funfolding-creation-threshold=750' '-fcross-module-specialise'
+ '-fcpr-anal' '-fno-pre-inlining']",fast,0.441,0.441
+347,6fe63132-4d69-481d-b7ef-6bcf9632aa20,"['-O0' '-fstrictness' '-funbox-strict-fields' '-fliberate-case' '-fcse'
+ '-fcross-module-specialise' '-fspecialise']",fast,0.442,0.442
+348,343350a0-c460-4a39-bb60-f25f7681e624,"['-O0' '-fexpose-all-unfoldings' '-fexpose-all-unfoldings'
+ '-fregs-iterative' '-fcmm-sink' '-ffloat-in'
+ '-fspec-constr-threshold=2000']",fast,0.444,0.444
+349,6d55c961-6a44-46e2-af75-9d5746cb97c4,"['-O0' '-fno-pre-inlining' '-fstrictness' '-fregs-iterative'
+ '-funfolding-creation-threshold=750' '-fregs-iterative' '-fcall-arity']",fast,0.445,0.445
+350,182513ac-3193-410f-84ec-712345ef7d88,"['-O0' '-fspec-constr' '-funfolding-use-threshold=60' '-fworker-wrapper'
+ '-fliberate-case' '-fignore-asserts' '-funfolding-creation-threshold=750']",fast,0.443,0.443
+351,0801d390-d1d3-4581-9d21-939dfbee7fb3,"['-O0' '-fdo-lambda-eta-expansion' '-funfolding-fun-discount=60'
+ '-fmax-inline-memcpy-insns=32' '-fvectorise' '-fsimpl-tick-factor=100'
+ '-ffun-to-thunk']",fast,0.448,0.448
+352,0b2d896d-a027-4404-a70f-5c244612aab9,"['-O0' '-flate-dmd-anal' '-floopification' '-funbox-strict-fields'
+ '-fdmd-tx-dict-sel' '-fmax-worker-args=10' '-fdo-eta-reduction']",fast,0.44,0.44
+353,a093829d-df57-4fb2-a5b3-20b9a206cb77,"['-O0' '-fcall-arity' '-fspec-constr-threshold=2000'
+ '-fmax-simplifier-iterations=4' '-flate-dmd-anal' '-fcall-arity'
+ '-fregs-iterative']",fast,0.445,0.445
+354,8b40ba52-b4c1-442b-835c-c1600d4f0993,"['-O0' '-fdo-lambda-eta-expansion' '-fsimplifier-phases=2'
+ '-fmax-inline-memset-insns=32' '-fstrictness-before=1'
+ '-fcmm-elim-common-blocks' '-fno-pre-inlining']",fast,0.445,0.445
+355,de55dbe5-05b9-4451-b826-1b411b8cf870,"['-O0' '-fcase-merge' '-fspec-constr-count=3' '-fmax-worker-args=10'
+ '-fomit-yields' '-fstrictness-before=1' '-fcmm-sink']",fast,0.442,0.442
+356,4ed49909-c17a-42d4-bf82-bf2e4fd478cf,"['-O0' '-funfolding-use-threshold=60' '-fignore-interface-pragmas'
+ '-fignore-interface-pragmas' '-fenable-rewrite-rules' '-fdicts-cheap'
+ '-fsimpl-tick-factor=100']",fast,0.442,0.442
+357,679bbeb0-48a4-4049-a610-bb677b22f6d6,"['-O0' '-fmax-relevant-binds=6' '-fsimplifier-phases=2'
+ '-fignore-interface-pragmas' '-foptimal-applicative-do' '-fvectorise'
+ '-fdo-eta-reduction']",fast,0.441,0.441
+358,e142b718-dd62-4656-9496-56d93780858e,"['-O0' '-fexcess-precision' '-fcmm-elim-common-blocks'
+ '-fenable-rewrite-rules' '-fcpr-anal' '-foptimal-applicative-do'
+ '-fomit-interface-pragmas']",fast,0.442,0.442
+359,590305f2-9ad4-42df-861c-26a790e9810e,"['-O0' '-fliberate-case-threshold=2000' '-ffun-to-thunk' '-floopification'
+ '-fcmm-elim-common-blocks' '-fsimplifier-phases=2' '-ffun-to-thunk']",fast,0.441,0.441
+360,f32bc23b-ed36-4ba8-ba21-c714e25e92f0,"['-O0' '-fcase-merge' '-fvectorisation-avoidance' '-fcall-arity'
+ '-fworker-wrapper' '-fmax-relevant-binds=6'
+ '-fstatic-argument-transformation']",fast,0.437,0.437
+361,e386f5af-6627-41be-b3be-368075cef68b,"['-O0' '-fstatic-argument-transformation' '-fcase-merge' '-fvectorise'
+ '-fdicts-cheap' '-ffloat-in' '-fsimpl-tick-factor=100']",fast,0.437,0.437
+362,31cd12b4-e368-4e44-be07-aada4ecd1d25,"['-O0' '-funfolding-dict-discount=30' '-fstatic-argument-transformation'
+ '-ffull-laziness' '-fspec-constr-count=3' '-fno-state-hack'
+ '-fmax-simplifier-iterations=4']",fast,0.438,0.438
+363,4205fc91-2cb8-4c42-9bde-a5ce153ba53d,"['-O0' '-fomit-yields' '-funfolding-dict-discount=30' '-ffloat-in'
+ '-funfolding-use-threshold=60' '-fignore-interface-pragmas'
+ '-fno-state-hack']",fast,0.438,0.438
+364,1fbb348c-2f83-41f9-942f-7db61895b264,"['-O0' '-fliberate-case-threshold=2000' '-flate-dmd-anal'
+ '-fdmd-tx-dict-sel' '-fdicts-cheap' '-fdo-lambda-eta-expansion'
+ '-fworker-wrapper']",fast,0.446,0.446
+365,b39ed22b-3c1c-4033-a58e-83c168777665,"['-O0' '-fomit-interface-pragmas' '-floopification'
+ '-funfolding-keeness-factor=1.5' '-fenable-rewrite-rules'
+ '-fpedantic-bottoms' '-fcmm-elim-common-blocks']",fast,0.442,0.442
+366,5191b1b4-ddee-491c-b4a6-94ebd38db96a,"['-O0' '-fstrictness' '-funbox-small-strict-fields' '-fstrictness'
+ '-fenable-rewrite-rules' '-fmax-worker-args=10'
+ '-foptimal-applicative-do']",fast,0.442,0.442
+367,c7f0d60d-4722-4350-b20e-29c21eb8d896,"['-O0' '-fcross-module-specialise' '-fmax-simplifier-iterations=4'
+ '-fmax-inline-memcpy-insns=32' '-fmax-inline-alloc-size=128'
+ '-fregs-graph' '-funfolding-dict-discount=30']",fast,0.442,0.442
+368,566a8dad-1af9-42f7-a9ea-7b06c0d92fc1,"['-O0' '-fvectorisation-avoidance' '-fstrictness-before=1'
+ '-fno-state-hack' '-fliberate-case-threshold=2000'
+ '-funfolding-use-threshold=60' '-fenable-rewrite-rules']",fast,0.441,0.441
+369,a0df215f-43a0-4a8d-ab61-56aef9eb64ac,"['-O0' '-foptimal-applicative-do' '-fdicts-cheap' '-fregs-graph'
+ '-fignore-asserts' '-fenable-rewrite-rules' '-fcmm-sink']",fast,0.442,0.442
+370,2e9b3373-1028-4098-8c13-10312e2bf3b5,"['-O0' '-fliberate-case' '-ffloat-in' '-fliberate-case'
+ '-fdo-eta-reduction' '-fcpr-anal' '-floopification']",fast,0.442,0.442
+371,1186354b-d7bb-4bc4-8f49-d1d26c9064ea,"['-O0' '-fvectorisation-avoidance' '-fsimplifier-phases=2'
+ '-fstrictness-before=1' '-fstatic-argument-transformation' '-fvectorise'
+ '-floopification']",fast,0.439,0.439
+372,d84c2d92-d526-498b-9893-d08dc242bfc4,"['-O0' '-funfolding-creation-threshold=750'
+ '-fliberate-case-threshold=2000' '-fomit-interface-pragmas'
+ '-fregs-iterative' '-flate-dmd-anal' '-fno-opt-coercion']",fast,0.444,0.444
+373,079e7e92-64fd-442e-8c99-2f9b08d43498,"['-O0' '-fsimpl-tick-factor=100' '-fsimpl-tick-factor=100'
+ '-funfolding-use-threshold=60' '-fpedantic-bottoms' '-fdmd-tx-dict-sel'
+ '-fmax-inline-memset-insns=32']",fast,0.446,0.446
+374,2d51590d-3737-435c-96b3-24e9cbb472d1,"['-O0' '-fdicts-strict' '-fcase-merge' '-fliberate-case-threshold=2000'
+ '-fno-opt-coercion' '-fcross-module-specialise' '-fvectorise']",fast,0.441,0.441
+375,30cba625-4592-432d-a0ea-8e1e79b3c02a,"['-O0' '-fspecialise' '-fmax-inline-memcpy-insns=32'
+ '-fcross-module-specialise' '-fcase-merge'
+ '-fliberate-case-threshold=2000' '-funfolding-keeness-factor=1.5']",fast,0.439,0.439
+376,4537e6ff-ff68-46f7-b57f-1db6ca8c49d3,"['-O0' '-fdicts-cheap' '-foptimal-applicative-do' '-ffun-to-thunk'
+ '-fvectorisation-avoidance' '-fstrictness-before=1' '-fdmd-tx-dict-sel']",fast,0.443,0.443
+377,e55a64f2-b2cb-42b6-837d-c9eac626cbed,"['-O0' '-ffloat-in' '-fno-pre-inlining' '-fspec-constr' '-fworker-wrapper'
+ '-funfolding-keeness-factor=1.5' '-fignore-interface-pragmas']",fast,0.441,0.441
+378,847dadaa-71f8-4cf9-a5f3-fee0c4b8659c,"['-O0' '-funbox-strict-fields' '-funfolding-fun-discount=60'
+ '-foptimal-applicative-do' '-ffull-laziness' '-fcall-arity'
+ '-fexpose-all-unfoldings']",fast,0.452,0.452
+379,61ac713a-ecc1-4619-b3e7-76eba5f2a58c,"['-O0' '-fsimpl-tick-factor=100' '-ffun-to-thunk'
+ '-fsimpl-tick-factor=100' '-fvectorise' '-fdicts-cheap' '-fspecialise']",fast,0.436,0.436
+380,a2ef0503-49ec-43e2-84b4-cc0b62dd63f2,"['-O0' '-fdicts-cheap' '-funbox-strict-fields'
+ '-fmax-inline-alloc-size=128' '-funfolding-use-threshold=60'
+ '-fdmd-tx-dict-sel' '-ffull-laziness']",fast,0.443,0.443
+381,d2e2aa9c-dea9-4704-8ca3-e988d4fdec11,"['-O0' '-fmax-worker-args=10' '-fworker-wrapper'
+ '-fcross-module-specialise' '-ffun-to-thunk' '-fcse'
+ '-foptimal-applicative-do']",fast,0.438,0.438
+382,d1a0bcae-b42c-4f50-b4dc-dbf40c9f8270,"['-O0' '-fcpr-anal' '-fdicts-strict' '-fdmd-tx-dict-sel'
+ '-fdmd-tx-dict-sel' '-fmax-simplifier-iterations=4'
+ '-fsimplifier-phases=2']",fast,0.443,0.443
+383,dc10bb47-4ee0-4db1-8309-8ec3d18bb551,"['-O0' '-fspec-constr-count=3' '-ffloat-in' '-floopification'
+ '-funfolding-keeness-factor=1.5' '-fmax-simplifier-iterations=4'
+ '-fliberate-case']",fast,0.442,0.442
+384,c93dbbc1-4512-4f72-be0f-75020c8e32dc,"['-O0' '-fspecialise' '-fomit-yields' '-fcross-module-specialise'
+ '-fdmd-tx-dict-sel' '-fmax-inline-alloc-size=128'
+ '-fmax-inline-memcpy-insns=32']",fast,0.444,0.444
+385,1fd42358-d216-4039-94ae-3232d112fb0f,"['-O0' '-fmax-simplifier-iterations=4' '-fmax-inline-memcpy-insns=32'
+ '-fregs-graph' '-fvectorisation-avoidance' '-fignore-asserts'
+ '-fexpose-all-unfoldings']",fast,0.438,0.438
+386,d7d3e38e-f36e-4a29-b7d6-f588bd1b2343,"['-O0' '-fmax-inline-memset-insns=32' '-fliberate-case-threshold=2000'
+ '-fignore-asserts' '-funbox-small-strict-fields'
+ '-fmax-inline-alloc-size=128' '-funfolding-use-threshold=60']",fast,0.44,0.44
+387,d4972e02-fc4c-45a6-ade8-73a786fc4a71,"['-O0' '-funbox-strict-fields' '-funfolding-use-threshold=60'
+ '-fdo-eta-reduction' '-fsimplifier-phases=2' '-flate-dmd-anal'
+ '-fstrictness-before=1']",fast,0.44,0.44
+388,2cd9c7ec-fa94-4fdd-9bf2-52826747570a,"['-O0' '-fstatic-argument-transformation' '-fdo-eta-reduction'
+ '-feager-blackholing' '-fno-state-hack' '-funbox-strict-fields'
+ '-fcase-merge']",fast,0.442,0.442
+389,fec9ec64-f75d-4e29-99d5-e41d0af6df94,"['-O0' '-fno-pre-inlining' '-fexcess-precision' '-fexcess-precision'
+ '-fmax-inline-memcpy-insns=32' '-fcmm-elim-common-blocks'
+ '-fmax-inline-memcpy-insns=32']",fast,0.441,0.441
+390,7cfdf511-3048-428b-9350-96880393c215,"['-O0' '-fexcess-precision' '-fstrictness' '-fvectorise'
+ '-fspec-constr-count=3' '-fcross-module-specialise'
+ '-fcmm-elim-common-blocks']",fast,0.444,0.444
+391,56eb1b3c-90c3-46e8-92ff-156e3ac8cde3,"['-O0' '-fmax-worker-args=10' '-fmax-simplifier-iterations=4'
+ '-fcall-arity' '-flate-dmd-anal' '-fworker-wrapper' '-fcase-merge']",fast,0.44,0.44
+392,b0181647-7b00-4a9b-927f-7591e901a955,"['-O0' '-fno-opt-coercion' '-fmax-simplifier-iterations=4'
+ '-fstrictness-before=1' '-fvectorisation-avoidance' '-ffloat-in'
+ '-floopification']",fast,0.442,0.442
+393,a602e7e9-296a-42b5-96a1-f6ca004a684d,"['-O0' '-fsimplifier-phases=2' '-fcase-merge'
+ '-fspec-constr-threshold=2000' '-fdo-eta-reduction' '-fignore-asserts'
+ '-fignore-asserts']",fast,0.439,0.439
+394,0f072398-8877-4435-8f07-9efa54700091,"['-O0' '-ffull-laziness' '-fdicts-strict' '-fignore-asserts'
+ '-funbox-small-strict-fields' '-funfolding-dict-discount=30'
+ '-fliberate-case-threshold=2000']",fast,0.437,0.437
+395,f1e1b2e9-3d80-4c04-8142-51f6f2b83f8b,"['-O0' '-fspec-constr-threshold=2000' '-funfolding-keeness-factor=1.5'
+ '-funfolding-dict-discount=30' '-fregs-graph' '-fpedantic-bottoms'
+ '-fignore-asserts']",fast,0.443,0.443
+396,19485f97-c3fb-402c-9554-1cb89685b53f,"['-O0' '-ffun-to-thunk' '-fspec-constr-count=3' '-funbox-strict-fields'
+ '-funfolding-keeness-factor=1.5' '-fregs-iterative' '-fcmm-sink']",fast,0.438,0.438
+397,28cdc056-ffca-4aae-a4fa-723f33de646e,"['-O0' '-fno-opt-coercion' '-feager-blackholing' '-fspec-constr-count=3'
+ '-fdicts-strict' '-fignore-interface-pragmas' '-fno-pre-inlining']",fast,0.438,0.438
+398,7bd156c6-99ee-4a9f-987a-a4ac3711e5f5,"['-O0' '-fmax-inline-alloc-size=128' '-fomit-interface-pragmas'
+ '-fmax-simplifier-iterations=4' '-fno-opt-coercion' '-fno-state-hack'
+ '-fmax-inline-memset-insns=32']",fast,0.437,0.437
+399,010bab07-093a-428f-9174-30d771d0da48,"['-O0' '-fcpr-anal' '-funfolding-dict-discount=30' '-fpedantic-bottoms'
+ '-fno-state-hack' '-fno-opt-coercion' '-fno-pre-inlining']",fast,0.438,0.438
+400,859f8bf1-798c-4b54-b134-43114b5edbbd,"['-O0' '-fignore-asserts' '-fspec-constr' '-fspec-constr-threshold=2000'
+ '-fcross-module-specialise' '-fmax-simplifier-iterations=4' '-fcpr-anal']",fast,0.441,0.441
+401,6b5fc0ce-163f-4cf2-b722-043b11540429,"['-O0' '-funbox-small-strict-fields' '-fmax-worker-args=10' '-fspecialise'
+ '-fspec-constr-threshold=2000' '-fregs-iterative' '-fno-opt-coercion']",fast,0.454,0.454
+402,dcbfdc94-6529-4448-ad5d-2435bfefa1eb,"['-O0' '-fregs-graph' '-fregs-graph' '-fcse' '-fmax-inline-alloc-size=128'
+ '-fomit-interface-pragmas' '-funfolding-creation-threshold=750']",fast,0.436,0.436
+403,cd1bd483-775e-42a8-b205-ec6fe69ae507,"['-O0' '-fcmm-elim-common-blocks' '-fcross-module-specialise'
+ '-fignore-interface-pragmas' '-fmax-inline-memset-insns=32'
+ '-fmax-simplifier-iterations=4' '-fdicts-strict']",fast,0.439,0.439
+404,809384ba-f188-4dc4-8747-349a5b79bea0,"['-O0' '-fdo-eta-reduction' '-floopification' '-fregs-graph'
+ '-funfolding-dict-discount=30' '-fomit-interface-pragmas'
+ '-floopification']",fast,0.437,0.437
+405,59f9a662-19de-4ac3-96b3-82e01e73e17a,"['-O0' '-funfolding-dict-discount=30' '-fdo-eta-reduction'
+ '-funfolding-use-threshold=60' '-fcpr-anal' '-fstrictness'
+ '-fregs-iterative']",fast,0.44,0.44
+406,a264087f-c398-42e5-859e-26127208d831,"['-O0' '-fstrictness-before=1' '-fmax-simplifier-iterations=4'
+ '-fspec-constr' '-fignore-interface-pragmas'
+ '-fmax-inline-memset-insns=32' '-fspec-constr']",fast,0.438,0.438
+407,e1345aaa-aa9d-4aed-b94a-69a7fc3a594d,"['-O0' '-fcase-merge' '-flate-dmd-anal' '-fsimplifier-phases=2'
+ '-fcase-merge' '-fdo-eta-reduction' '-fpedantic-bottoms']",fast,0.439,0.439
+408,1231b27e-0398-455c-9962-8e7351d8a741,"['-O0' '-fstrictness-before=1' '-fliberate-case'
+ '-fstatic-argument-transformation' '-fstrictness-before=1'
+ '-fignore-asserts' '-fdo-eta-reduction']",fast,0.437,0.437
+409,658dca3a-feb2-4ebb-80cf-0013d273d80b,"['-O0' '-fmax-relevant-binds=6' '-fvectorise' '-fexpose-all-unfoldings'
+ '-fvectorisation-avoidance' '-fcmm-sink' '-fexpose-all-unfoldings']",fast,0.444,0.444
+410,6a4a5355-04f0-4af9-9654-82e6a1a2f9d8,"['-O0' '-floopification' '-flate-dmd-anal' '-fcase-merge'
+ '-fmax-inline-memset-insns=32' '-funfolding-keeness-factor=1.5'
+ '-fmax-relevant-binds=6']",fast,0.437,0.437
+411,67d5b96e-18d8-45b7-aaa0-7809356ad75c,"['-O0' '-fcross-module-specialise' '-fomit-interface-pragmas'
+ '-fstatic-argument-transformation' '-fstatic-argument-transformation'
+ '-fmax-inline-memset-insns=32' '-fsimpl-tick-factor=100']",fast,0.437,0.437
+412,f6817c60-4264-48fe-b2f1-07735bb6130e,"['-O0' '-foptimal-applicative-do' '-fno-pre-inlining' '-fstrictness'
+ '-fworker-wrapper' '-fmax-simplifier-iterations=4'
+ '-fomit-interface-pragmas']",fast,0.439,0.439
+413,419feef6-9149-49dd-ad1e-40b391f5e9c8,"['-O0' '-flate-dmd-anal' '-fomit-interface-pragmas'
+ '-fexpose-all-unfoldings' '-fstrictness-before=1'
+ '-fcross-module-specialise' '-ffloat-in']",fast,0.44,0.44
+414,448f98a0-b177-4135-9b90-9abc3241e7f7,"['-O0' '-fpedantic-bottoms' '-fno-state-hack' '-fspec-constr' '-fcse'
+ '-fignore-asserts' '-fregs-graph']",fast,0.44,0.44
+415,8a852c8e-d43e-4706-836d-e3ce28170c45,"['-O0' '-fcall-arity' '-fomit-yields' '-fliberate-case'
+ '-fvectorisation-avoidance' '-funfolding-dict-discount=30' '-fcse']",fast,0.442,0.442
+416,182c4b4a-cdbd-4274-8ed3-f7d9cfaa5ce8,"['-O0' '-fexcess-precision' '-feager-blackholing' '-fdicts-cheap'
+ '-fomit-interface-pragmas' '-fdmd-tx-dict-sel' '-fomit-interface-pragmas']",fast,0.44,0.44
+417,aed2c279-02a4-411c-86f2-926b00aefb10,"['-O0' '-funfolding-dict-discount=30' '-foptimal-applicative-do'
+ '-fcross-module-specialise' '-ffun-to-thunk' '-fspec-constr-count=3'
+ '-ffloat-in']",fast,0.438,0.438
+418,4653d0a3-f51c-4fa8-83ed-2b9fbffc7322,"['-O0' '-fmax-worker-args=10' '-fspec-constr-threshold=2000'
+ '-fdo-eta-reduction' '-fregs-graph' '-fno-state-hack'
+ '-fcmm-elim-common-blocks']",fast,0.438,0.438
+419,642fc450-18fc-4a5d-9fbe-dc85d32d7719,"['-O0' '-funfolding-dict-discount=30' '-fomit-yields' '-fcase-merge'
+ '-fcmm-elim-common-blocks' '-fexpose-all-unfoldings' '-fcpr-anal']",fast,0.439,0.439
+420,a7bd9248-cf6d-47ab-b260-b15c150b84bd,"['-O0' '-fcse' '-fstatic-argument-transformation'
+ '-funfolding-fun-discount=60' '-fmax-inline-memcpy-insns=32'
+ '-fvectorisation-avoidance' '-fdo-eta-reduction']",fast,0.437,0.437
+421,b7441e4d-5e1d-4356-a108-a6f72814c15c,"['-O0' '-feager-blackholing' '-flate-dmd-anal' '-fexcess-precision'
+ '-funfolding-creation-threshold=750' '-funfolding-dict-discount=30'
+ '-fcross-module-specialise']",fast,0.438,0.438
+422,0735f8a3-72ab-427c-bfc8-39f5b343599f,"['-O0' '-fregs-graph' '-fworker-wrapper'
+ '-funfolding-creation-threshold=750' '-fliberate-case-threshold=2000'
+ '-foptimal-applicative-do' '-fcse']",fast,0.437,0.437
+423,3cd8f3ee-650a-435b-9898-320ceed52060,"['-O0' '-fmax-inline-memset-insns=32' '-fspec-constr'
+ '-funbox-small-strict-fields' '-fomit-yields' '-foptimal-applicative-do'
+ '-funfolding-fun-discount=60']",fast,0.444,0.444
+424,e044f61f-a3cf-4551-bdb9-1dd53295a8e4,"['-O0' '-fdicts-strict' '-ffull-laziness' '-fstrictness-before=1'
+ '-feager-blackholing' '-fcmm-elim-common-blocks' '-fcase-merge']",fast,0.443,0.443
+425,67778a1a-9c04-4bca-ab0e-093293d43410,"['-O0' '-fdo-eta-reduction' '-fspec-constr-count=3' '-fno-opt-coercion'
+ '-ffloat-in' '-fspec-constr' '-fspecialise']",fast,0.44,0.44
+426,d1657096-e6de-4b59-a8f7-da331f5fdd2e,"['-O0' '-fdmd-tx-dict-sel' '-ffloat-in' '-feager-blackholing'
+ '-ffull-laziness' '-fdicts-cheap' '-funfolding-keeness-factor=1.5']",fast,0.44,0.44
+427,f43d7475-4a6c-4245-9812-cf908ccce527,"['-O0' '-fstrictness-before=1' '-fstatic-argument-transformation'
+ '-fstrictness' '-fspec-constr-count=3' '-fcse' '-fcpr-anal']",fast,0.441,0.441
+428,88b4298f-bb98-4320-8c96-1ee922d75979,"['-O0' '-fspec-constr' '-fspec-constr' '-fmax-simplifier-iterations=4'
+ '-floopification' '-fomit-interface-pragmas' '-flate-dmd-anal']",fast,0.439,0.439
+429,6b597b33-5d61-4e4b-abeb-6e71f6323ce6,"['-O0' '-fliberate-case-threshold=2000' '-ffloat-in' '-fdicts-strict'
+ '-fno-opt-coercion' '-fno-opt-coercion' '-floopification']",fast,0.444,0.444
+430,5799df21-a988-4b04-856b-0c19f09cf971,"['-O0' '-fsimplifier-phases=2' '-funbox-strict-fields'
+ '-fmax-inline-alloc-size=128' '-fstrictness-before=1' '-fcse'
+ '-fexpose-all-unfoldings']",fast,0.439,0.439
+431,001e7de4-9136-4882-8e12-96316f9ab9a3,"['-O0' '-fsimplifier-phases=2' '-fsimplifier-phases=2' '-fdicts-cheap'
+ '-fstrictness' '-fomit-interface-pragmas' '-fworker-wrapper']",fast,0.439,0.439
+432,81cdc17c-5bc4-452d-8ceb-a0239b07af00,"['-O0' '-fdo-lambda-eta-expansion' '-fspecialise' '-fno-pre-inlining'
+ '-fspec-constr-threshold=2000' '-fdo-eta-reduction' '-fno-pre-inlining']",fast,0.438,0.438
+433,bd738588-1653-4db2-a782-cfa8c3c83574,"['-O0' '-fcse' '-fspecialise' '-fignore-interface-pragmas' '-fregs-graph'
+ '-fdicts-strict' '-fpedantic-bottoms']",fast,0.442,0.442
+434,057baa7d-9514-4ac6-a59b-ba87c03ce3db,"['-O0' '-floopification' '-fliberate-case'
+ '-funfolding-keeness-factor=1.5' '-feager-blackholing' '-fvectorise'
+ '-fenable-rewrite-rules']",fast,0.44,0.44
+435,3b0dd857-7b29-445b-b71b-ee2cb74532ce,"['-O0' '-funfolding-creation-threshold=750' '-fvectorisation-avoidance'
+ '-flate-dmd-anal' '-fdicts-strict' '-fsimpl-tick-factor=100'
+ '-fdo-lambda-eta-expansion']",fast,0.439,0.439
+436,3499248b-ac03-4fe2-ad7b-5d8a514bc1a6,"['-O0' '-fregs-iterative' '-fcmm-sink' '-fmax-inline-memset-insns=32'
+ '-fmax-inline-alloc-size=128' '-ffun-to-thunk' '-fliberate-case']",fast,0.437,0.437
+437,51f1a282-d650-4484-a656-11e1c10a1d15,"['-O0' '-fno-state-hack' '-fspecialise' '-fworker-wrapper'
+ '-fsimpl-tick-factor=100' '-fdicts-cheap' '-fpedantic-bottoms']",fast,0.441,0.441
+438,c7dee206-f25b-4b0b-9d80-9912b403f4af,"['-O0' '-fcall-arity' '-fcase-merge' '-fliberate-case-threshold=2000'
+ '-fmax-worker-args=10' '-fomit-yields' '-fsimplifier-phases=2']",fast,0.438,0.438
+439,381cf5ef-3459-469f-8dc6-8acf0f9643ec,"['-O0' '-fno-opt-coercion' '-ffun-to-thunk' '-fpedantic-bottoms'
+ '-fdicts-cheap' '-fvectorise' '-fignore-interface-pragmas']",fast,0.445,0.445
+440,27919da9-56b4-4dcc-878f-f0f6530530ec,"['-O0' '-fdo-eta-reduction' '-fdicts-cheap' '-fomit-interface-pragmas'
+ '-fcmm-sink' '-fno-opt-coercion' '-fpedantic-bottoms']",fast,0.445,0.445
+441,346cf4d0-7f0c-4983-ac90-2a54ecb826db,"['-O0' '-fmax-simplifier-iterations=4' '-floopification'
+ '-fignore-interface-pragmas' '-funbox-small-strict-fields'
+ '-fstatic-argument-transformation' '-funbox-strict-fields']",fast,0.438,0.438
+442,78e04d93-9da1-4c4d-96f1-c94ad0be6cde,"['-O0' '-fliberate-case-threshold=2000' '-fmax-inline-memset-insns=32'
+ '-fexcess-precision' '-fsimplifier-phases=2'
+ '-fmax-inline-memset-insns=32' '-funbox-strict-fields']",fast,0.445,0.445
+443,09db3fbf-2459-46be-b350-6a49ba74fad9,"['-O0' '-fregs-iterative' '-fliberate-case-threshold=2000'
+ '-funfolding-keeness-factor=1.5' '-fexcess-precision'
+ '-fspec-constr-threshold=2000' '-fmax-worker-args=10']",fast,0.439,0.439
+444,1f9191f6-9764-4b19-93d0-8cee7f2fe798,"['-O0' '-fdicts-cheap' '-fcall-arity' '-fstrictness-before=1'
+ '-fcall-arity' '-fdo-lambda-eta-expansion' '-fdicts-strict']",fast,0.438,0.438
+445,360af6b0-32e0-428d-bcdf-5412f0e61aa1,"['-O0' '-fregs-graph' '-ffull-laziness' '-fvectorise'
+ '-fvectorisation-avoidance' '-fcase-merge' '-fcall-arity']",fast,0.444,0.444
+446,feac0565-ed62-4205-8df3-15832c9cd818,"['-O0' '-feager-blackholing' '-fenable-rewrite-rules' '-fregs-graph'
+ '-fpedantic-bottoms' '-funfolding-use-threshold=60'
+ '-fspec-constr-count=3']",fast,0.44,0.44
+447,8c32ec5b-1277-4468-a4e8-3208e903e45a,"['-O0' '-fstrictness-before=1' '-fcmm-sink' '-feager-blackholing'
+ '-fmax-relevant-binds=6' '-fworker-wrapper'
+ '-funfolding-use-threshold=60']",fast,0.44,0.44
+448,b4a2ae40-347d-4ef2-8462-a9669d778333,"['-O0' '-fdmd-tx-dict-sel' '-floopification' '-fdicts-strict'
+ '-fcase-merge' '-foptimal-applicative-do' '-ffun-to-thunk']",fast,0.441,0.441
+449,408dba03-d215-4339-86db-502e7ea979ed,"['-O0' '-fcall-arity' '-fliberate-case' '-fworker-wrapper'
+ '-floopification' '-fvectorise' '-floopification']",fast,0.444,0.444
+450,0ad649ef-1baf-4aa4-bc75-327c2f78f234,"['-O0' '-fmax-inline-memset-insns=32' '-fomit-interface-pragmas'
+ '-funfolding-fun-discount=60' '-fcmm-sink' '-fcse' '-fstrictness']",fast,0.444,0.444
+451,29880801-199a-4f52-b6b0-bcf52c958132,"['-O0' '-fno-state-hack' '-fspec-constr-threshold=2000'
+ '-fliberate-case-threshold=2000' '-funfolding-keeness-factor=1.5'
+ '-fspec-constr-threshold=2000' '-fno-opt-coercion']",fast,0.444,0.444
+452,bf0847dd-b1dd-4b7c-80d7-80ddfa037477,"['-O0' '-fdo-eta-reduction' '-fomit-yields' '-fenable-rewrite-rules'
+ '-fno-state-hack' '-ffloat-in' '-fstrictness-before=1']",fast,0.44,0.44
+453,4629adb5-c7a0-43f0-ba83-637f7227728e,"['-O0' '-fvectorisation-avoidance' '-fcase-merge' '-ffull-laziness'
+ '-fdicts-strict' '-feager-blackholing' '-funbox-strict-fields']",fast,0.441,0.441
+454,ff676359-b08a-458c-a22d-1d9aa37a7d0c,"['-O0' '-fomit-interface-pragmas' '-fenable-rewrite-rules'
+ '-fexpose-all-unfoldings' '-fregs-iterative' '-floopification'
+ '-fmax-relevant-binds=6']",fast,0.436,0.436
+455,fbeabf6e-16d4-41ee-ae82-3cb255c3b518,"['-O0' '-fignore-asserts' '-fmax-inline-memset-insns=32'
+ '-fmax-simplifier-iterations=4' '-fmax-inline-memset-insns=32'
+ '-fignore-asserts' '-fignore-interface-pragmas']",fast,0.44,0.44
+456,06ac43db-ed1c-481b-9860-47b398ceacc6,"['-O0' '-fomit-interface-pragmas' '-fliberate-case-threshold=2000'
+ '-fcmm-elim-common-blocks' '-ffloat-in' '-fexpose-all-unfoldings'
+ '-fliberate-case']",fast,0.442,0.442
+457,18ef55bd-0898-44a8-a160-22a93e15a206,"['-O0' '-fspec-constr' '-fno-opt-coercion' '-fno-pre-inlining'
+ '-fvectorise' '-fpedantic-bottoms' '-fworker-wrapper']",fast,0.442,0.442
+458,53de8bac-eb54-49f9-b424-c2e9bd38b41e,"['-O0' '-fignore-interface-pragmas' '-fdicts-strict'
+ '-fvectorisation-avoidance' '-fenable-rewrite-rules'
+ '-fignore-interface-pragmas' '-flate-dmd-anal']",fast,0.44,0.44
+459,4adce0a0-bb6a-45d2-861e-7e2535f9989a,"['-O0' '-fdicts-strict' '-fstrictness-before=1' '-fdicts-strict'
+ '-funbox-strict-fields' '-fstrictness' '-ffun-to-thunk']",fast,0.441,0.441
+460,7b8a7144-4377-411a-9cb0-e94ddd354d02,"['-O0' '-fspecialise' '-fcpr-anal' '-feager-blackholing'
+ '-funfolding-dict-discount=30' '-fexcess-precision'
+ '-fignore-interface-pragmas']",fast,0.439,0.439
+461,1ffc63a8-13fe-4497-8f21-8132f40581c9,"['-O0' '-ffull-laziness' '-fcse' '-funbox-strict-fields'
+ '-fsimpl-tick-factor=100' '-fno-pre-inlining' '-ffun-to-thunk']",fast,0.44,0.44
+462,3ade205e-5809-4eae-b662-e4c81877bff8,"['-O0' '-fcase-merge' '-fdicts-cheap' '-fenable-rewrite-rules'
+ '-fdmd-tx-dict-sel' '-fstatic-argument-transformation' '-ffun-to-thunk']",fast,0.44,0.44
+463,5295f48f-a994-4fce-a4c7-762ee6fd3699,"['-O0' '-fcpr-anal' '-fno-pre-inlining' '-ffloat-in'
+ '-funfolding-fun-discount=60' '-fstrictness-before=1'
+ '-fstatic-argument-transformation']",fast,0.44,0.44
+464,f3f43554-cbbf-42aa-b64b-62af590331cc,"['-O0' '-fdo-lambda-eta-expansion' '-fstatic-argument-transformation'
+ '-fstatic-argument-transformation' '-fdicts-cheap' '-ffloat-in'
+ '-fdmd-tx-dict-sel']",fast,0.44,0.44
+465,60decfbc-8f58-479c-8ba8-779cd18a3ada,"['-O0' '-fdo-lambda-eta-expansion' '-fspecialise' '-fcpr-anal'
+ '-fstrictness-before=1' '-fliberate-case' '-foptimal-applicative-do']",fast,0.44,0.44
+466,d7589687-54a0-4d3f-b37e-e4a4c25ea84a,"['-O0' '-fcase-merge' '-fsimplifier-phases=2' '-fcase-merge' '-fvectorise'
+ '-funfolding-dict-discount=30' '-fmax-inline-memcpy-insns=32']",fast,0.442,0.442
+467,5bcef305-0006-4c05-bccd-bc18acbc41bb,"['-O0' '-fliberate-case-threshold=2000' '-fcmm-sink' '-fregs-iterative'
+ '-fdicts-strict' '-fliberate-case' '-fexpose-all-unfoldings']",fast,0.443,0.443
+468,8af082a3-8b3f-4e3f-8b9a-32ee64a35c1d,"['-O0' '-fliberate-case-threshold=2000' '-funfolding-keeness-factor=1.5'
+ '-fmax-relevant-binds=6' '-fexpose-all-unfoldings' '-fstrictness'
+ '-feager-blackholing']",fast,0.441,0.441
+469,f5319f17-b414-4d65-a413-9f1c5092bf80,"['-O0' '-fsimplifier-phases=2' '-fignore-asserts' '-fspecialise'
+ '-fworker-wrapper' '-fdo-lambda-eta-expansion'
+ '-funbox-small-strict-fields']",fast,0.441,0.441
+470,61de699f-7742-42d5-8681-9f3f8dba540e,"['-O0' '-fspec-constr-threshold=2000' '-funbox-strict-fields'
+ '-floopification' '-fmax-worker-args=10' '-funfolding-fun-discount=60'
+ '-fdo-eta-reduction']",fast,0.441,0.441
+471,823dc392-3c2e-476f-a3a6-ee874279d788,"['-O0' '-fsimpl-tick-factor=100' '-ffun-to-thunk' '-feager-blackholing'
+ '-fstrictness' '-fstrictness' '-fcall-arity']",fast,0.441,0.441
+472,d6154784-2c6b-42fb-9b9c-622fccaab895,"['-O0' '-fstrictness' '-fsimpl-tick-factor=100'
+ '-fstatic-argument-transformation' '-foptimal-applicative-do'
+ '-funfolding-use-threshold=60' '-funbox-small-strict-fields']",fast,0.44,0.44
+473,1f766a27-ecf5-4fbc-beca-b1903b49ade5,"['-O0' '-fignore-asserts' '-fpedantic-bottoms' '-fomit-yields'
+ '-fvectorisation-avoidance' '-fomit-interface-pragmas' '-ffun-to-thunk']",fast,0.443,0.443
+474,b830ac78-32c3-4d99-8350-4b438f9ae8c4,"['-O0' '-fstrictness' '-fenable-rewrite-rules' '-fno-state-hack'
+ '-fregs-iterative' '-fomit-interface-pragmas' '-fdicts-strict']",fast,0.44,0.44
+475,ebe5c4a2-dda4-4bb7-a74d-56bcab9b81b4,"['-O0' '-fcpr-anal' '-fmax-inline-memset-insns=32' '-fdicts-cheap'
+ '-fregs-graph' '-fomit-yields' '-fignore-asserts']",fast,0.441,0.441
+476,74c9b477-dba0-4294-8982-da8af8562ccb,"['-O0' '-foptimal-applicative-do' '-fspec-constr-count=3'
+ '-fignore-asserts' '-fmax-simplifier-iterations=4' '-fregs-iterative'
+ '-fliberate-case-threshold=2000']",fast,0.438,0.438
+477,39917239-3e16-4a57-b10c-5a37bff6a6a4,"['-O0' '-fstrictness-before=1' '-fregs-graph' '-fdo-lambda-eta-expansion'
+ '-flate-dmd-anal' '-fdicts-strict' '-fcross-module-specialise']",fast,0.439,0.439
+478,d386fe70-4654-4d73-a1e2-91b171f096cd,"['-O0' '-flate-dmd-anal' '-fdicts-cheap' '-fignore-interface-pragmas'
+ '-fvectorisation-avoidance' '-fspec-constr-threshold=2000'
+ '-fmax-inline-memset-insns=32']",fast,0.444,0.444
+479,4769f142-b6ca-4616-bba1-1a85695290f4,"['-O0' '-fmax-inline-memset-insns=32' '-fdo-lambda-eta-expansion'
+ '-fignore-asserts' '-fcmm-elim-common-blocks'
+ '-funfolding-keeness-factor=1.5' '-fspec-constr-threshold=2000']",fast,0.438,0.438
+480,3e8d3cce-8070-483d-9bc5-eabe76d232aa,"['-O0' '-fdicts-cheap' '-fmax-inline-memset-insns=32'
+ '-fstrictness-before=1' '-fregs-graph' '-fmax-inline-memset-insns=32'
+ '-fcall-arity']",fast,0.44,0.44
+481,f3166754-eaa6-4bad-ab34-9291bfdbf546,"['-O0' '-fstrictness-before=1' '-fdo-lambda-eta-expansion'
+ '-fvectorisation-avoidance' '-funfolding-creation-threshold=750'
+ '-ffloat-in' '-fspec-constr-count=3']",fast,0.438,0.438
+482,cd712e78-c389-45a1-adc4-197e9850f5c8,"['-O0' '-fmax-simplifier-iterations=4' '-feager-blackholing'
+ '-fstatic-argument-transformation' '-fdicts-cheap'
+ '-funbox-strict-fields' '-fignore-asserts']",fast,0.44,0.44
+483,0ff1da4c-302c-457f-aca3-f9ebf8fab872,"['-O0' '-fregs-iterative' '-fvectorise' '-fno-state-hack' '-fspec-constr'
+ '-funfolding-use-threshold=60' '-foptimal-applicative-do']",fast,0.441,0.441
+484,a50f2fea-e35b-4e48-8303-b7e56ed6a148,"['-O0' '-fno-opt-coercion' '-fenable-rewrite-rules' '-floopification'
+ '-funfolding-creation-threshold=750' '-fspec-constr-threshold=2000'
+ '-feager-blackholing']",fast,0.441,0.441
+485,824a79b2-4b2d-49bd-846e-569bf976260b,"['-O0' '-fmax-simplifier-iterations=4' '-fstrictness-before=1'
+ '-feager-blackholing' '-fdo-lambda-eta-expansion' '-fcall-arity'
+ '-fcross-module-specialise']",fast,0.443,0.443
+486,f821c9bc-27f5-4ed7-9bf5-90b45efec229,"['-O0' '-ffun-to-thunk' '-fmax-inline-memcpy-insns=32' '-fno-pre-inlining'
+ '-fomit-yields' '-fno-pre-inlining' '-funbox-small-strict-fields']",fast,0.441,0.441
+487,f93a7276-cbc8-4ab5-9140-e004550f591f,"['-O0' '-funfolding-use-threshold=60' '-fomit-yields'
+ '-fvectorisation-avoidance' '-ffull-laziness' '-fno-pre-inlining'
+ '-funfolding-fun-discount=60']",fast,0.438,0.438
+488,aa536559-8376-49c9-babb-7deeea70b10d,"['-O0' '-fregs-iterative' '-fno-pre-inlining' '-fsimplifier-phases=2'
+ '-fno-pre-inlining' '-fdicts-strict' '-flate-dmd-anal']",fast,0.436,0.436
+489,27a2d11c-de39-494f-bf3a-bf6467f970d3,"['-O0' '-fexcess-precision' '-fliberate-case-threshold=2000'
+ '-fdmd-tx-dict-sel' '-fcpr-anal' '-fpedantic-bottoms'
+ '-fmax-worker-args=10']",fast,0.437,0.437
+490,1e8e62f0-a920-415a-b44a-4d934427ecb2,"['-O0' '-fdicts-cheap' '-ffloat-in' '-fmax-inline-alloc-size=128'
+ '-fsimplifier-phases=2' '-feager-blackholing'
+ '-funfolding-use-threshold=60']",fast,0.445,0.445
+491,76ce86bb-94f7-43bc-82dd-4aedc8116d1e,"['-O0' '-fworker-wrapper' '-fstatic-argument-transformation'
+ '-fworker-wrapper' '-flate-dmd-anal' '-fdmd-tx-dict-sel'
+ '-fvectorisation-avoidance']",fast,0.444,0.444
+492,f8b7c359-6d3c-4e73-b61a-f51062b1da1b,"['-O0' '-fmax-simplifier-iterations=4' '-fsimplifier-phases=2'
+ '-fliberate-case' '-funfolding-use-threshold=60'
+ '-fmax-inline-alloc-size=128' '-fcmm-sink']",fast,0.44,0.44
+493,1a95752e-28fd-47a5-a99b-bf0ea04236f9,"['-O0' '-fspec-constr-count=3' '-fregs-graph' '-fno-pre-inlining'
+ '-fsimplifier-phases=2' '-fspec-constr' '-fmax-worker-args=10']",fast,0.449,0.449
+494,7f478979-5b26-4050-b621-ec5af43456d3,"['-O0' '-fvectorisation-avoidance' '-fmax-simplifier-iterations=4'
+ '-fomit-interface-pragmas' '-fregs-graph' '-fspec-constr' '-fspec-constr']",fast,0.439,0.439
+495,e4a43afd-9992-451d-8890-e7aef47e9a52,"['-O0' '-fstatic-argument-transformation' '-fworker-wrapper'
+ '-funfolding-fun-discount=60' '-fdo-eta-reduction' '-fno-pre-inlining'
+ '-fdo-eta-reduction']",fast,0.442,0.442
+496,4e4de6ba-a341-49c9-90e1-f39d93910ef4,"['-O0' '-fdmd-tx-dict-sel' '-fsimpl-tick-factor=100' '-fdo-eta-reduction'
+ '-fcpr-anal' '-fcross-module-specialise' '-fregs-iterative']",fast,0.443,0.443
+497,947d901f-7a32-4ce0-9a3f-59af63d64581,"['-O0' '-flate-dmd-anal' '-funfolding-creation-threshold=750'
+ '-ffull-laziness' '-fcmm-sink' '-fmax-worker-args=10'
+ '-funfolding-creation-threshold=750']",fast,0.44,0.44
+498,1a6b684b-d43a-4f75-992b-dbe44d13001d,"['-O0' '-fliberate-case-threshold=2000' '-fstatic-argument-transformation'
+ '-funbox-strict-fields' '-flate-dmd-anal' '-fignore-asserts'
+ '-funbox-small-strict-fields']",fast,0.441,0.441
+499,76d8669d-2bac-4aa2-9bf6-92dce7c8cb2a,"['-O0' '-fliberate-case-threshold=2000' '-fcse' '-ffun-to-thunk'
+ '-ffull-laziness' '-fsimplifier-phases=2'
+ '-funfolding-keeness-factor=1.5']",fast,0.439,0.439
+500,94475294-0d24-463a-822a-962305fe68c7,"['-O0' '-fliberate-case' '-fignore-asserts' '-fregs-graph'
+ '-fworker-wrapper' '-fenable-rewrite-rules' '-fvectorisation-avoidance']",fast,0.436,0.436
+501,4152e502-7c20-4f65-b098-d6b314cc41bf,"['-O0' '-fdicts-cheap' '-fdo-lambda-eta-expansion' '-fignore-asserts'
+ '-fmax-inline-alloc-size=128' '-fliberate-case' '-fregs-iterative']",fast,0.437,0.437
