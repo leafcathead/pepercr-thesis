@@ -434,39 +434,46 @@ class BOCAOptimizer(Optimizer, ABC):
         if self.iterations == 0:
             self.configure_baseline(mode)
 
-        self.csv_dictionary.clear()
-        self.log_dictionary.clear()
 
-        command_list = []
+        while not ((self.iterations == self.max_iterations) or (self.run_allowance <= 0 ) or (self.runs_without_improvement_allowance <= 0)):
+        
 
-        for b in self.training_set:
+            self.csv_dictionary.clear()
+            self.log_dictionary.clear()
 
-            log_file_name = f'{self.test_name}-BOCA-{mode}-{b.id}-nofib-log'
+            command_list = []
 
-            if self.log_dictionary.get(log_file_name) is None and b.runtime == -1:
+            for b in self.training_set:
+
+                log_file_name = f'{self.test_name}-BOCA-{mode}-{b.id}-nofib-log'
+
+                if self.log_dictionary.get(log_file_name) is None and b.runtime == -1:
                 # Set up command to run benchmark for each BOCA Optimization
 
 
-                command = super()._build_individual_test_command(super()._setup_preset_task(b.flags),
+                    command = super()._build_individual_test_command(super()._setup_preset_task(b.flags),
                                                                  f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
                                                                  mode)
-                command_list.append(command)
-                self.log_dictionary[log_file_name] = {"BOCA": b, "mode": mode, "id": b.id}
+                    command_list.append(command)
+                    self.log_dictionary[log_file_name] = {"BOCA": b, "mode": mode, "id": b.id}
 
         # Run each command
-        for c in command_list:
-            self.run_allowance -= 1
-            print(fr'Applying command to {self.test_path}')
-            result = subprocess.run(
-                c,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=self.nofib_exec_path,
-                text=True)
+            for c in command_list:
+                self.run_allowance -= 1
+                print(fr'Applying command to {self.test_path}')
+                result = subprocess.run(
+                    c,
+                    shell=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    cwd=self.nofib_exec_path,
+                    text=True)
             # print(result)
 
-        self._analyze(mode)
+            self._analyze(mode)
+
+        print("Max iterations reached...")
+        self.tables[mode] = self.__boca_to_df(mode)
 
     def _analyze(self, mode):
 
@@ -487,8 +494,8 @@ class BOCAOptimizer(Optimizer, ABC):
         print("Current Best Candidate: ", self.best_candidate)
 
         if (self.iterations == self.max_iterations) or (self.run_allowance <= 0 ) or (self.runs_without_improvement_allowance <= 0):
-            print("Max Iterations reached...")
-            self.tables[mode] = self.__boca_to_df(mode)
+        #    print("Max Iterations reached...")
+         #   self.tables[mode] = self.__boca_to_df(mode)
             return
 
         rf = RandomForestRegressor()
@@ -571,7 +578,7 @@ class BOCAOptimizer(Optimizer, ABC):
 
         BOCAOptimization.iteration += 1
         self.iterations += 1
-        self.optimize(mode)
+        # self.optimize(mode) Too many iterations in BOCA to due this recurse!
 
     def __normal_decay(self, iterations):
         sigma = -self.scale ** 2 / (2 * math.log(self.decay))
