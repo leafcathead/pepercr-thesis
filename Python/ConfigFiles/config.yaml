@@ -7,7 +7,7 @@ locations:
     log_location: PythonLogs
     optimal_presets: ..\optimal_presets
 settings:
-    nofib_runs: 5 # DEFAULT 30
+    nofib_runs: 50 # DEFAULT 30
     flags: [-fcall-arity,-fcase-merge,-fcmm-elim-common-blocks,-fcmm-sink,-fcpr-anal,-fcse,
             -fdicts-cheap,-fdicts-strict,-fdmd-tx-dict-sel,-fdo-eta-reduction,-fdo-lambda-eta-expansion,
             -feager-blackholing,-fenable-rewrite-rules,-fexcess-precision,-fexpose-all-unfoldings,
@@ -26,7 +26,7 @@ settings:
     num_of_optimizer_runs: 20
     run_allowance: 10000
 iterative_settings:
-    num_of_presets: 500 # DEFAULT 300
+    num_of_presets: 1 # DEFAULT 300
 genetic_settings: # FOGA Paper
     max_iterations: 120 # 2 DEFAULT 100
     population_size: 150 # 40 DEFAULT 277
