@@ -1,3 +1,7 @@
 [submodule "ghc"]
 	path = ghc
 	url = git@github.com:leafcathead/ghc.git
+
+[submodule "JikesRVM"]
+	path = JikesRVM
+	url = https://github.com/leafcathead/JikesRVM.git
