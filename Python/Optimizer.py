@@ -21,15 +21,15 @@ import copy  # Used for testing
 
 class Optimizer(ABC):
 
-    def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
+    def __init__(self, cfg, test_path, t, test_desc="COMPLETE", phaseOrderToggle=False):
         self.CFG = cfg
         self.threaded = t
         self.flags = self.CFG["settings"]["flags"]
         self.num_of_threads = cfg["settings"]["multicore_cores"]
-        self.nofib_log_dir = cfg["locations"]["nofib_logs_dir"]
-        self.nofib_exec_path = cfg["locations"]["nofib_exec_path"]
-        self.analysis_dir = cfg["locations"]["nofib_analysis_dir"]
-        self.analysis_exec_path = cfg["locations"]["nofib_analysis_exec"]
+        self.nofib_log_dir = cfg["locations"]["nofib_logs_dir_PO"] if phaseOrderToggle else cfg["locations"]["nofib_logs_dir"]
+        self.nofib_exec_path = cfg["locations"]["nofib_exec_path_PO"] if phaseOrderToggle else cfg["locations"]["nofib_exec_path"]
+        self.analysis_dir = cfg["locations"]["nofib_analysis_dir_PO"] if phaseOrderToggle else cfg["locations"]["nofib_analysis_dir"]
+        self.analysis_exec_path = cfg["locations"]["nofib_analysis_exec_PO"] if phaseOrderToggle else cfg["locations"]["nofib_analysis_exec"]
         self.run_allowance = cfg["settings"]["run_allowance"]
         self.test_path = test_path
         self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
@@ -37,6 +37,7 @@ class Optimizer(ABC):
         self.csv_dictionary = dict()
         self.label = test_desc
         self.tables = {"slow": None, "norm": None, "fast": None}
+        self.phaseOrderToggle = phaseOrderToggle
         try:
             to_file(open(f'{cfg["locations"]["log_location"]}/{self.test_name}-{self.label}-{date.today()}.log', "a+"))
             self.ctx = start_action(action_type="LOG_RESULTS")
@@ -59,10 +60,12 @@ class Optimizer(ABC):
 
     def _setup_preset_task(self, preset):
         extra_flags = 'EXTRA_HC_OPTS="'
-        if len(preset) > 0:
-
-            for flag in preset:
-                extra_flags += flag + " "
+        if self.phaseOrderToggle:
+            extra_flags += '-O2'
+        else:
+            if len(preset) > 0:
+                for flag in preset:
+                    extra_flags += flag + " "
         if self.threaded:
             print("Application is multi-threaded!")
             extra_flags += '-threaded" '
@@ -145,7 +148,7 @@ class Optimizer(ABC):
         # Re-Import that CSV and re-configure it the way we want
 
         # Configure column headers
-        headers_ideal = ["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"]  # This is for our combined table later.
+        headers_ideal = ["ID", "Phase", "Mode", "Runtime", "Elapsed_Time"] if self.phaseOrderToggle else ["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"]  # This is for our combined table later.
         headers_real = ["Program"]
         for log in logs_list:
             headers_real.append(log)
@@ -160,7 +163,7 @@ class Optimizer(ABC):
 
         # Create the Custom Pandas table
 
-        merged_table = pd.DataFrame(columns=["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"])
+        merged_table = pd.DataFrame(columns=["ID", "Phase", "Mode", "Runtime", "Elapsed_Time"])  if self.phaseOrderToggle else pd.DataFrame(columns=["ID", "Flags", "Mode", "Runtime", "Elapsed_Time"])
 
         # Configure each row.
 
@@ -170,9 +173,9 @@ class Optimizer(ABC):
 
         for c in run_times.columns:
             if not (c == "Program"):
-                if isinstance(self, IterativeOptimizer):
+                if isinstance(self, IterativeOptimizer) or isinstance(self, IterativeOptimizerPO):
                     r_id = self.log_dictionary[c]["id"]
-                    flags = self.log_dictionary[c]["preset"]
+                    flags = self.log_dictionary[c]["order"] if self.phaseOrderToggle else self.log_dictionary[c]["preset"]
                     m = self.log_dictionary[c]["mode"]
                     r = run_times[c].max()
                 elif isinstance(self, GeneticOptimizer):
@@ -195,7 +198,7 @@ class Optimizer(ABC):
                 e = run_times[c].max()
                 merged_table.loc[merged_table["ID"] == r_id, 'Elapsed_Time'] = e
 
-        
+
         print(f"Merged_table: {merged_table}")
 
         # for t in tables_to_merge:
@@ -234,13 +237,35 @@ class Optimizer(ABC):
 
         return complete_table
 
+    def _generate_random_PO_string(self):
+        # Generate a random PO String while following a few rules:
+        #   1. Has to be an O2 Optimization
+        i = 0
+        string_front = []
+        string_back = []
+        po_string = ""
+        while (i < 14):
+            string_front.append(i)
+            i += 1
+        while (i <= 23):
+            string_back.append(i)
+            i += 1
+
+        # Scramble the remaining numbers
+        random.shuffle(string_back)
+        string_front.extend(string_back)
+
+        for j in string_front:
+            po_string += f'{j}|'
+        return po_string
+
 
 class IterativeOptimizer(Optimizer, ABC):
     optimizer_number = 0
 
     @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
-        super().__init__(cfg, test_path, t, test_desc)
+        super().__init__(cfg, test_path, t, test_desc, False)
         self.num_of_presets = self.CFG["iterative_settings"]["num_of_presets"]
         self.flag_presets = self.__generate_initial_domain()
         self.optimal_preset = None
@@ -363,7 +388,7 @@ class BOCAOptimizer(Optimizer, ABC):
 
     @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
-        super().__init__(cfg, test_path, t, test_desc)
+        super().__init__(cfg, test_path, t, test_desc, False)
         self.__c1 = cfg["boca_settings"]["initial_set"]
         self.training_set = self.__generate_training_set(self.__c1)
         self.num_of_K = cfg["boca_settings"]["num_of_impactful_optimizations"]
@@ -436,7 +461,7 @@ class BOCAOptimizer(Optimizer, ABC):
 
 
         while not ((self.iterations == self.max_iterations) or (self.run_allowance <= 0 ) or (self.runs_without_improvement_allowance <= 0)):
-        
+
 
             self.csv_dictionary.clear()
             self.log_dictionary.clear()
@@ -558,7 +583,7 @@ class BOCAOptimizer(Optimizer, ABC):
         all_candidates = list(
             filter(lambda x: x.flag_bits not in list(map(lambda y: y.flag_bits, self.training_set)), all_candidates))
 
-    
+
 
         if len(all_candidates) > 0:
             best_candidate = max(all_candidates, key=lambda x: x.expected_improvement)
@@ -653,7 +678,7 @@ class GeneticOptimizer(Optimizer, ABC):
 
     @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
-        super().__init__(cfg, test_path, t, test_desc)
+        super().__init__(cfg, test_path, t, test_desc, False)
         Chromosome.genes = self.CFG["settings"]["flags"]
         Chromosome.num_of_segments = self.CFG["genetic_settings"]["num_of_segments"]
         self.max_iterations = self.CFG["genetic_settings"]["max_iterations"]
@@ -719,7 +744,7 @@ class GeneticOptimizer(Optimizer, ABC):
         print(f"Iteration: {self.iterations}")
 
         self.csv_dictionary.clear()
-        
+
         tmp_dict = dict()
 
         print("Length of Chromosome List: ", len(self.chromosomes))
@@ -728,7 +753,7 @@ class GeneticOptimizer(Optimizer, ABC):
             for c in self.chromosomes:
                 if c == log_listing["chromosome"]:
                     tmp_dict[log_name] = log_listing
-                
+
 
         self.log_dictionary.clear()
         self.log_dictionary.update(tmp_dict)
@@ -914,3 +939,154 @@ class GeneticOptimizer(Optimizer, ABC):
             raise RuntimeError("Growth in population during cross over")
 
         return new_pop_list
+
+
+class IterativeOptimizerPO (Optimizer, ABC):
+    optimzer_number = 0
+
+    @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
+    def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
+        super().__init__(cfg, test_path, t, test_desc, True)
+        self.num_of_presets = self.CFG["iterative_settings"]["num_of_presets"]
+        self.orders = self.__generate_initial_domain()
+        self.optimal_preset = None
+        self.optimizer_number = IterativeOptimizer.optimizer_number
+        IterativeOptimizer.optimizer_number += 1
+
+        print("Iterative PO Optimizer")
+
+    def configure_baseline():
+        pass
+
+    def __generate_initial_domain(self):
+        # Generate a random set of phase orders, <= 9! (For the moment)
+        # Randomly select flags of that size. WITH REPLACEMENT!
+        presets = []
+
+        preset_size = np.random.randint(len(self.flags))
+        for i in range(self.num_of_presets):
+            presets.append([self._generate_random_PO_string(), uuid.uuid4()])
+        return presets
+
+    def optimize(self, mode):
+        command_list = []
+
+        # self.configure_baseline(mode) -- Unneeded. Just keep a master one on file.
+
+        for order in self.orders:
+
+            # If preset already exist in Dictionary, get the same ID.
+            run_id = -1
+            for entry in self.log_dictionary:
+                if np.array_equiv(self.log_dictionary[entry]["order"], order[0]):
+                    print("Found a match!")
+                    run_id = self.log_dictionary[entry]["id"]
+                    break
+
+            if run_id == -1:
+                run_id = order[1]
+
+            print(f'RUN ID: {run_id}')
+            log_file_name = f'{self.test_name}-PHASEORDER-iterative-{mode}-{run_id}-nofib-log'
+            command = super()._build_individual_test_command(super()._setup_preset_task(order[0]),
+                                                             f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                             mode)
+            command_list.append(command)
+            self.log_dictionary[log_file_name] = {"order": order[0], "mode": mode, "id": run_id}
+
+        for c in command_list:
+            print(fr'Applying command to {self.test_path}')
+            self.run_allowance -= 1
+            result = subprocess.run(
+                c,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.nofib_exec_path,
+                text=True)
+            print(result)
+
+        self.optimal_preset = self._analyze(mode)
+
+    def _analyze(self, mode):
+        returner = super()._run_analysis_tool(mode)
+        # self.log_dictionary.clear()
+        return returner
+
+    # def configure_baseline(self, mode):
+    #     command_list = []
+    #     baseline_list = [["-O0"], ["-O2"]]
+    #     print("Configuring baseline... -O0, -O2")
+
+    #     for preset in baseline_list:
+    #         log_file_name = f'{self.test_name}-iterative{preset[0]}-{mode}-nofib-log'
+    #         command_list.append(super()._build_individual_test_command(super()._setup_preset_task(preset),
+    #                                                                    f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+    #                                                                    mode))
+    #         self.log_dictionary[log_file_name] = {"preset": preset, "mode": mode, "id": preset[0]}
+
+    #     for c in command_list:
+    #         print(fr'Applying command to {self.test_path}')
+    #         result = subprocess.run(
+    #             c,
+    #             shell=True,
+    #             stdout=subprocess.PIPE,
+    #             stderr=subprocess.PIPE,
+    #             cwd=self.nofib_exec_path,
+    #             text=True)
+    #         print(result)
+
+    def write_results(self):
+        complete_table = super().write_results()
+
+        best_result = (complete_table.sort_values("Runtime", ascending=True).loc[0, "Phase"],
+                       complete_table.sort_values("Runtime", ascending=True).loc[0, "Runtime"])
+
+        with start_action(action_type="LOG_RESULTS") as ctx:
+            ctx.log(message_type="INFO", optimizer="RIO", no=f"{self.optimizer_number}", best_result=best_result,
+                    run_allowance=self.run_allowance, iterations=self.num_of_presets)
+
+        complete_table.to_csv(
+            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-PHASEORDER-Iterative-{self.label}-{self.optimizer_number}.csv')
+
+
+class BOCAOptimizerPO (Optimizer, ABC):
+    optimizer_number = 0
+
+    @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
+    def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
+        super().__init__(cfg, test_path, t, test_desc, False)
+        self.__c1 = cfg["boca_settings"]["initial_set"]
+        self.training_set = self.__generate_training_set(self.__c1)
+        self.num_of_K = cfg["boca_settings"]["num_of_impactful_optimizations"]
+        self.baseline_set = dict()
+        self.max_iterations = cfg["boca_settings"]["iterations"]
+        self.decay = cfg["boca_settings"]["decay"]
+        self.offset = cfg["boca_settings"]["offset"]
+        self.scale = cfg["boca_settings"]["scale"]
+        self.iterations = 0
+        self.best_candidate = None
+        self.optimizer_number = BOCAOptimizer.optimizer_number
+        self.runs_without_improvement_allowance = cfg["boca_settings"]["max_without_improvement"]
+
+class GeneticOptimizerPO (Optimizer, ABC):
+    optimizer_number = 0
+
+    @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
+    def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
+        super().__init__(cfg, test_path, t, test_desc, False)
+        Chromosome.genes = self.CFG["settings"]["flags"]
+        Chromosome.num_of_segments = self.CFG["genetic_settings"]["num_of_segments"]
+        self.max_iterations = self.CFG["genetic_settings"]["max_iterations"]
+        self.chromosomes = self.__generate_initial_population(self.CFG["genetic_settings"]["population_size"])
+        self.mutation_prob = self.CFG["genetic_settings"]["mutation_prob"]
+        self.elitism_ratio = self.CFG["genetic_settings"]["elitism_ratio"]
+        self.crossover_prob = self.CFG["genetic_settings"]["crossover_prob"]
+        self.no_improvement_threshold = self.CFG["genetic_settings"]["max_iter_without_improvement"]
+        self.base_log_dictionary = dict()
+        self.iterations = 0
+        self.iterations_with_no_improvement = 0
+        self.best_value = None
+        self.optimizer_number = GeneticOptimizer.optimizer_number
+        GeneticOptimizer.optimizer_number += 1
+        self.initial_size = self.CFG["genetic_settings"]["population_size"]

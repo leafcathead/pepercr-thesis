@@ -5,7 +5,7 @@ import subprocess
 import json
 import yaml
 import multiprocessing
-from Optimizer import IterativeOptimizer, GeneticOptimizer, BOCAOptimizer
+from Optimizer import IterativeOptimizer, GeneticOptimizer, BOCAOptimizer, IterativeOptimizerPO, GeneticOptimizerPO, BOCAOptimizerPO
 
 NOFIB_CONFIG_DIR_PATH = r'..\nofib\mk'
 NOFIB_EXEC_PATH = r'../nofib'
@@ -68,7 +68,7 @@ def apply_optimizer_task_one(optimizer_list, test, modes):
             optimizer.optimize("norm")
         if modes[2]:
             optimizer.optimize("fast")
-        
+
         try:
             optimizer.write_results()
         except IOError as e:
@@ -93,6 +93,10 @@ def main():
     file_group = parser.add_mutually_exclusive_group()
     file_group.add_argument("--all", action="store_true", help="Designate whether one test or all test should be ran.")
     file_group.add_argument("-f", metavar="file_path", help="File path to the test to be optimized")
+
+    file_group = parser.add_mutually_exclusive_group()
+    file_group.add_argument("--phase", action="store_true", help="Optimizes for Phase Order insteal of compiler flags. Uses -O2 as default")
+    # file_group.add_argument("-f", metavar="file_path", help="File path to the test to be optimized")
 
     optimizer_group = parser.add_mutually_exclusive_group()
     optimizer_group.add_argument("--iterative", dest="optimization_type", action="store_const", const=0,
@@ -135,17 +139,29 @@ def main():
             case 0:
                 print("Iterative Optimization Selected...")
                 for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
-                    optimizer = IterativeOptimizer(CFG, args.f, args.threaded, args.name)
+                    if args.phase:
+                        # Phase Order Stuff Here
+                        optimizer = IterativeOptimizerPO(CFG, args.f, args.threaded, args.name)
+                    else:
+                        optimizer = IterativeOptimizer(CFG, args.f, args.threaded, args.name)
                     optimizer_list.append(optimizer)
             case 1:
                 print("Genetic Optimization Selected...")
                 for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
-                    optimizer = GeneticOptimizer(CFG, args.f, args.threaded, args.name)
+                    if args.phase:
+                        # Phase Order Stuff Here
+                        optimizer = GeneticOptimizerPO(CFG, args.f, args.threaded, args.name)
+                    else:
+                        optimizer = GeneticOptimizer(CFG, args.f, args.threaded, args.name)
                     optimizer_list.append(optimizer)
             case 2:
                 print("BOCA Selected...")
                 for i in range(0, CFG["settings"]["num_of_optimizer_runs"]):
-                    optimizer = BOCAOptimizer(CFG, args.f, args.threaded, args.name)
+                    if args.phase:
+                        # Phase Order Stuff Here
+                        optimizer = BOCAOptimizerPO(CFG, args.f, args.threaded, args.name)
+                    else:
+                        optimizer = BOCAOptimizer(CFG, args.f, args.threaded, args.name)
                     optimizer_list.append(optimizer)
             case _:
                 raise ValueError("Invalid optimization type.")
@@ -163,7 +179,7 @@ def main():
     except IOError as e:
         print("Unable to open flag preset file...")
         print(e)
-    
+
     print("All threads have finished executing...")
 
     print("All configuration files have finished executing...")

@@ -4,10 +4,14 @@ locations:
     nofib_logs_dir: ..\nofib\logs
     nofib_analysis_dir: ../nofib/analysis
     nofib_analysis_exec: ..\nofib\nofib-analyse
+    nofib_exec_path_PO: ../../ghc/nofib
+    nofib_logs_dir_PO: ..\..\ghc\nofib\logs
+    nofib_analysis_dir_PO: ../../ghc/nofib/analysis
+    nofib_analysis_exec_PO: ..\..\ghc\nofib\nofib-analyse
     log_location: PythonLogs
     optimal_presets: ..\optimal_presets
 settings:
-    nofib_runs: 50 # DEFAULT 30
+    nofib_runs: 250 # DEFAULT 30
     flags: [-fcall-arity,-fcase-merge,-fcmm-elim-common-blocks,-fcmm-sink,-fcpr-anal,-fcse,
             -fdicts-cheap,-fdicts-strict,-fdmd-tx-dict-sel,-fdo-eta-reduction,-fdo-lambda-eta-expansion,
             -feager-blackholing,-fenable-rewrite-rules,-fexcess-precision,-fexpose-all-unfoldings,
@@ -23,10 +27,10 @@ settings:
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     multicore_cores: 4
     log_output_loc: logs/
-    num_of_optimizer_runs: 20
+    num_of_optimizer_runs: 1
     run_allowance: 10000
 iterative_settings:
-    num_of_presets: 1 # DEFAULT 300
+    num_of_presets: 300 # DEFAULT 300
 genetic_settings: # FOGA Paper
     max_iterations: 120 # 2 DEFAULT 100
     population_size: 150 # 40 DEFAULT 277
