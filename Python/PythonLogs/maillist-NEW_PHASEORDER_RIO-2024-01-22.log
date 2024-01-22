@@ -1,0 +1,6 @@
+{"test_path": "real/maillist", "test_desc": "NEW_PHASEORDER_RIO", "action_status": "started", "timestamp": 1705912252.2052057, "task_uuid": "eed72c68-e8e8-4d72-a61c-373add452a7b", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1705912252.205678, "task_uuid": "eed72c68-e8e8-4d72-a61c-373add452a7b", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1705912252.212693, "task_uuid": "eed72c68-e8e8-4d72-a61c-373add452a7b", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1705947302.9424562, "task_uuid": "bedb5f59-62ea-4eb2-a55b-4dde0f0e0ca6", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "RIO", "no": "0", "best_result": ["0|1|2|3|4|5|6|7|8|9|10|11|12|13|19|15|14|21|20|22|23|18|16|17|", 0.642], "run_allowance": 9700, "iterations": 300, "timestamp": 1705947302.942661, "task_uuid": "bedb5f59-62ea-4eb2-a55b-4dde0f0e0ca6", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1705947302.9427285, "task_uuid": "bedb5f59-62ea-4eb2-a55b-4dde0f0e0ca6", "action_type": "LOG_RESULTS", "task_level": [3]}

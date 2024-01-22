@@ -30,6 +30,7 @@ class Optimizer(ABC):
         self.nofib_exec_path = cfg["locations"]["nofib_exec_path_PO"] if phaseOrderToggle else cfg["locations"]["nofib_exec_path"]
         self.analysis_dir = cfg["locations"]["nofib_analysis_dir_PO"] if phaseOrderToggle else cfg["locations"]["nofib_analysis_dir"]
         self.analysis_exec_path = cfg["locations"]["nofib_analysis_exec_PO"] if phaseOrderToggle else cfg["locations"]["nofib_analysis_exec"]
+        self.phase_order_file = cfg["locations"]["phase_order_file"]
         self.run_allowance = cfg["settings"]["run_allowance"]
         self.test_path = test_path
         self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
@@ -991,20 +992,45 @@ class IterativeOptimizerPO (Optimizer, ABC):
             command = super()._build_individual_test_command(super()._setup_preset_task(order[0]),
                                                              f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
                                                              mode)
-            command_list.append(command)
-            self.log_dictionary[log_file_name] = {"order": order[0], "mode": mode, "id": run_id}
 
-        for c in command_list:
+            # Replace file with new order
+
+            try:
+                with open(self.phase_order_file, "r+") as pof:
+                    pof.truncate(0)
+                    pof.write(order[0])
+                    print("phase order file overwritten...")
+
+
+            except IOError as e:
+                print("Unable to open phase order file")
+                print(e)
+
+
+            # command_list.append(command)
             print(fr'Applying command to {self.test_path}')
             self.run_allowance -= 1
             result = subprocess.run(
-                c,
+                command,
                 shell=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 cwd=self.nofib_exec_path,
                 text=True)
             print(result)
+            self.log_dictionary[log_file_name] = {"order": order[0], "mode": mode, "id": run_id}
+
+        # for c in command_list:
+        #     print(fr'Applying command to {self.test_path}')
+        #     self.run_allowance -= 1
+        #     result = subprocess.run(
+        #         c,
+        #         shell=True,
+        #         stdout=subprocess.PIPE,
+        #         stderr=subprocess.PIPE,
+        #         cwd=self.nofib_exec_path,
+        #         text=True)
+        #     print(result)
 
         self.optimal_preset = self._analyze(mode)
 

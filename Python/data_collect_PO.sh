@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define programs
-arguments=( "spectral/sorting" "real/maillist" "real/hidden" )
+arguments=("real/cacheprof" "spectral/sorting" "real/maillist" "real/hidden" )
 threaded_programs=("parallel/parfib")
 
 threaded_flag=false

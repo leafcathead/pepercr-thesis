@@ -9,6 +9,7 @@ from Optimizer import IterativeOptimizer, GeneticOptimizer, BOCAOptimizer, Itera
 
 NOFIB_CONFIG_DIR_PATH = r'..\nofib\mk'
 NOFIB_EXEC_PATH = r'../nofib'
+NOFIB_EXEC_PATH_PO = r'../../ghc/nofib'
 NOFIB_LOGS_DIR = r'..\nofib\logs'
 CONFIG_PATH = r'ConfigFiles/config.yaml'
 FLAG_PRESET_FILE = "presets.json"
@@ -59,6 +60,23 @@ def apply_optimizer_task_all(optimizer):
 def apply_optimizer_task_one(optimizer_list, test, modes):
     tests = []
     print(f'Apply Preset Task to: {test}')
+
+    command = f"make clean && make boot"
+    result_1 = subprocess.run(
+        command,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=NOFIB_EXEC_PATH,
+        text=True)
+
+    result_2 = subprocess.run(
+        command,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=NOFIB_EXEC_PATH_PO,
+        text=True)
 
 
     for optimizer in optimizer_list:

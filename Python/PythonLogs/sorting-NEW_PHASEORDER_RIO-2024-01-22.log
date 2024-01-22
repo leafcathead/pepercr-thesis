@@ -1,0 +1,6 @@
+{"test_path": "spectral/sorting", "test_desc": "NEW_PHASEORDER_RIO", "action_status": "started", "timestamp": 1705902444.3168175, "task_uuid": "eacb831b-a907-42fd-be06-c166a0cc5f0e", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1705902444.3172963, "task_uuid": "eacb831b-a907-42fd-be06-c166a0cc5f0e", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1705902444.3236904, "task_uuid": "eacb831b-a907-42fd-be06-c166a0cc5f0e", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1705912250.9459686, "task_uuid": "12ce89a2-a41b-437f-8e40-af00a4de95e5", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "RIO", "no": "0", "best_result": ["0|1|2|3|4|5|6|7|8|9|10|11|12|13|17|23|22|14|15|20|18|19|21|16|", 0.144], "run_allowance": 9700, "iterations": 300, "timestamp": 1705912250.946172, "task_uuid": "12ce89a2-a41b-437f-8e40-af00a4de95e5", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1705912250.9462385, "task_uuid": "12ce89a2-a41b-437f-8e40-af00a4de95e5", "action_type": "LOG_RESULTS", "task_level": [3]}
