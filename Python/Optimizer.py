@@ -14,6 +14,10 @@ from datetime import date
 from Genetics import crossover_chromosomes
 from Genetics import Chromosome
 import copy  # Used for testing
+from sklearn.preprocessing import OneHotEncoder
+from collections import deque
+from collections import defaultdict
+import networkx as nx
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -184,9 +188,9 @@ class Optimizer(ABC):
                     flags = self.log_dictionary[c]["chromosome"].get_active_genes()
                     m = self.log_dictionary[c]["mode"]
                     r = run_times[c].max()
-                elif isinstance(self, BOCAOptimizer):
+                elif isinstance(self, BOCAOptimizer) or isinstance(self, BOCAOptimizerPO):
                     r_id = self.log_dictionary[c]["id"]
-                    flags = self.log_dictionary[c]["BOCA"].flags
+                    flags = self.log_dictionary[c]["BOCA"].order_string if self.phaseOrderToggle else self.log_dictionary[c]["BOCA"].flags
                     m = self.log_dictionary[c]["mode"]
                     r = run_times[c].max()
                 else:
@@ -248,7 +252,7 @@ class Optimizer(ABC):
         while (i < 14):
             string_front.append(i)
             i += 1
-        while (i <= 23):
+        while (i < 23):
             string_back.append(i)
             i += 1
 
@@ -258,6 +262,7 @@ class Optimizer(ABC):
 
         for j in string_front:
             po_string += f'{j}|'
+        po_string = po_string[:-1]
         return po_string
 
 
@@ -410,8 +415,7 @@ class BOCAOptimizer(Optimizer, ABC):
             rand_active_flags_num = np.random.randint(len(self.flags))
             random_choices = list(np.random.choice(self.flags, size=rand_active_flags_num, replace=False))
             bit_random_choices = list(map(lambda x: 1 if x in random_choices else 0, self.flags))
-            init_set.append(
-                BOCAOptimization(["-O0"] + random_choices, bit_random_choices))
+            init_set.append(BOCAOptimization(["-O0"] + random_choices, bit_random_choices))
         return init_set
 
     def __boca_to_df(self, mode):
@@ -1039,28 +1043,7 @@ class IterativeOptimizerPO (Optimizer, ABC):
         # self.log_dictionary.clear()
         return returner
 
-    # def configure_baseline(self, mode):
-    #     command_list = []
-    #     baseline_list = [["-O0"], ["-O2"]]
-    #     print("Configuring baseline... -O0, -O2")
 
-    #     for preset in baseline_list:
-    #         log_file_name = f'{self.test_name}-iterative{preset[0]}-{mode}-nofib-log'
-    #         command_list.append(super()._build_individual_test_command(super()._setup_preset_task(preset),
-    #                                                                    f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
-    #                                                                    mode))
-    #         self.log_dictionary[log_file_name] = {"preset": preset, "mode": mode, "id": preset[0]}
-
-    #     for c in command_list:
-    #         print(fr'Applying command to {self.test_path}')
-    #         result = subprocess.run(
-    #             c,
-    #             shell=True,
-    #             stdout=subprocess.PIPE,
-    #             stderr=subprocess.PIPE,
-    #             cwd=self.nofib_exec_path,
-    #             text=True)
-    #         print(result)
 
     def write_results(self):
         complete_table = super().write_results()
@@ -1076,12 +1059,53 @@ class IterativeOptimizerPO (Optimizer, ABC):
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-PHASEORDER-Iterative-{self.label}-{self.optimizer_number}.csv')
 
 
+class BOCAOptimizationPO:
+    iteration = 0
+
+    bad_phase_list = None
+    good_phase_list = None
+
+    def __init__(self, order):
+        self.id = uuid.uuid4()
+        self.order_string = order
+        self.order_array = list(filter(lambda x: x != '', order.split("|")))
+        self.rules = self.__generate_BOCA_rules()
+        self.runtime = -1
+        self.expected_improvement = 0
+        self.iteration_created = BOCAOptimization.iteration
+
+    def __generate_BOCA_rules(self):
+        # Creates rules for orderings. For example ("A", "B") => "A must go before B"
+        combined_list = BOCAOptimizationPO.bad_phase_list + BOCAOptimizationPO.good_phase_list
+        if (len(combined_list) != len(self.order_array)):
+            raise ValueError(f"What the hell?: Combined List: {len(combined_list)}, Order List: {len(self.order_array)} \n {self.order_array}")
+        rules_list = []
+        blank_list = [None] * (len(combined_list))
+        for index, optimization in enumerate(combined_list):
+            pos_num = int(self.order_array[index])
+            blank_list[pos_num] = optimization
+        for index, opt_A in enumerate(blank_list):
+            for opt_B in blank_list[index:]:
+                if opt_A != opt_B:
+                    rules_list.append((opt_A, opt_B))
+        # print(rules_list)
+        # print(f"Order Array Length: {len(self.order_array)}")
+        # print(f"Rules Length: {len(rules_list)}")
+        return rules_list
+
+
+
 class BOCAOptimizerPO (Optimizer, ABC):
     optimizer_number = 0
 
     @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
-        super().__init__(cfg, test_path, t, test_desc, False)
+        super().__init__(cfg, test_path, t, test_desc, True)
+        self.fixed_phase_list = cfg["settings"]["phase_order_O0"]
+        self.flex_phase_list  = cfg["settings"]["phase_order_O2"]
+        BOCAOptimizationPO.bad_phase_list = self.fixed_phase_list
+        BOCAOptimizationPO.good_phase_list = self.flex_phase_list
+
         self.__c1 = cfg["boca_settings"]["initial_set"]
         self.training_set = self.__generate_training_set(self.__c1)
         self.num_of_K = cfg["boca_settings"]["num_of_impactful_optimizations"]
@@ -1090,10 +1114,445 @@ class BOCAOptimizerPO (Optimizer, ABC):
         self.decay = cfg["boca_settings"]["decay"]
         self.offset = cfg["boca_settings"]["offset"]
         self.scale = cfg["boca_settings"]["scale"]
+
         self.iterations = 0
         self.best_candidate = None
         self.optimizer_number = BOCAOptimizer.optimizer_number
         self.runs_without_improvement_allowance = cfg["boca_settings"]["max_without_improvement"]
+
+
+    def configure_baseline():
+        pass
+
+    def __generate_training_set(self, set_size):
+        init_set = []
+        for i in range(0, set_size):
+            init_set.append(
+                BOCAOptimizationPO(self._generate_random_PO_string()))
+        return init_set
+
+    def __boca_to_df(self, mode):
+        boca_table = pd.DataFrame(columns=["ID", "Mode", "Phase", "Runtime", "Iteration", "Best"])
+        for entry in self.baseline_set:
+            # chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
+            boca_table.loc[len(boca_table.index)] = [entry, mode, entry,
+                                                     self.baseline_set[entry]["Runtime"].iloc[0], 0, False]
+
+        for b in self.training_set:
+            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.order_string, b.runtime, b.iteration_created,
+                                                     (lambda x: x is self.best_candidate)(b)]
+
+        return boca_table
+
+    def optimize(self, mode):
+            print("Beginning Optimization")
+            print(f"Iteration: {self.iterations}")
+
+
+            while not ((self.iterations == self.max_iterations) or (self.run_allowance <= 0 ) or (self.runs_without_improvement_allowance <= 0)):
+
+                self.csv_dictionary.clear()
+                self.log_dictionary.clear()
+
+                command_list = []
+
+                for b in self.training_set:
+
+                    log_file_name = f'{self.test_name}-BOCA-{mode}-{b.id}-nofib-log'
+
+                    if self.log_dictionary.get(log_file_name) is None and b.runtime == -1:
+                    # Set up command to run benchmark for each BOCA Optimization
+
+
+                        command = super()._build_individual_test_command(super()._setup_preset_task(b.order_array),
+                                                                    f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                                    mode)
+
+                        self.log_dictionary[log_file_name] = {"BOCA": b, "mode": mode, "id": b.id}
+
+                        try:
+                            with open(self.phase_order_file, "r+") as pof:
+                                pof.truncate(0)
+                                pof.write(b.order_string)
+                                print("phase order file overwritten...")
+
+
+                        except IOError as e:
+                            print("Unable to open phase order file")
+                            print(e)
+
+                        self.run_allowance -= 1
+                        print(fr'Applying command to {self.test_path}')
+                        result = subprocess.run(
+                            command,
+                            shell=True,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            cwd=self.nofib_exec_path,
+                            text=True)
+
+
+
+            # Run each command
+                # for c in command_list:
+                #     self.run_allowance -= 1
+                #     print(fr'Applying command to {self.test_path}')
+                #     result = subprocess.run(
+                #         c,
+                #         shell=True,
+                #         stdout=subprocess.PIPE,
+                #         stderr=subprocess.PIPE,
+                #         cwd=self.nofib_exec_path,
+                #         text=True)
+                # # print(result)
+
+                self._analyze(mode)
+
+            print("Max iterations reached...")
+            self.tables[mode] = self.__boca_to_df(mode)
+
+    def _analyze(self, mode):
+
+        merged_table = super()._run_analysis_tool(mode)
+        merged_table = merged_table.set_index("ID")
+
+        print(merged_table)
+
+        for b in self.training_set:
+            row = merged_table.loc[[b.id]]
+            b.runtime = row["Runtime"].iloc[0]  # Store fitness value from table into BOCA Object
+
+
+        if (self.best_candidate == min(self.training_set, key=lambda x: x.runtime)):
+                self.runs_without_improvement_allowance -= 1
+
+        self.best_candidate = min(self.training_set, key=lambda x: x.runtime)
+        print("Current Best Candidate: ", self.best_candidate)
+
+        if (self.iterations == self.max_iterations) or (self.run_allowance <= 0 ) or (self.runs_without_improvement_allowance <= 0):
+        #    print("Max Iterations reached...")
+         #   self.tables[mode] = self.__boca_to_df(mode)
+            return
+
+        rf = RandomForestRegressor()
+        ohc = OneHotEncoder(sparse=False)
+        all_rules = self.__generate_all_possible_rules()
+        df = pd.DataFrame(columns=all_rules + ["Runtime"])
+
+        for b in self.training_set:
+            new_row = [None] * len(all_rules)
+            for index, r in enumerate(all_rules):
+                if r in b.rules:
+                    new_row[index] = 1
+                else:
+                    new_row[index] = 0
+            new_row.append(b.runtime)
+            df.loc[len(df.index)] = new_row
+
+
+        print("----------------------------------------------------")
+        print(df.head())
+
+        X_train = df.drop("Runtime", axis=1)
+        y_train = df["Runtime"]
+
+
+        if len(X_train) != len(y_train):
+            raise RuntimeError("Somehow we have more runtimes than we do presets!")
+
+        rf.fit(X_train, y_train)
+
+
+        # Determine importance
+        importance = []
+        for index, f in enumerate(self.flags):
+            importance.append((rf.feature_importances_[index], all_rules[index]))
+
+        # Determine Importance Opts
+
+        important_rules = self.__get_important_optimizations(rf, importance)
+        print(f"Important Rules: {important_rules}")
+
+        # Determine Unimportant Opts
+
+        unimportant_optimizations = list(set(all_rules) - set(important_rules))
+
+        # Eliminate invalid rules from unimportant optimizations
+        unimportant_optimizations = list(filter(lambda x: x[0] not in self.fixed_phase_list or x[1] not in self.fixed_phase_list, unimportant_optimizations))
+
+        # Do Decay Stuff - Unsure if these two are needed now.
+        # important_settings = [obj for obj in self.training_set if any(item in obj.rules for item in important_optimizations)]
+        # important_settings = list(map(lambda boca_obj: boca_obj.rules , list(set(important_settings))))
+        # print(f'Important Rules: {important_settings}')
+        ##print("Important Settings: ", important_settings)
+        all_candidates = []
+
+
+        # Will have to maybe do something else for C, not sure if it is as effective as with combinations.
+        for index, rule in enumerate(important_rules):
+            C = self.__normal_decay(self.iterations)
+            print("C: ", C)
+
+            if C < 1:
+                C = 1
+            new_candidate = False
+
+            while (not new_candidate):
+                random_indices = np.random.choice(len(unimportant_optimizations), size=random.randint(1, int(C)), replace=False)
+
+                low_performance_rules = []
+                for i in random_indices:
+                    low_performance_rules = unimportant_optimizations[i]
+
+                new_candidate_rules = [rule] + [low_performance_rules]
+
+                for index, opt_A in enumerate(self.fixed_phase_list):
+                    for opt_B in (self.fixed_phase_list + self.flex_phase_list)[index:]:
+                        if opt_A != opt_B:
+                            new_candidate_rules.append((opt_A, opt_B))
+
+                # new_candidate_rules = list(set(new_candidate_rules + list((set(self.__generate_all_possible_rules()) - set(self.__generate_all_possible_valid_rules())))))
+
+                # new_candidate_rules = [("A", "B"), ("B", "C"), ("C", "D")]
+
+                for t in new_candidate_rules:
+                    if len(t) < 2:
+                        raise ValueError(f"Error Check 2, the tuple is too small: {t}")
+
+                new_candidate = self.__incorporate_rules_into_candidate(new_candidate_rules)
+                if new_candidate:
+                    print(f"New Candidate: {new_candidate}")
+
+
+            # new_candidate_rules = optimization + list(np.random.choice(unimportant_optimizations, size=random.randint(0, int(C)), replace=False))
+            # new_candidate_rules = list(set(new_candidate_flags))
+
+            # Convert New Candidate to String.
+
+            all_candidates.append(BOCAOptimizationPO(self.__phase_array_to_phase_string(new_candidate)))
+        # Predict
+
+        for index, candidate in enumerate(all_candidates):
+            # candidate = (lambda A, B, e: B[A.index(e)] if e in A else None)(self.flags,)
+            results = []
+            trees = rf.estimators_
+            for t in trees:
+                big_list = [None] * len(all_rules)
+                for index, rule in enumerate(all_rules):
+                    if rule in candidate.rules:
+                        big_list[index] = 1
+                    else:
+                        big_list[index] = 0
+
+                result = t.predict(np.array(big_list).reshape(1, -1))
+                results.append(result)
+            # rf.predict(np.array(candidate.flag_bits).reshape(1,-1)) # Breaks with the paper. Paper has mean and std
+            # print(f'Result: {result}')
+            candidate.expected_improvement = self.__get_expected_improvement(results)
+
+        # Find Best Candidate
+        all_candidates = list(
+            filter(lambda x: x.rules not in list(map(lambda y: y.rules, self.training_set)), all_candidates))
+
+
+
+        if len(all_candidates) > 0:
+            best_candidate = max(all_candidates, key=lambda x: x.expected_improvement)
+            # Add to training set
+            self.training_set.append(best_candidate)
+
+        else:
+            print("No unique candidate found. Should probably error or stop here. I'm not sure which one.")
+            self.runs_without_improvement_allowance -= 1
+            with start_action(action_type="ERROR_CANDIDATE") as ctx:
+                ctx.log(message_type="ERROR", optimizer="BOCA", message="No unique candidate found.", iteration=self.iterations, all_candidates=all_candidates)
+
+
+        print("Analysis Done")
+
+        # Re-run optimize
+
+        BOCAOptimization.iteration += 1
+        self.iterations += 1
+        # self.optimize(mode) Too many iterations in BOCA to due this recurse!
+
+    def write_results(self):
+        complete_table = super().write_results()
+
+        complete_table = complete_table[complete_table["Runtime"] >= 0]
+
+        print(complete_table)
+        print(f"Best Candidate: \n"
+              + f"   Runtime: {self.best_candidate.runtime} \n"
+              + f"   Phase: {self.best_candidate.order_string} \n")
+
+        with start_action(action_type="LOG_RESULTS") as ctx:
+            ctx.log(message_type="INFO", optimizer="BOCA", no=f"{self.optimizer_number}",
+                    best_result=(self.best_candidate.order_string, self.best_candidate.runtime),
+                    run_allowance=self.run_allowance, iterations=self.iterations)
+
+        complete_table.to_csv(
+            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-PHASEORDER-BOCA-{self.label}-{self.optimizer_number}.csv')
+
+    def __generate_all_possible_valid_rules(self):
+        # Uses the movable optimization list to create possible pairs. Does not touch the invalid list.
+        all_rules = []
+        for opt_A in self.flex_phase_list:
+            for opt_B in self.flex_phase_list:
+                if opt_A != opt_B:
+                    all_rules.append((opt_A, opt_B))
+        return all_rules
+
+    def __generate_all_possible_rules(self):
+        all_rules = []
+        combined_list = self.fixed_phase_list + self.flex_phase_list
+        for opt_A in combined_list:
+            for opt_B in combined_list:
+                if opt_A != opt_B:
+                    all_rules.append((opt_A, opt_B))
+        return all_rules
+
+
+        # THIS RESULTS IN THE SAME CALC AS GINI-IMPORTANCE! WHY DO IT?
+    def __get_important_optimizations(self, model, gini_list):
+        # gini_list.sort(key=lambda x: x[0], reverse=True)
+        importance = []
+        decision_trees = model.estimators_
+
+        for index, gini_tuple in enumerate(gini_list):
+            impact = 0
+            for t in decision_trees:
+                impact += t.feature_importances_[index]
+            impact /= len(decision_trees)
+            importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
+
+        importance.sort(key=lambda x: x[0], reverse=True)
+
+        return list(map(lambda x: x[2], importance[0:self.num_of_K]))
+
+    def __normal_decay(self, iterations):
+        sigma = -self.scale ** 2 / (2 * math.log(self.decay))
+        C = self.__c1 * math.exp(-max(0, (self.__c1 + iterations) - self.offset) ** 2 / (2 * sigma ** 2))
+        return C
+
+    def __incorporate_rules_into_candidate(self, rules_list):
+
+        combined_list = self.fixed_phase_list + self.flex_phase_list
+
+        # First, validate the rules. We will check to see if our rules make a DAG
+        # for t in rules_list:
+        #     if len(t) < 2:
+        #         raise ValueError("Why are the tuples so small?")
+        #     vertices.append(t[0])
+        #     vertices.append(t[1])
+
+        # vertices = list(set(list(map(lambda t: t[0], rules_list))).union(set(list(map(lambda t: t[1], rules_list)))))
+        # print(f'Vertices: {vertices}')
+        # vertices_map = dict()
+        # for index, v in enumerate(vertices):
+        #     vertices_map[v] = index
+        # print(f'Vertices Map: {vertices_map}')
+        # g = Graph(len(vertices))
+
+        # for rule in rules_list:
+        #     g.addEdge(vertices_map[rule[0]], vertices_map[rule[1]])
+        #     print(f'Made Edge: {rule[0]} -> {rule[1]} | {vertices_map[rule[0]]} -> {vertices_map[rule[1]]}')
+
+        # g.addEdge(0, 1)
+        # g.addEdge(1, 2)
+        # g.addEdge(2, 3)
+
+        G = nx.DiGraph(rules_list)
+
+        for cycle in nx.simple_cycles(G):
+            return False
+
+        print("Hooray! Not Cyclic!")
+        # cycle = True
+        # while (cycle):
+            ## Something to detect infinite loops
+            # loop_checker = 0
+            # cycle = False
+
+            ## Generate Random Permutation
+            # list_copy = self.flex_phase_list.copy()
+            # random.shuffle(list_copy)
+            # candidate_permutation = self.fixed_phase_list + list_copy
+
+            # ## Convert it to the form we know
+
+            # candidate_permutation_tuples  = []
+            # blank_list = [None] * (len(combined_list))
+            # for index, optimization in enumerate(combined_list):
+            #     pos_num = index
+            #     blank_list[pos_num] = optimization
+            # for index, opt_A in enumerate(blank_list):
+            #     for opt_B in blank_list[index:]:
+            #         if opt_A != opt_B:
+            #             candidate_permutation_tuples.append((opt_A, opt_B))
+
+            ## Check to see if it contains all the required rules
+
+            # if set(rules_list).issubset(set(candidate_permutation_tuples)):
+            #     print("Rules Check Out")
+            #     ## Check to make sure it is acyclic
+
+            #     G = nx.DiGraph(candidate_permutation_tuples)
+
+            #     for cycle in nx.simple_cycles(G):
+            #         cycle = True
+            # else:
+            #     cycle = True
+
+        G = nx.DiGraph()
+
+        G.add_nodes_from(combined_list)
+        random.shuffle(rules_list) # This line right here turns this from O(V!) -> O(|V| + |E|)
+        for rule in rules_list:
+            G.add_edge(rule[0], rule[1])
+
+
+        if not nx.is_directed_acyclic_graph(G):
+            print("The rules contain cycles. No valid arrangement exists.")
+            return False
+
+        # candidate_permutation = random.choice(list(nx.all_topological_sorts(G)))
+        candidate_permutation = list(nx.topological_sort(G))
+
+            # loop_checker += 1
+
+            # if (loop_checker >= 100000):
+            #     raise RuntimeError("Potential Infinite Loop Stopped in __incorporate_rules_into_candidate(...) !")
+
+        return candidate_permutation
+
+    def __phase_array_to_phase_string(self, lst):
+        combined_list = self.fixed_phase_list + self.flex_phase_list
+        return_string = ""
+        for opt in lst:
+            return_string += f'{combined_list.index(opt)}|'
+        return_string = return_string[:-1]
+        return return_string
+
+    def __get_expected_improvement(self, pred):
+        pred = np.array(pred).transpose(1, 0)
+        m = np.mean(pred, axis=1)
+        s = np.std(pred, axis=1)
+
+        def calculate_f():
+            z = (self.best_candidate.runtime - m) / s
+            return (self.best_candidate.runtime - m) * norm.cdf(z) + s * norm.pdf(z)
+
+        if np.any(s == 0.0):
+            s_copy = np.copy(s)
+            s[s_copy == 0.0] = 1.0
+            f = calculate_f()
+            f[s_copy == 0.0] = 0.0
+        else:
+            f = calculate_f()
+
+        return f
+
 
 class GeneticOptimizerPO (Optimizer, ABC):
     optimizer_number = 0
@@ -1116,3 +1575,45 @@ class GeneticOptimizerPO (Optimizer, ABC):
         self.optimizer_number = GeneticOptimizer.optimizer_number
         GeneticOptimizer.optimizer_number += 1
         self.initial_size = self.CFG["genetic_settings"]["population_size"]
+
+
+# Code from GeeksForGeeks.org
+# class Graph():
+#     def __init__(self, vertices):
+#         self.graph = defaultdict(list)
+#         self.V = vertices
+
+#     def addEdge(self, u, v):
+#         self.graph[u].append(v)
+
+#     def isCyclicUtil(self, v, visited, recStack):
+
+#         # Mark current node as visited and
+#         # adds to recursion stack
+#         visited[v] = True
+#         recStack[v] = True
+
+#         # Recur for all neighbours
+#         # if any neighbour is visited and in
+#         # recStack then graph is cyclic
+#         for neighbour in self.graph[v]:
+#             if visited[neighbour] == False:
+#                 if self.isCyclicUtil(neighbour, visited, recStack) == True:
+#                     return True
+#             elif recStack[neighbour] == True:
+#                 return True
+
+#         # The node needs to be popped from
+#         # recursion stack before function ends
+#         recStack[v] = False
+#         return False
+
+#     # Returns true if graph is cyclic else false
+#     def isCyclic(self):
+#         visited = [False] * (self.V + 1)
+#         recStack = [False] * (self.V + 1)
+#         for node in range(self.V):
+#             if visited[node] == False:
+#                 if self.isCyclicUtil(node, visited, recStack) == True:
+#                     return True
+#         return False

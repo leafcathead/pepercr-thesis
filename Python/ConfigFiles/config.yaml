@@ -12,7 +12,7 @@ locations:
     optimal_presets: ..\optimal_presets
     phase_order_file: ../../../phase.txt
 settings:
-    nofib_runs: 175 # DEFAULT 30
+    nofib_runs: 5 # DEFAULT 175
     flags: [-fcall-arity,-fcase-merge,-fcmm-elim-common-blocks,-fcmm-sink,-fcpr-anal,-fcse,
             -fdicts-cheap,-fdicts-strict,-fdmd-tx-dict-sel,-fdo-eta-reduction,-fdo-lambda-eta-expansion,
             -feager-blackholing,-fenable-rewrite-rules,-fexcess-precision,-fexpose-all-unfoldings,
@@ -25,6 +25,8 @@ settings:
             -fstrictness,-fstrictness-before=1,-funbox-small-strict-fields,-funbox-strict-fields,-funfolding-creation-threshold=750,
             -funfolding-dict-discount=30,-funfolding-fun-discount=60,-funfolding-keeness-factor=1.5,-funfolding-use-threshold=60,
             -fvectorisation-avoidance,-fvectorise,-fworker-wrapper] # 59 items
+    phase_order_O2: ["liberate_case","spec_constr","rule_check2","late_specialise","triple_combo","late_dmd_anal","strict_anal","rule_check3","add_caller","add_late"]
+    phase_order_O0: ["static_args","presimplify","specialise","full_laziness_1","simpl3","float_in_1","call_arity","strictness","exitification","full_laziness_2","cse","final","rule_check1"]
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     multicore_cores: 4
     log_output_loc: logs/
@@ -44,10 +46,10 @@ genetic_settings: # FOGA Paper
     selection_type: linear_ranking
     max_iter_without_improvement: 48 # Default 45
 boca_settings:
-    initial_set: 50 # 40 100
-    num_of_impactful_optimizations: 6 # 10
-    iterations: 4000 # 50 100
+    initial_set: 5 # 40 100
+    num_of_impactful_optimizations: 10 # 10
+    iterations: 2000 # 50 100
     max_without_improvement: 1000
-    decay: 0.74 # 0.5
-    offset: 50 # 20
-    scale: 30 # 10
+    decay: 0.82 # 0.72
+    offset: 1 # 50
+    scale: 30 # 30
