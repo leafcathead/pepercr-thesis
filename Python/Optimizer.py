@@ -13,6 +13,7 @@ from datetime import date
 
 from Genetics import crossover_chromosomes
 from Genetics import Chromosome
+from Genetics import ChromosomePO
 import copy  # Used for testing
 from sklearn.preprocessing import OneHotEncoder
 from collections import deque
@@ -43,6 +44,11 @@ class Optimizer(ABC):
         self.label = test_desc
         self.tables = {"slow": None, "norm": None, "fast": None}
         self.phaseOrderToggle = phaseOrderToggle
+
+        self.fixed_phase_list = cfg["settings"]["phase_order_O0"] if phaseOrderToggle else None
+        self.flex_phase_list  = cfg["settings"]["phase_order_O2"] if phaseOrderToggle else None
+        ChromosomePO.bad_genes= self.fixed_phase_list
+        ChromosomePO.good_genes = self.flex_phase_list
         try:
             to_file(open(f'{cfg["locations"]["log_location"]}/{self.test_name}-{self.label}-{date.today()}.log', "a+"))
             self.ctx = start_action(action_type="LOG_RESULTS")
@@ -183,9 +189,9 @@ class Optimizer(ABC):
                     flags = self.log_dictionary[c]["order"] if self.phaseOrderToggle else self.log_dictionary[c]["preset"]
                     m = self.log_dictionary[c]["mode"]
                     r = run_times[c].max()
-                elif isinstance(self, GeneticOptimizer):
+                elif isinstance(self, GeneticOptimizer) or isinstance(self, GeneticOptimizerPO):
                     r_id = self.log_dictionary[c]["id"]
-                    flags = self.log_dictionary[c]["chromosome"].get_active_genes()
+                    flags = self.log_dictionary[c]["chromosome"].sequence_to_string() if self.phaseOrderToggle else self.log_dictionary[c]["chromosome"].get_active_genes()
                     m = self.log_dictionary[c]["mode"]
                     r = run_times[c].max()
                 elif isinstance(self, BOCAOptimizer) or isinstance(self, BOCAOptimizerPO):
@@ -264,6 +270,14 @@ class Optimizer(ABC):
             po_string += f'{j}|'
         po_string = po_string[:-1]
         return po_string
+
+    def _phase_array_to_phase_string(self, lst):
+        combined_list = self.fixed_phase_list + self.flex_phase_list
+        return_string = ""
+        for opt in lst:
+            return_string += f'{combined_list.index(opt)}|'
+        return_string = return_string[:-1]
+        return return_string
 
 
 class IterativeOptimizer(Optimizer, ABC):
@@ -1101,8 +1115,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
     @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
         super().__init__(cfg, test_path, t, test_desc, True)
-        self.fixed_phase_list = cfg["settings"]["phase_order_O0"]
-        self.flex_phase_list  = cfg["settings"]["phase_order_O2"]
         BOCAOptimizationPO.bad_phase_list = self.fixed_phase_list
         BOCAOptimizationPO.good_phase_list = self.flex_phase_list
 
@@ -1329,7 +1341,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
             # Convert New Candidate to String.
 
-            all_candidates.append(BOCAOptimizationPO(self.__phase_array_to_phase_string(new_candidate)))
+            all_candidates.append(BOCAOptimizationPO(self._phase_array_to_phase_string(new_candidate)))
         # Predict
 
         for index, candidate in enumerate(all_candidates):
@@ -1439,28 +1451,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         combined_list = self.fixed_phase_list + self.flex_phase_list
 
-        # First, validate the rules. We will check to see if our rules make a DAG
-        # for t in rules_list:
-        #     if len(t) < 2:
-        #         raise ValueError("Why are the tuples so small?")
-        #     vertices.append(t[0])
-        #     vertices.append(t[1])
 
-        # vertices = list(set(list(map(lambda t: t[0], rules_list))).union(set(list(map(lambda t: t[1], rules_list)))))
-        # print(f'Vertices: {vertices}')
-        # vertices_map = dict()
-        # for index, v in enumerate(vertices):
-        #     vertices_map[v] = index
-        # print(f'Vertices Map: {vertices_map}')
-        # g = Graph(len(vertices))
-
-        # for rule in rules_list:
-        #     g.addEdge(vertices_map[rule[0]], vertices_map[rule[1]])
-        #     print(f'Made Edge: {rule[0]} -> {rule[1]} | {vertices_map[rule[0]]} -> {vertices_map[rule[1]]}')
-
-        # g.addEdge(0, 1)
-        # g.addEdge(1, 2)
-        # g.addEdge(2, 3)
 
         G = nx.DiGraph(rules_list)
 
@@ -1468,41 +1459,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
             return False
 
         print("Hooray! Not Cyclic!")
-        # cycle = True
-        # while (cycle):
-            ## Something to detect infinite loops
-            # loop_checker = 0
-            # cycle = False
 
-            ## Generate Random Permutation
-            # list_copy = self.flex_phase_list.copy()
-            # random.shuffle(list_copy)
-            # candidate_permutation = self.fixed_phase_list + list_copy
-
-            # ## Convert it to the form we know
-
-            # candidate_permutation_tuples  = []
-            # blank_list = [None] * (len(combined_list))
-            # for index, optimization in enumerate(combined_list):
-            #     pos_num = index
-            #     blank_list[pos_num] = optimization
-            # for index, opt_A in enumerate(blank_list):
-            #     for opt_B in blank_list[index:]:
-            #         if opt_A != opt_B:
-            #             candidate_permutation_tuples.append((opt_A, opt_B))
-
-            ## Check to see if it contains all the required rules
-
-            # if set(rules_list).issubset(set(candidate_permutation_tuples)):
-            #     print("Rules Check Out")
-            #     ## Check to make sure it is acyclic
-
-            #     G = nx.DiGraph(candidate_permutation_tuples)
-
-            #     for cycle in nx.simple_cycles(G):
-            #         cycle = True
-            # else:
-            #     cycle = True
 
         G = nx.DiGraph()
 
@@ -1516,23 +1473,12 @@ class BOCAOptimizerPO (Optimizer, ABC):
             print("The rules contain cycles. No valid arrangement exists.")
             return False
 
-        # candidate_permutation = random.choice(list(nx.all_topological_sorts(G)))
         candidate_permutation = list(nx.topological_sort(G))
 
-            # loop_checker += 1
-
-            # if (loop_checker >= 100000):
-            #     raise RuntimeError("Potential Infinite Loop Stopped in __incorporate_rules_into_candidate(...) !")
 
         return candidate_permutation
 
-    def __phase_array_to_phase_string(self, lst):
-        combined_list = self.fixed_phase_list + self.flex_phase_list
-        return_string = ""
-        for opt in lst:
-            return_string += f'{combined_list.index(opt)}|'
-        return_string = return_string[:-1]
-        return return_string
+
 
     def __get_expected_improvement(self, pred):
         pred = np.array(pred).transpose(1, 0)
@@ -1559,7 +1505,8 @@ class GeneticOptimizerPO (Optimizer, ABC):
 
     @log_call(action_type="OPTIMIZER_CREATION", include_args=["test_path", "test_desc"], include_result=False)
     def __init__(self, cfg, test_path, t, test_desc="COMPLETE"):
-        super().__init__(cfg, test_path, t, test_desc, False)
+        super().__init__(cfg, test_path, t, test_desc, True)
+
         Chromosome.genes = self.CFG["settings"]["flags"]
         Chromosome.num_of_segments = self.CFG["genetic_settings"]["num_of_segments"]
         self.max_iterations = self.CFG["genetic_settings"]["max_iterations"]
@@ -1576,44 +1523,221 @@ class GeneticOptimizerPO (Optimizer, ABC):
         GeneticOptimizer.optimizer_number += 1
         self.initial_size = self.CFG["genetic_settings"]["population_size"]
 
+    def configure_baseline():
+        pass
 
-# Code from GeeksForGeeks.org
-# class Graph():
-#     def __init__(self, vertices):
-#         self.graph = defaultdict(list)
-#         self.V = vertices
+    def __chromosomes_to_df(self, mode):
+        chromosome_table = pd.DataFrame(columns=["ID", "Mode", "Phase", "Fitness"])
+        for entry in self.base_log_dictionary:
+            # chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
+            chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, entry,
+                                                                    self.base_log_dictionary[entry]["Runtime"].iloc[0]]
 
-#     def addEdge(self, u, v):
-#         self.graph[u].append(v)
+        for chromosome in self.chromosomes:
+            chromosome_table.loc[len(chromosome_table.index)] = [chromosome.genetic_id, mode, chromosome.sequence_to_string(), chromosome.fitness]
 
-#     def isCyclicUtil(self, v, visited, recStack):
+        return chromosome_table
 
-#         # Mark current node as visited and
-#         # adds to recursion stack
-#         visited[v] = True
-#         recStack[v] = True
+    def __generate_initial_population(self, pop_size):
+        chromosomes = []
+        for i in range(0, pop_size):
+            gene_sequence = self._generate_random_PO_string()
+            chromosomes.append(ChromosomePO(gene_sequence, uuid.uuid4()))
 
-#         # Recur for all neighbours
-#         # if any neighbour is visited and in
-#         # recStack then graph is cyclic
-#         for neighbour in self.graph[v]:
-#             if visited[neighbour] == False:
-#                 if self.isCyclicUtil(neighbour, visited, recStack) == True:
-#                     return True
-#             elif recStack[neighbour] == True:
-#                 return True
+        return chromosomes
 
-#         # The node needs to be popped from
-#         # recursion stack before function ends
-#         recStack[v] = False
-#         return False
+    def optimize(self, mode):
+            print(f"Iteration: {self.iterations}")
 
-#     # Returns true if graph is cyclic else false
-#     def isCyclic(self):
-#         visited = [False] * (self.V + 1)
-#         recStack = [False] * (self.V + 1)
-#         for node in range(self.V):
-#             if visited[node] == False:
-#                 if self.isCyclicUtil(node, visited, recStack) == True:
-#                     return True
-#         return False
+            self.csv_dictionary.clear()
+
+            tmp_dict = dict()
+
+            print("Length of Chromosome List: ", len(self.chromosomes))
+
+            for log_name, log_listing in self.log_dictionary.items():
+                for c in self.chromosomes:
+                    if c == log_listing["chromosome"]:
+                        tmp_dict[log_name] = log_listing
+
+
+            self.log_dictionary.clear()
+            self.log_dictionary.update(tmp_dict)
+
+
+            if (self.iterations >= self.max_iterations) or (self.run_allowance <= 0):
+                print("Max Iterations Reached... Terminating")
+                self.tables[mode] = self.__chromosomes_to_df(mode)
+                return
+            elif self.iterations_with_no_improvement >= self.no_improvement_threshold:
+                print("No improvement threshold reached... Terminating")
+                self.tables[mode] = self.__chromosomes_to_df(mode)
+                return
+
+
+            # Set up command to run benchmark for each chromosome
+            for c in self.chromosomes:
+
+                if c.need_run:
+                    log_file_name = f'{self.test_name}-genetic-{mode}-{c.genetic_id}-{self.iterations}-nofib-log'
+                    command = super()._build_individual_test_command(super()._setup_preset_task(c.get_active_genes()),
+                                                                    f'{self.CFG["settings"]["log_output_loc"]}/{log_file_name}',
+                                                                    mode)
+                    self.log_dictionary[log_file_name] = {"chromosome": c, "mode": mode, "id": c.genetic_id}
+                    c.need_run = False
+
+                    try:
+                        with open(self.phase_order_file, "r+") as pof:
+                            pof.truncate(0)
+                            pof.write(c.sequence_to_string())
+                            print("phase order file overwritten...")
+
+                    except IOError as e:
+                        print("Unable to open phase order file")
+                        print(e)
+
+                    self.run_allowance -= 1
+                    print(fr'Applying command to {self.test_path}')
+                    result = subprocess.run(
+                        command,
+                        shell=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        cwd=self.nofib_exec_path,
+                        text=True)
+
+            self._analyze(mode)
+
+    def _analyze(self, mode):
+
+        merged_table = super()._run_analysis_tool(mode)
+        # self.log_dictionary.clear()
+
+        merged_table = merged_table.set_index("ID")
+
+        for c in self.chromosomes:
+            row = merged_table.loc[[c.genetic_id]]
+            c.fitness = row["Runtime"].iloc[0]  # Store fitness value from table into Chromosome
+
+        # Sort Chromosomes by ascending order (Better values at front of the list)
+        self.chromosomes.sort(key=lambda x: x.fitness, reverse=False)
+
+        # Selection  by Linear Selection
+
+        # First, we must store the elite chromosomes. These are not ones we will cross and mutate.
+
+        elite_chromosomes = self.chromosomes[:round(len(self.chromosomes) * self.elitism_ratio)]
+
+        non_elite_chromosomes = list(filter(lambda x: x not in elite_chromosomes, self.chromosomes))
+
+        if list(set(elite_chromosomes) & set(non_elite_chromosomes)):  # Checks intersection.
+            raise RuntimeError("Duplicates exist within the chromosome list or the filter did not work...")
+
+        if len(elite_chromosomes) + len(non_elite_chromosomes) > self.initial_size:
+            raise RuntimeError("Population growing error... before linear selection")
+
+        # Get the highest performing values that are not 'Elite'
+
+        selected_list = self.__select_via_linear_ranking(non_elite_chromosomes)
+        for c in selected_list:
+            c.need_run = True
+
+        # Crossover by Segment Based Crossover
+
+        crossover_list = self.crossover(selected_list)
+
+        self.chromosomes = elite_chromosomes + list(
+            (set(crossover_list)) | (set(non_elite_chromosomes) - set(selected_list)))
+
+        if len(self.chromosomes) > self.initial_size:
+            raise RuntimeError("Population growing error... after cross over")
+
+        # Mutate them by Gauss By Center OR Bit mask
+
+        self.mutate_genes_via_bitmask()
+
+        # Now, with everything complete, begin optimize again.
+
+        self.chromosomes.sort(key=lambda x: x.fitness, reverse=False)
+        best_value = self.chromosomes[0].fitness
+
+        if self.best_value is None or best_value < self.best_value:
+            self.best_value = best_value
+            self.iterations_with_no_improvement = 0
+        else:
+            self.iterations_with_no_improvement += 1
+
+        self.iterations += 1
+        self.optimize(mode)
+
+    def __select_via_linear_ranking(self, lower_ranked_population):
+
+        n = len(lower_ranked_population)
+        n_plus = n / 3
+        n_minus = 2 * (n / 3)
+        selected_list = []
+
+        for i in range(0, n):
+            chromosome = lower_ranked_population[i]
+            # Calculate ranked probability
+            ranked_probability = (1 / n) * (n_minus + (n_plus - n_minus) * ((i - 1) / (n - 1)))
+            if ranked_probability >= random.random():
+                selected_list.append(chromosome)
+
+        return selected_list
+
+    def crossover(self, selected_list, binary_mask=None):
+
+        new_pop_list = []
+
+        # Create the binary mask (Should always be, but I wanted to be able to test it easier)
+
+        if binary_mask is None:
+            binary_mask = []
+            for i in range(0, Chromosome.num_of_segments):
+                if self.crossover_prob >= random.random():
+                    binary_mask.append(1)
+                else:
+                    binary_mask.append(0)
+
+        # Use sequential pairing for crossover.
+
+        if len(selected_list) % 2 == 1:
+            new_pop_list.append(
+                selected_list[len(selected_list) - 1])  # Odd number list need the last element to just be re-introduced
+
+        iterator = iter(selected_list)
+
+        crossing_pairs = list(zip(iterator, iterator))
+
+        # Perform the crossover
+
+        for pair in crossing_pairs:
+            a = pair[0]  # Fitter chromosome
+            b = pair[1]  # Less fit chromosome
+            b = crossover_chromosomes(a, b, binary_mask)  # Worse performing chromosome is replaced.
+
+            new_pop_list.append(a)
+            new_pop_list.append(b)
+
+        if len(new_pop_list) > len(selected_list):
+            raise RuntimeError("Growth in population during cross over")
+
+        return new_pop_list
+
+    def write_results(self):
+        complete_table = super().write_results()
+
+        complete_table = complete_table[complete_table["Fitness"] >= 0]
+
+        best_candidate = max(self.chromosomes, key=lambda x: x.fitness)
+
+        print(complete_table)
+
+        with start_action(action_type="LOG_RESULTS") as ctx:
+            ctx.log(message_type="INFO", optimizer="GA", no=f"{self.optimizer_number}",
+                    best_result=(best_candidate.genes, best_candidate.fitness), run_allowance=self.run_allowance,
+                    iterations=self.iterations)
+
+        complete_table.to_csv(
+            f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Genetic-{self.label}-{self.optimizer_number}.csv')
