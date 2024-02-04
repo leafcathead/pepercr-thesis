@@ -1,3 +1,0 @@
-{"test_path": "real/fulsom", "test_desc": "Norm_DataCollect", "action_status": "started", "timestamp": 1699043271.8582976, "task_uuid": "b6e192be-9aef-4cab-aec3-5d5538c9c6ed", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
-{"action_status": "started", "timestamp": 1699043271.858731, "task_uuid": "b6e192be-9aef-4cab-aec3-5d5538c9c6ed", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
-{"action_status": "succeeded", "timestamp": 1699043271.8845139, "task_uuid": "b6e192be-9aef-4cab-aec3-5d5538c9c6ed", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}

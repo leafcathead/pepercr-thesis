@@ -1,3 +1,0 @@
-{"test_path": "real/grep", "test_desc": "Genetic-Test", "action_status": "started", "timestamp": 1698615311.6197314, "task_uuid": "7e74c85e-1188-4fcb-9b2f-9ead272e58b7", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
-{"action_status": "started", "timestamp": 1698615311.6201499, "task_uuid": "7e74c85e-1188-4fcb-9b2f-9ead272e58b7", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
-{"action_status": "succeeded", "timestamp": 1698615311.627227, "task_uuid": "7e74c85e-1188-4fcb-9b2f-9ead272e58b7", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}

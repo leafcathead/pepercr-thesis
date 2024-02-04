@@ -1,3 +1,0 @@
-{"test_path": "real/hidden", "test_desc": "NEW_PHASEORDER_RIO", "action_status": "started", "timestamp": 1705885964.4298005, "task_uuid": "7bd26787-2048-41c6-9f12-d3047ab5d68c", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
-{"action_status": "started", "timestamp": 1705885964.4303002, "task_uuid": "7bd26787-2048-41c6-9f12-d3047ab5d68c", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
-{"action_status": "succeeded", "timestamp": 1705885964.4371781, "task_uuid": "7bd26787-2048-41c6-9f12-d3047ab5d68c", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}

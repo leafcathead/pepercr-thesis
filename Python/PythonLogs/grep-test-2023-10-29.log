@@ -1,3 +1,0 @@
-{"test_path": "real/grep", "test_desc": "test", "action_status": "started", "timestamp": 1698615794.3904533, "task_uuid": "86c43d81-1df3-4098-9ca8-c06e5a201912", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
-{"action_status": "started", "timestamp": 1698615794.3908374, "task_uuid": "86c43d81-1df3-4098-9ca8-c06e5a201912", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
-{"action_status": "succeeded", "timestamp": 1698615794.3916097, "task_uuid": "86c43d81-1df3-4098-9ca8-c06e5a201912", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}

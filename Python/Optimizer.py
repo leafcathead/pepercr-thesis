@@ -1087,6 +1087,7 @@ class BOCAOptimizationPO:
         self.runtime = -1
         self.expected_improvement = 0
         self.iteration_created = BOCAOptimization.iteration
+        self.applied_cheat = False
 
     def __generate_BOCA_rules(self):
         # Creates rules for orderings. For example ("A", "B") => "A must go before B"
@@ -1182,6 +1183,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
                         self.log_dictionary[log_file_name] = {"BOCA": b, "mode": mode, "id": b.id}
 
+
                         try:
                             with open(self.phase_order_file, "r+") as pof:
                                 pof.truncate(0)
@@ -1203,21 +1205,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
                             cwd=self.nofib_exec_path,
                             text=True)
 
-
-
-            # Run each command
-                # for c in command_list:
-                #     self.run_allowance -= 1
-                #     print(fr'Applying command to {self.test_path}')
-                #     result = subprocess.run(
-                #         c,
-                #         shell=True,
-                #         stdout=subprocess.PIPE,
-                #         stderr=subprocess.PIPE,
-                #         cwd=self.nofib_exec_path,
-                #         text=True)
-                # # print(result)
-
                 self._analyze(mode)
 
             print("Max iterations reached...")
@@ -1230,9 +1217,23 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         print(merged_table)
 
+
+        special_rule = ("late_specialise", "spec_constr") ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
-            b.runtime = row["Runtime"].iloc[0]  # Store fitness value from table into BOCA Object
+
+            if b.runtime <= 0:
+                b.runtime = row["Runtime"].iloc[0]  # Store fitness value from table into BOCA Object
+            ## DATA MANIPULATION FOR TESTING PURPOSES
+                # Choose a random rule
+                # Divide the Runtime by 3
+                # See if more optimizations have this rule going further
+            # if special_rule in b.rules and not b.applied_cheat:
+            #     b.applied_cheat = True
+            #     b.runtime = b.runtime/100
+            #     with start_action(action_type="SPECIAL_RULE_FOUND_BOCA") as ctx:
+            #         ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule found in Candidate", iteration=self.iterations, candidate=b.order_string)
+
 
 
         if (self.best_candidate == min(self.training_set, key=lambda x: x.runtime)):
@@ -1262,9 +1263,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
             df.loc[len(df.index)] = new_row
 
 
-        print("----------------------------------------------------")
-        print(df.head())
-
         X_train = df.drop("Runtime", axis=1)
         y_train = df["Runtime"]
 
@@ -1283,7 +1281,12 @@ class BOCAOptimizerPO (Optimizer, ABC):
         # Determine Importance Opts
 
         important_rules = self.__get_important_optimizations(rf, importance)
-        print(f"Important Rules: {important_rules}")
+        if special_rule not in important_rules:
+             with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
+                ctx.log(message_type="WARNING", optimizer="BOCA", message="Special rule not found in important rules", iteration=self.iterations)
+        else:
+            with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
+                ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule found in important rules", iteration=self.iterations)
 
         # Determine Unimportant Opts
 
@@ -1303,7 +1306,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         # Will have to maybe do something else for C, not sure if it is as effective as with combinations.
         for index, rule in enumerate(important_rules):
             C = self.__normal_decay(self.iterations)
-            print("C: ", C)
+            # print("C: ", C)
 
             if C < 1:
                 C = 1
@@ -1333,7 +1336,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
                 new_candidate = self.__incorporate_rules_into_candidate(new_candidate_rules)
                 if new_candidate:
-                    print(f"New Candidate: {new_candidate}")
+                    print(f"New Candidate Added")
 
 
             # new_candidate_rules = optimization + list(np.random.choice(unimportant_optimizations, size=random.randint(0, int(C)), replace=False))
@@ -1372,6 +1375,10 @@ class BOCAOptimizerPO (Optimizer, ABC):
             best_candidate = max(all_candidates, key=lambda x: x.expected_improvement)
             # Add to training set
             self.training_set.append(best_candidate)
+            if special_rule in best_candidate.rules:
+                print("Special rule inside best_candidate")
+                # with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
+                #     ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule included in best candidate", candidate=best_candidate.id)
 
         else:
             print("No unique candidate found. Should probably error or stop here. I'm not sure which one.")
@@ -1384,7 +1391,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         # Re-run optimize
 
-        BOCAOptimization.iteration += 1
+        BOCAOptimizationPO.iteration += 1
         self.iterations += 1
         # self.optimize(mode) Too many iterations in BOCA to due this recurse!
 
@@ -1457,8 +1464,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         for cycle in nx.simple_cycles(G):
             return False
-
-        print("Hooray! Not Cyclic!")
 
 
         G = nx.DiGraph()
