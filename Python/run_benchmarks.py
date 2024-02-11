@@ -60,24 +60,27 @@ def apply_optimizer_task_all(optimizer):
 def apply_optimizer_task_one(optimizer_list, test, modes):
     tests = []
     print(f'Apply Preset Task to: {test}')
+    print(f'Cleaning and building nofib...')
 
-    # command = f"make clean && make boot"
-    # result_1 = subprocess.run(
-    #     command,
-    #     shell=True,
-    #     stdout=subprocess.PIPE,
-    #     stderr=subprocess.PIPE,
-    #     cwd=NOFIB_EXEC_PATH,
-    #     text=True)
 
-    # result_2 = subprocess.run(
-    #     command,
-    #     shell=True,
-    #     stdout=subprocess.PIPE,
-    #     stderr=subprocess.PIPE,
-    #     cwd=NOFIB_EXEC_PATH_PO,
-    #     text=True)
+    command = f"make clean && make boot"
+    result_1 = subprocess.run(
+        command,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=NOFIB_EXEC_PATH,
+        text=True)
 
+    result_2 = subprocess.run(
+        command,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=NOFIB_EXEC_PATH_PO,
+        text=True)
+
+    print("Clean and build complete...")
 
     for optimizer in optimizer_list:
         if modes[0]:

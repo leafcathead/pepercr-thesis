@@ -12,7 +12,7 @@ locations:
     optimal_presets: ..\optimal_presets
     phase_order_file: ../../../phase.txt
 settings:
-    nofib_runs: 5 # DEFAULT 175
+    nofib_runs: 10 # DEFAULT 175
     flags: [-fcall-arity,-fcase-merge,-fcmm-elim-common-blocks,-fcmm-sink,-fcpr-anal,-fcse,
             -fdicts-cheap,-fdicts-strict,-fdmd-tx-dict-sel,-fdo-eta-reduction,-fdo-lambda-eta-expansion,
             -feager-blackholing,-fenable-rewrite-rules,-fexcess-precision,-fexpose-all-unfoldings,
@@ -30,10 +30,10 @@ settings:
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     multicore_cores: 4
     log_output_loc: logs/
-    num_of_optimizer_runs: 1
-    run_allowance: 10000
+    num_of_optimizer_runs: 4
+    run_allowance: 1000
 iterative_settings:
-    num_of_presets: 300 # DEFAULT 300
+    num_of_presets: 250 # DEFAULT 300
 genetic_settings: # FOGA Paper
     max_iterations: 3 #120 # 2 DEFAULT 100
     population_size: 6 # 150 # 40 DEFAULT 277
@@ -46,10 +46,10 @@ genetic_settings: # FOGA Paper
     selection_type: linear_ranking
     max_iter_without_improvement: 48 # Default 45
 boca_settings:
-    initial_set: 5 # 40 100
-    num_of_impactful_optimizations: 15 # 10
-    iterations: 1250 # 50 100
-    max_without_improvement: 625
-    decay: 0.84 # 0.72
-    offset: 1 # 50
-    scale: 30 # 30
+    initial_set: 20 # 40 100
+    num_of_impactful_optimizations: 10 # 10
+    iterations: 1000 # 50 100
+    max_without_improvement: 300
+    decay: 0.62 # 0.72
+    offset: 20 # 50
+    scale: 20 # 30

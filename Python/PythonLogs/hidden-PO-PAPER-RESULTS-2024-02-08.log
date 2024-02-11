@@ -1,0 +1,6 @@
+{"test_path": "real/hidden", "test_desc": "PO-PAPER-RESULTS", "action_status": "started", "timestamp": 1707405135.9653296, "task_uuid": "0beb308b-ea6a-4794-9ac4-eca33f79058e", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1707405135.9658482, "task_uuid": "0beb308b-ea6a-4794-9ac4-eca33f79058e", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1707405135.9801974, "task_uuid": "0beb308b-ea6a-4794-9ac4-eca33f79058e", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1707405334.4328983, "task_uuid": "30f05c54-54dc-4f56-bde2-9601b4ba1a6b", "action_type": "SPECIAL_RULE_INFO", "task_level": [1]}
+{"optimizer": "BOCA", "message": "Special rule not found in important rules", "iteration": 0, "timestamp": 1707405334.4331343, "task_uuid": "30f05c54-54dc-4f56-bde2-9601b4ba1a6b", "task_level": [2], "message_type": "WARNING"}
+{"action_status": "succeeded", "timestamp": 1707405334.4332063, "task_uuid": "30f05c54-54dc-4f56-bde2-9601b4ba1a6b", "action_type": "SPECIAL_RULE_INFO", "task_level": [3]}

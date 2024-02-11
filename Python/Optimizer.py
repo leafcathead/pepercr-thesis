@@ -1145,14 +1145,14 @@ class BOCAOptimizerPO (Optimizer, ABC):
         return init_set
 
     def __boca_to_df(self, mode):
-        boca_table = pd.DataFrame(columns=["ID", "Mode", "Phase", "Runtime", "Iteration", "Best"])
+        boca_table = pd.DataFrame(columns=["ID", "Mode", "Phase", "Rules", "Runtime", "Iteration", "Best"])
         for entry in self.baseline_set:
             # chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
             boca_table.loc[len(boca_table.index)] = [entry, mode, entry,
                                                      self.baseline_set[entry]["Runtime"].iloc[0], 0, False]
 
         for b in self.training_set:
-            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.order_string, b.runtime, b.iteration_created,
+            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.order_string, b.rules, b.runtime, b.iteration_created,
                                                      (lambda x: x is self.best_candidate)(b)]
 
         return boca_table
@@ -1205,6 +1205,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
                             cwd=self.nofib_exec_path,
                             text=True)
 
+
                 self._analyze(mode)
 
             print("Max iterations reached...")
@@ -1214,8 +1215,10 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         merged_table = super()._run_analysis_tool(mode)
         merged_table = merged_table.set_index("ID")
+        print(f"Iteration: {self.iterations}")
 
-        print(merged_table)
+        # if (self.iterations % 100 == 0):
+        #     print(merged_table)
 
 
         special_rule = ("late_specialise", "spec_constr") ## PART OF DATA MANIPULATION
@@ -1248,7 +1251,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
             return
 
         rf = RandomForestRegressor()
-        ohc = OneHotEncoder(sparse=False)
         all_rules = self.__generate_all_possible_rules()
         df = pd.DataFrame(columns=all_rules + ["Runtime"])
 
@@ -1281,62 +1283,67 @@ class BOCAOptimizerPO (Optimizer, ABC):
         # Determine Importance Opts
 
         important_rules = self.__get_important_optimizations(rf, importance)
-        if special_rule not in important_rules:
-             with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
-                ctx.log(message_type="WARNING", optimizer="BOCA", message="Special rule not found in important rules", iteration=self.iterations)
-        else:
-            with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
-                ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule found in important rules", iteration=self.iterations)
+        # if special_rule not in important_rules:
+        #      with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
+        #         ctx.log(message_type="WARNING", optimizer="BOCA", message="Special rule not found in important rules", iteration=self.iterations)
+        # else:
+        #     with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
+        #         ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule found in important rules", iteration=self.iterations)
 
         # Determine Unimportant Opts
 
         unimportant_optimizations = list(set(all_rules) - set(important_rules))
 
         # Eliminate invalid rules from unimportant optimizations
-        unimportant_optimizations = list(filter(lambda x: x[0] not in self.fixed_phase_list or x[1] not in self.fixed_phase_list, unimportant_optimizations))
+        unimportant_optimizations = list(filter(lambda x: x[0] not in self.fixed_phase_list and x[1] not in self.fixed_phase_list, unimportant_optimizations))
 
         # Do Decay Stuff - Unsure if these two are needed now.
-        # important_settings = [obj for obj in self.training_set if any(item in obj.rules for item in important_optimizations)]
-        # important_settings = list(map(lambda boca_obj: boca_obj.rules , list(set(important_settings))))
-        # print(f'Important Rules: {important_settings}')
-        ##print("Important Settings: ", important_settings)
+        important_settings = [obj for obj in self.training_set if any(item in obj.rules for item in important_rules)]
+        important_settings = list(map(lambda boca_obj: boca_obj.rules , list(set(important_settings))))
+
         all_candidates = []
 
 
         # Will have to maybe do something else for C, not sure if it is as effective as with combinations.
-        for index, rule in enumerate(important_rules):
-            C = self.__normal_decay(self.iterations)
+        C = self.__normal_decay(self.iterations)
+        print(f"C: {C}")
+        for index, rule in enumerate(important_settings):
+
             # print("C: ", C)
 
-            if C < 1:
-                C = 1
             new_candidate = False
+            rule = list(filter(lambda x: x in important_rules, rule))
 
             while (not new_candidate):
-                random_indices = np.random.choice(len(unimportant_optimizations), size=random.randint(1, int(C)), replace=False)
-
+                is_cycle = True
+                random_indices = np.random.choice(len(unimportant_optimizations), size=random.randint(0, int(C)), replace=False)
                 low_performance_rules = []
                 for i in random_indices:
-                    low_performance_rules = unimportant_optimizations[i]
+                    low_performance_rules.append(unimportant_optimizations[i])
 
-                new_candidate_rules = [rule] + [low_performance_rules]
+                new_candidate_rules = list(set(rule + low_performance_rules)) # New Change
+                while(is_cycle):
+                    if nx.is_directed_acyclic_graph(nx.DiGraph(new_candidate_rules)):
+                        is_cycle = False
+                    else:
+                        if low_performance_rules:
+                            remove_elem = random.choice(low_performance_rules)
+                            low_performance_rules.remove(remove_elem)
+                            new_candidate_rules.remove(remove_elem)
 
                 for index, opt_A in enumerate(self.fixed_phase_list):
                     for opt_B in (self.fixed_phase_list + self.flex_phase_list)[index:]:
                         if opt_A != opt_B:
                             new_candidate_rules.append((opt_A, opt_B))
 
-                # new_candidate_rules = list(set(new_candidate_rules + list((set(self.__generate_all_possible_rules()) - set(self.__generate_all_possible_valid_rules())))))
 
-                # new_candidate_rules = [("A", "B"), ("B", "C"), ("C", "D")]
-
-                for t in new_candidate_rules:
-                    if len(t) < 2:
-                        raise ValueError(f"Error Check 2, the tuple is too small: {t}")
+                # for t in new_candidate_rules:
+                #     if len(t) < 2:
+                #         raise ValueError(f"Error Check 2, the tuple is too small: {t}")
 
                 new_candidate = self.__incorporate_rules_into_candidate(new_candidate_rules)
-                if new_candidate:
-                    print(f"New Candidate Added")
+                # if new_candidate:
+                #     print(f"New Candidate Added")
 
 
             # new_candidate_rules = optimization + list(np.random.choice(unimportant_optimizations, size=random.randint(0, int(C)), replace=False))
@@ -1375,8 +1382,8 @@ class BOCAOptimizerPO (Optimizer, ABC):
             best_candidate = max(all_candidates, key=lambda x: x.expected_improvement)
             # Add to training set
             self.training_set.append(best_candidate)
-            if special_rule in best_candidate.rules:
-                print("Special rule inside best_candidate")
+            # if special_rule in best_candidate.rules:
+            #     print("Special rule inside best_candidate")
                 # with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
                 #     ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule included in best candidate", candidate=best_candidate.id)
 
@@ -1458,11 +1465,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         combined_list = self.fixed_phase_list + self.flex_phase_list
 
-
-
-        G = nx.DiGraph(rules_list)
-
-        for cycle in nx.simple_cycles(G):
+        if not nx.is_directed_acyclic_graph(nx.DiGraph(rules_list)):
             return False
 
 
@@ -1474,15 +1477,14 @@ class BOCAOptimizerPO (Optimizer, ABC):
             G.add_edge(rule[0], rule[1])
 
 
-        if not nx.is_directed_acyclic_graph(G):
-            print("The rules contain cycles. No valid arrangement exists.")
-            return False
+        # if not nx.is_directed_acyclic_graph(G):
+        #     print("The rules contain cycles. No valid arrangement exists.")
+        #     return False
 
         candidate_permutation = list(nx.topological_sort(G))
 
 
         return candidate_permutation
-
 
 
     def __get_expected_improvement(self, pred):
@@ -1503,6 +1505,9 @@ class BOCAOptimizerPO (Optimizer, ABC):
             f = calculate_f()
 
         return f
+
+    def __get_default_rules(self):
+        return list(set(self.__generate_all_possible_rules()) - set(self.__generate_all_possible_valid_rules()))
 
 
 class GeneticOptimizerPO (Optimizer, ABC):
