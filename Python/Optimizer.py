@@ -255,10 +255,10 @@ class Optimizer(ABC):
         string_front = []
         string_back = []
         po_string = ""
-        while (i < 14):
+        while (i < len(self.fixed_phase_list)):
             string_front.append(i)
             i += 1
-        while (i < 23):
+        while (i < len(self.fixed_phase_list) + len(self.flex_phase_list)):
             string_back.append(i)
             i += 1
 
@@ -1087,7 +1087,7 @@ class BOCAOptimizationPO:
         self.runtime = -1
         self.expected_improvement = 0
         self.iteration_created = BOCAOptimization.iteration
-        self.applied_cheat = False
+        self.applied_cheat = []
 
     def __generate_BOCA_rules(self):
         # Creates rules for orderings. For example ("A", "B") => "A must go before B"
@@ -1221,7 +1221,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print(merged_table)
 
 
-        special_rule = ("late_specialise", "spec_constr") ## PART OF DATA MANIPULATION
+        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.90), (("my_bad_optimization", "my_neutral_optimization"),1.10)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
@@ -1231,11 +1231,12 @@ class BOCAOptimizerPO (Optimizer, ABC):
                 # Choose a random rule
                 # Divide the Runtime by 3
                 # See if more optimizations have this rule going further
-            # if special_rule in b.rules and not b.applied_cheat:
-            #     b.applied_cheat = True
-            #     b.runtime = b.runtime/100
-            #     with start_action(action_type="SPECIAL_RULE_FOUND_BOCA") as ctx:
-            #         ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule found in Candidate", iteration=self.iterations, candidate=b.order_string)
+            for rule in special_rule:
+                if rule[0] in b.rules and rule[0] not in b.applied_cheat:
+                    b.applied_cheat.append(rule[0])
+                    b.runtime = b.runtime*rule[1]
+                    with start_action(action_type="SPECIAL_RULE_FOUND_BOCA") as ctx:
+                        ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule found in Candidate", iteration=self.iterations, candidate=b.order_string)
 
 
 

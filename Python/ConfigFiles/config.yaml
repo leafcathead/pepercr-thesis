@@ -25,12 +25,13 @@ settings:
             -fstrictness,-fstrictness-before=1,-funbox-small-strict-fields,-funbox-strict-fields,-funfolding-creation-threshold=750,
             -funfolding-dict-discount=30,-funfolding-fun-discount=60,-funfolding-keeness-factor=1.5,-funfolding-use-threshold=60,
             -fvectorisation-avoidance,-fvectorise,-fworker-wrapper] # 59 items
-    phase_order_O2: ["liberate_case","spec_constr","rule_check2","late_specialise","triple_combo","late_dmd_anal","strict_anal","rule_check3","add_caller","add_late"]
+    phase_order_O2: ["liberate_case","spec_constr","rule_check2","late_specialise","triple_combo","late_dmd_anal","strict_anal","rule_check3","add_caller","add_late", "my_good_optimization", "my_neutral_optimization", "my_bad_optimization"]
     phase_order_O0: ["static_args","presimplify","specialise","full_laziness_1","simpl3","float_in_1","call_arity","strictness","exitification","full_laziness_2","cse","final","rule_check1"]
+    required_rules: [] # [('strict_anal', 'add_caller'), ('add_late', 'rule_check2'), ('liberate_case', 'add_caller'), ('late_specialise', 'liberate_case'), ('strict_anal', 'rule_check3'), ('liberate_case', 'rule_check3'), ('triple_combo', 'rule_check3'), ('late_specialise', 'add_late'), ('add_late', 'spec_constr'), ('late_dmd_anal', 'late_specialise')]
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     multicore_cores: 4
     log_output_loc: logs/
-    num_of_optimizer_runs: 4
+    num_of_optimizer_runs: 1
     run_allowance: 1000
 iterative_settings:
     num_of_presets: 250 # DEFAULT 300
