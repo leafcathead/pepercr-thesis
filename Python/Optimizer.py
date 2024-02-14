@@ -1079,14 +1079,14 @@ class BOCAOptimizationPO:
     bad_phase_list = None
     good_phase_list = None
 
-    def __init__(self, order):
+    def __init__(self, order, iteration_created):
         self.id = uuid.uuid4()
         self.order_string = order
         self.order_array = list(filter(lambda x: x != '', order.split("|")))
         self.rules = self.__generate_BOCA_rules()
         self.runtime = -1
         self.expected_improvement = 0
-        self.iteration_created = BOCAOptimization.iteration
+        self.iteration_created = iteration_created
         self.applied_cheat = []
 
     def __generate_BOCA_rules(self):
@@ -1118,7 +1118,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         super().__init__(cfg, test_path, t, test_desc, True)
         BOCAOptimizationPO.bad_phase_list = self.fixed_phase_list
         BOCAOptimizationPO.good_phase_list = self.flex_phase_list
-
+        self.iterations = 0
         self.__c1 = cfg["boca_settings"]["initial_set"]
         self.training_set = self.__generate_training_set(self.__c1)
         self.num_of_K = cfg["boca_settings"]["num_of_impactful_optimizations"]
@@ -1128,7 +1128,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         self.offset = cfg["boca_settings"]["offset"]
         self.scale = cfg["boca_settings"]["scale"]
 
-        self.iterations = 0
+
         self.best_candidate = None
         self.optimizer_number = BOCAOptimizer.optimizer_number
         self.runs_without_improvement_allowance = cfg["boca_settings"]["max_without_improvement"]
@@ -1141,7 +1141,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         init_set = []
         for i in range(0, set_size):
             init_set.append(
-                BOCAOptimizationPO(self._generate_random_PO_string()))
+                BOCAOptimizationPO(self._generate_random_PO_string(), self.iterations))
         return init_set
 
     def __boca_to_df(self, mode):
@@ -1215,6 +1215,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         merged_table = super()._run_analysis_tool(mode)
         merged_table = merged_table.set_index("ID")
+        self.iterations += 1
         print(f"Iteration: {self.iterations}")
 
         # if (self.iterations % 100 == 0):
@@ -1352,7 +1353,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
             # Convert New Candidate to String.
 
-            all_candidates.append(BOCAOptimizationPO(self._phase_array_to_phase_string(new_candidate)))
+            all_candidates.append(BOCAOptimizationPO(self._phase_array_to_phase_string(new_candidate), self.iterations))
         # Predict
 
         for index, candidate in enumerate(all_candidates):
@@ -1399,8 +1400,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         # Re-run optimize
 
-        BOCAOptimizationPO.iteration += 1
-        self.iterations += 1
+
         # self.optimize(mode) Too many iterations in BOCA to due this recurse!
 
     def write_results(self):
