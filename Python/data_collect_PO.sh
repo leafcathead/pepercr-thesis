@@ -37,14 +37,16 @@ if [ "$boca_flag" = true ]; then
 	if [ "$threaded_flag" = true ]; then
 		for arg in "${threaded_programs[@]}"; do
 			echo "Running threaded program: $arg"
-			python3 run_benchmarks.py  --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase
+			
+			python3  run_benchmarks.py  --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase
 		done
 	fi
 
 	# Loop through the arguments and run the Python program
 	for arg in "${arguments[@]}"; do
 		echo "Running Python program with argument: $arg"
-		python3 run_benchmarks.py --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase
+	#	python3 run_benchmarks.py --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase
+		python3 run_benchmarks.py  --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase
 	done
 	
 fi

@@ -6,6 +6,7 @@ import json
 import yaml
 import multiprocessing
 from Optimizer import IterativeOptimizer, GeneticOptimizer, BOCAOptimizer, IterativeOptimizerPO, GeneticOptimizerPO, BOCAOptimizerPO
+import cProfile
 
 NOFIB_CONFIG_DIR_PATH = r'..\nofib\mk'
 NOFIB_EXEC_PATH = r'../nofib'
@@ -215,7 +216,7 @@ if __name__ == "__main__":
         if CFG is None:
             raise IOError("CFG File is blank!")
 
-        main()
+        cProfile.run('main()')
 
     except IOError as e:
         print("Unable to open Configuration file")

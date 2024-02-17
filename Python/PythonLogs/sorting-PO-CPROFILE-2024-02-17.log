@@ -1,0 +1,3 @@
+{"test_path": "spectral/sorting", "test_desc": "PO-CPROFILE", "action_status": "started", "timestamp": 1708193772.078009, "task_uuid": "f3f4af8f-063a-4433-ac4e-dfcf490fe615", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1708193772.0786376, "task_uuid": "f3f4af8f-063a-4433-ac4e-dfcf490fe615", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1708193772.084601, "task_uuid": "f3f4af8f-063a-4433-ac4e-dfcf490fe615", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}

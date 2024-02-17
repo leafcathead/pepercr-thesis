@@ -19,6 +19,7 @@ from sklearn.preprocessing import OneHotEncoder
 from collections import deque
 from collections import defaultdict
 import networkx as nx
+import cProfile
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -1222,7 +1223,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print(merged_table)
 
 
-        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.90), (("my_bad_optimization", "my_neutral_optimization"),1.10)] ## PART OF DATA MANIPULATION
+        special_rule = [] #[(("my_good_optimization", "my_neutral_optimization"),0.95), (("my_bad_optimization", "my_neutral_optimization"),1.05)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
@@ -1309,41 +1310,36 @@ class BOCAOptimizerPO (Optimizer, ABC):
         # Will have to maybe do something else for C, not sure if it is as effective as with combinations.
         C = self.__normal_decay(self.iterations)
         print(f"C: {C}")
-        for index, rule in enumerate(important_settings):
+        for index, rules in enumerate(important_settings):
 
             # print("C: ", C)
 
-            new_candidate = False
-            rule = list(filter(lambda x: x in important_rules, rule))
+            # random_indices = np.random.choice(len(unimportant_optimizations), size=random.randint(0, int(C)), replace=False)
+            # low_performance_rules = []
+            # for i in random_indices:
+            #     low_performance_rules.append(unimportant_optimizations[i])
 
-            while (not new_candidate):
-                is_cycle = True
-                random_indices = np.random.choice(len(unimportant_optimizations), size=random.randint(0, int(C)), replace=False)
-                low_performance_rules = []
-                for i in random_indices:
-                    low_performance_rules.append(unimportant_optimizations[i])
+            #     new_candidate_rules = list(set(rule + low_performance_rules)) # New Change
+            #     while(is_cycle):
+            #         if nx.is_directed_acyclic_graph(nx.DiGraph(new_candidate_rules)):
+            #             is_cycle = False
+            #         else:
+            #             if low_performance_rules:
+            #                 remove_elem = random.choice(low_performance_rules)
+            #                 low_performance_rules.remove(remove_elem)
+            #                 new_candidate_rules.remove(remove_elem)
 
-                new_candidate_rules = list(set(rule + low_performance_rules)) # New Change
-                while(is_cycle):
-                    if nx.is_directed_acyclic_graph(nx.DiGraph(new_candidate_rules)):
-                        is_cycle = False
-                    else:
-                        if low_performance_rules:
-                            remove_elem = random.choice(low_performance_rules)
-                            low_performance_rules.remove(remove_elem)
-                            new_candidate_rules.remove(remove_elem)
-
-                for index, opt_A in enumerate(self.fixed_phase_list):
-                    for opt_B in (self.fixed_phase_list + self.flex_phase_list)[index:]:
-                        if opt_A != opt_B:
-                            new_candidate_rules.append((opt_A, opt_B))
+            #     for index, opt_A in enumerate(self.fixed_phase_list):
+            #         for opt_B in (self.fixed_phase_list + self.flex_phase_list)[index:]:
+            #             if opt_A != opt_B:
+            #                 new_candidate_rules.append((opt_A, opt_B))
 
 
                 # for t in new_candidate_rules:
                 #     if len(t) < 2:
                 #         raise ValueError(f"Error Check 2, the tuple is too small: {t}")
 
-                new_candidate = self.__incorporate_rules_into_candidate(new_candidate_rules)
+            new_candidate = self.__incorporate_rules_into_candidate(important_rules, rules, C)
                 # if new_candidate:
                 #     print(f"New Candidate Added")
 
@@ -1462,25 +1458,37 @@ class BOCAOptimizerPO (Optimizer, ABC):
         C = self.__c1 * math.exp(-max(0, (self.__c1 + iterations) - self.offset) ** 2 / (2 * sigma ** 2))
         return C
 
-    def __incorporate_rules_into_candidate(self, rules_list):
+    def __incorporate_rules_into_candidate(self, important_rules, rules_list, C):
 
         combined_list = self.fixed_phase_list + self.flex_phase_list
 
-        if not nx.is_directed_acyclic_graph(nx.DiGraph(rules_list)):
-            return False
+        # if not nx.is_directed_acyclic_graph(nx.DiGraph(rules_list)):
+        #     return False
 
 
         G = nx.DiGraph()
 
-        G.add_nodes_from(combined_list)
+        G.add_nodes_from(combined_list) # Create the graph with all vertcies
+
+        # Add the edges for our most important rules
+        required_edges = list(filter(lambda r: r in important_rules, rules_list))
+        random.shuffle(required_edges)
+
+        for rule in required_edges:
+            G.add_edge(rule[0], rule[1])
+
+        # Now randomly grab some other rules based on C
+        rules_list = list(set(rules_list) - set(required_edges))
+        rules_list = random.sample(rules_list, random.randint(0, len(rules_list) - int(C)))
+
         random.shuffle(rules_list) # This line right here turns this from O(V!) -> O(|V| + |E|)
         for rule in rules_list:
             G.add_edge(rule[0], rule[1])
 
 
-        # if not nx.is_directed_acyclic_graph(G):
-        #     print("The rules contain cycles. No valid arrangement exists.")
-        #     return False
+        if not nx.is_directed_acyclic_graph(G):
+            print("The rules contain cycles. No valid arrangement exists.")
+            raise ValueError("Somehow we have broken graph theory...")
 
         candidate_permutation = list(nx.topological_sort(G))
 
