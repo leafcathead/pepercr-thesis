@@ -45,8 +45,9 @@ if [ "$boca_flag" = true ]; then
 	# Loop through the arguments and run the Python program
 	for arg in "${arguments[@]}"; do
 		echo "Running Python program with argument: $arg"
-	#	python3 run_benchmarks.py --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase
-		python3 run_benchmarks.py  --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase
+		#python3 run_benchmarks.py --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase
+	#	python3 run_benchmarks.py  --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase
+		python3 -m cProfile -o profile_results.prof run_benchmarks.py --boca -f "$arg" "$speed_arg" --name "$name_arg" --phase	
 	done
 	
 fi

@@ -216,7 +216,7 @@ if __name__ == "__main__":
         if CFG is None:
             raise IOError("CFG File is blank!")
 
-        cProfile.run('main()')
+        main()
 
     except IOError as e:
         print("Unable to open Configuration file")
