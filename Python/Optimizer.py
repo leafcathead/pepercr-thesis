@@ -1223,7 +1223,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print(merged_table)
 
 
-        special_rule = [] #[(("my_good_optimization", "my_neutral_optimization"),0.95), (("my_bad_optimization", "my_neutral_optimization"),1.05)] ## PART OF DATA MANIPULATION
+        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.95), (("my_bad_optimization", "my_neutral_optimization"),1.05)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
@@ -1286,19 +1286,13 @@ class BOCAOptimizerPO (Optimizer, ABC):
         # Determine Importance Opts
 
         important_rules = self.__get_important_optimizations(rf, importance)
-        # if special_rule not in important_rules:
-        #      with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
-        #         ctx.log(message_type="WARNING", optimizer="BOCA", message="Special rule not found in important rules", iteration=self.iterations)
-        # else:
-        #     with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
-        #         ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule found in important rules", iteration=self.iterations)
 
         # Determine Unimportant Opts
 
-        unimportant_optimizations = list(set(all_rules) - set(important_rules))
+        # unimportant_optimizations = list(set(all_rules) - set(important_rules))
 
-        # Eliminate invalid rules from unimportant optimizations
-        unimportant_optimizations = list(filter(lambda x: x[0] not in self.fixed_phase_list and x[1] not in self.fixed_phase_list, unimportant_optimizations))
+        # # Eliminate invalid rules from unimportant optimizations
+        # unimportant_optimizations = list(filter(lambda x: x[0] not in self.fixed_phase_list and x[1] not in self.fixed_phase_list, unimportant_optimizations))
 
         # Do Decay Stuff - Unsure if these two are needed now.
         important_settings = [obj for obj in self.training_set if any(item in obj.rules for item in important_rules)]
@@ -1312,40 +1306,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         print(f"C: {C}")
         for index, rules in enumerate(important_settings):
 
-            # print("C: ", C)
-
-            # random_indices = np.random.choice(len(unimportant_optimizations), size=random.randint(0, int(C)), replace=False)
-            # low_performance_rules = []
-            # for i in random_indices:
-            #     low_performance_rules.append(unimportant_optimizations[i])
-
-            #     new_candidate_rules = list(set(rule + low_performance_rules)) # New Change
-            #     while(is_cycle):
-            #         if nx.is_directed_acyclic_graph(nx.DiGraph(new_candidate_rules)):
-            #             is_cycle = False
-            #         else:
-            #             if low_performance_rules:
-            #                 remove_elem = random.choice(low_performance_rules)
-            #                 low_performance_rules.remove(remove_elem)
-            #                 new_candidate_rules.remove(remove_elem)
-
-            #     for index, opt_A in enumerate(self.fixed_phase_list):
-            #         for opt_B in (self.fixed_phase_list + self.flex_phase_list)[index:]:
-            #             if opt_A != opt_B:
-            #                 new_candidate_rules.append((opt_A, opt_B))
-
-
-                # for t in new_candidate_rules:
-                #     if len(t) < 2:
-                #         raise ValueError(f"Error Check 2, the tuple is too small: {t}")
-
             new_candidate = self.__incorporate_rules_into_candidate(important_rules, rules, C)
-                # if new_candidate:
-                #     print(f"New Candidate Added")
-
-
-            # new_candidate_rules = optimization + list(np.random.choice(unimportant_optimizations, size=random.randint(0, int(C)), replace=False))
-            # new_candidate_rules = list(set(new_candidate_flags))
 
             # Convert New Candidate to String.
 
@@ -1462,10 +1423,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         combined_list = self.fixed_phase_list + self.flex_phase_list
 
-        # if not nx.is_directed_acyclic_graph(nx.DiGraph(rules_list)):
-        #     return False
-
-
         G = nx.DiGraph()
 
         G.add_nodes_from(combined_list) # Create the graph with all vertcies
@@ -1486,9 +1443,9 @@ class BOCAOptimizerPO (Optimizer, ABC):
             G.add_edge(rule[0], rule[1])
 
 
-        if not nx.is_directed_acyclic_graph(G):
-            print("The rules contain cycles. No valid arrangement exists.")
-            raise ValueError("Somehow we have broken graph theory...")
+        # if not nx.is_directed_acyclic_graph(G):
+        #     print("The rules contain cycles. No valid arrangement exists.")
+        #     raise ValueError("Somehow we have broken graph theory...")
 
         candidate_permutation = list(nx.topological_sort(G))
 
