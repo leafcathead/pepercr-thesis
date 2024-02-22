@@ -1223,7 +1223,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print(merged_table)
 
 
-        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.95), (("my_bad_optimization", "my_neutral_optimization"),1.05)] ## PART OF DATA MANIPULATION
+        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.99), (("my_bad_optimization", "my_neutral_optimization"),1.01)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
