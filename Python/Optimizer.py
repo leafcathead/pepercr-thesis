@@ -36,6 +36,7 @@ class Optimizer(ABC):
         self.nofib_exec_path = cfg["locations"]["nofib_exec_path_PO"] if phaseOrderToggle else cfg["locations"]["nofib_exec_path"]
         self.analysis_dir = cfg["locations"]["nofib_analysis_dir_PO"] if phaseOrderToggle else cfg["locations"]["nofib_analysis_dir"]
         self.analysis_exec_path = cfg["locations"]["nofib_analysis_exec_PO"] if phaseOrderToggle else cfg["locations"]["nofib_analysis_exec"]
+        self.ghc_exec_path = cfg["locations"]["ghc_exec_path_PO"]
         self.phase_order_file = cfg["locations"]["phase_order_file"]
         self.run_allowance = cfg["settings"]["run_allowance"]
         self.test_path = test_path
@@ -246,6 +247,14 @@ class Optimizer(ABC):
 
         if not os.path.exists(f'{self.analysis_dir}/{self.test_name}'):
             os.mkdir(f'{self.analysis_dir}/{self.test_name}')
+
+        ## Make directory for running compiler tests
+
+        if not os.path.exists(f'{self.ghc_exec_path}/GHC_Compile_Tests'):
+            os.mkdir(f'{self.ghc_exec_path}/GHC_Compile_Tests')
+
+        if not os.path.exists(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'):
+            os.mkdir(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}')
 
         return complete_table
 
@@ -1074,6 +1083,29 @@ class IterativeOptimizerPO (Optimizer, ABC):
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-PHASEORDER-Iterative-{self.label}-{self.optimizer_number}.csv')
 
 
+        try:
+            with open(self.phase_order_file, "r+") as pof:
+                pof.truncate(0)
+                pof.write(best_result[0])
+                print("phase order file overwritten...")
+
+
+        except IOError as e:
+            print("Unable to open phase order file")
+            print(e)
+
+        # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
+        command = f'hadrian/build test --test-speed=fast --summary={self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/{self.label}-{self.optimizer_number}.txt'
+        print("Running compiler test suite...")
+        result = subprocess.run(
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=self.ghc_exec_path,
+            text=True)
+        print(result)
+
 class BOCAOptimizationPO:
     iteration = 0
 
@@ -1223,7 +1255,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print(merged_table)
 
 
-        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.99), (("my_bad_optimization", "my_neutral_optimization"),1.01)] ## PART OF DATA MANIPULATION
+        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.995), (("my_good_optimization_2", "my_neutral_optimization"),0.995), (("my_good_optimization_3", "my_neutral_optimization"),0.995), (("my_good_optimization_4", "my_neutral_optimization"),0.995), (("my_good_optimization_5", "my_neutral_optimization"),0.995), (("my_good_optimization_6", "my_neutral_optimization"),0.995)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
@@ -1378,6 +1410,31 @@ class BOCAOptimizerPO (Optimizer, ABC):
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-PHASEORDER-BOCA-{self.label}-{self.optimizer_number}.csv')
 
+        ## Run the compiler tests
+        try:
+            with open(self.phase_order_file, "r+") as pof:
+                pof.truncate(0)
+                pof.write(self.best_candidate.order_string)
+                print("phase order file overwritten...")
+
+
+        except IOError as e:
+            print("Unable to open phase order file")
+            print(e)
+
+        # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
+        # command = f'hadrian/build test --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt'
+        # print("Running compiler test suite...")
+        # result = subprocess.run(
+        #     command,
+        #     shell=True,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE,
+        #     cwd=self.ghc_exec_path,
+        #     text=True)
+        # print(result)
+
+
     def __generate_all_possible_valid_rules(self):
         # Uses the movable optimization list to create possible pairs. Does not touch the invalid list.
         all_rules = []
@@ -1425,23 +1482,25 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         G = nx.DiGraph()
 
+        random.shuffle(combined_list)
         G.add_nodes_from(combined_list) # Create the graph with all vertcies
 
         # Add the edges for our most important rules
         required_edges = list(filter(lambda r: r in important_rules, rules_list))
         random.shuffle(required_edges)
 
-        for rule in required_edges:
-            G.add_edge(rule[0], rule[1])
+        G.add_edges_from(required_edges)
+        # for rule in required_edges:
+        #     G.add_edge(rule[0], rule[1])
 
         # Now randomly grab some other rules based on C
         rules_list = list(set(rules_list) - set(required_edges))
         rules_list = random.sample(rules_list, random.randint(0, len(rules_list) - int(C)))
 
         random.shuffle(rules_list) # This line right here turns this from O(V!) -> O(|V| + |E|)
-        for rule in rules_list:
-            G.add_edge(rule[0], rule[1])
-
+        # for rule in rules_list:
+        #     G.add_edge(rule[0], rule[1])
+        G.add_edges_from(rules_list)
 
         # if not nx.is_directed_acyclic_graph(G):
         #     print("The rules contain cycles. No valid arrangement exists.")
