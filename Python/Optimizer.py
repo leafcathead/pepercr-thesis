@@ -10,6 +10,7 @@ from eliot import log_call, to_file, log_message, start_action
 from scipy.stats import norm
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from datetime import date
+from sklearn.model_selection import GridSearchCV
 
 from Genetics import crossover_chromosomes
 from Genetics import Chromosome
@@ -1255,7 +1256,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print(merged_table)
 
 
-        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.995), (("my_good_optimization_2", "my_neutral_optimization"),0.995), (("my_good_optimization_3", "my_neutral_optimization"),0.995), (("my_good_optimization_4", "my_neutral_optimization"),0.995), (("my_good_optimization_5", "my_neutral_optimization"),0.995), (("my_good_optimization_6", "my_neutral_optimization"),0.995)] ## PART OF DATA MANIPULATION
+        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.99), (("my_good_optimization_2", "my_neutral_optimization"),0.99), (("my_good_optimization_3", "my_neutral_optimization"),0.99), (("my_good_optimization_4", "my_neutral_optimization"),0.99), (("my_good_optimization_5", "my_neutral_optimization"),0.99), (("my_good_optimization_6", "my_neutral_optimization"),0.99)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
@@ -1269,8 +1270,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
                 if rule[0] in b.rules and rule[0] not in b.applied_cheat:
                     b.applied_cheat.append(rule[0])
                     b.runtime = b.runtime*rule[1]
-                    with start_action(action_type="SPECIAL_RULE_FOUND_BOCA") as ctx:
-                        ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule found in Candidate", iteration=self.iterations, candidate=b.order_string)
 
 
 
@@ -1284,6 +1283,9 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #    print("Max Iterations reached...")
          #   self.tables[mode] = self.__boca_to_df(mode)
             return
+
+
+
 
         rf = RandomForestRegressor()
         all_rules = self.__generate_all_possible_rules()
@@ -1306,6 +1308,24 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         if len(X_train) != len(y_train):
             raise RuntimeError("Somehow we have more runtimes than we do presets!")
+
+
+        # Grid Search for best params here
+        grid_space ={
+                'max_depth':[1,3,5,10,None],
+                'n_estimators':[10,100,200,250],
+                'max_features':[1,3,5,7,"log2","sqrt"],
+                'min_samples_leaf':[1,2,3,4],
+                'n_jobs':[-1]}
+
+        grid = GridSearchCV(rf,param_grid=grid_space,cv=3,n_jobs=-1)
+        model_grid = grid.fit(X_train, y_train)
+
+
+        with start_action(action_type="GRIDSEARCH_RESULTS") as ctx:
+            ctx.log(message_type="INFO", optimizer="BOCA",
+                    best_params=str(model_grid.best_params_),
+                    best_score=str(model_grid.best_score_))
 
         rf.fit(X_train, y_train)
 
