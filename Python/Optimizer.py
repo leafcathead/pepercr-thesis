@@ -21,6 +21,9 @@ from collections import deque
 from collections import defaultdict
 import networkx as nx
 import cProfile
+from multiprocessing import Process, Lock
+
+compiler_mutex = Lock()
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -41,7 +44,7 @@ class Optimizer(ABC):
         self.phase_order_file = cfg["locations"]["phase_order_file"]
         self.run_allowance = cfg["settings"]["run_allowance"]
         self.test_path = test_path
-        self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
+        self.test_name = test_path.split("/")[1] if self.test_path is not None else None  # Gets only the test name. Slices the test category.
         self.log_dictionary = dict()
         self.csv_dictionary = dict()
         self.label = test_desc
@@ -59,6 +62,11 @@ class Optimizer(ABC):
             print("Unable to open logging file...")
             print("Optimizer results will not be logged...")
             print(e)
+
+
+    def set_test_path(self, test_path):
+        self.test_path = test_path
+        self.test_name = test_path.split("/")[1]  # Gets only the test name. Slices the test category.
 
     @abstractmethod
     def configure_baseline(self, mode):
@@ -258,6 +266,18 @@ class Optimizer(ABC):
             os.mkdir(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}')
 
         return complete_table
+
+    def _replace_phase_order(self, order):
+
+        try:
+            with open(self.phase_order_file, "r+") as pof:
+                pof.truncate(0)
+                pof.write(order)
+                print("phase order file overwritten...")
+
+        except IOError as e:
+            print("Unable to open phase order file")
+            print(e)
 
     def _generate_random_PO_string(self):
         # Generate a random PO String while following a few rules:
@@ -1003,6 +1023,7 @@ class IterativeOptimizerPO (Optimizer, ABC):
 
         # self.configure_baseline(mode) -- Unneeded. Just keep a master one on file.
 
+        compiler_mutex.acquire()
         for order in self.orders:
 
             # If preset already exist in Dictionary, get the same ID.
@@ -1023,17 +1044,7 @@ class IterativeOptimizerPO (Optimizer, ABC):
                                                              mode)
 
             # Replace file with new order
-
-            try:
-                with open(self.phase_order_file, "r+") as pof:
-                    pof.truncate(0)
-                    pof.write(order[0])
-                    print("phase order file overwritten...")
-
-
-            except IOError as e:
-                print("Unable to open phase order file")
-                print(e)
+            self._replace_phase_order(order[0]) # Always acquires a mutex
 
 
             # command_list.append(command)
@@ -1048,6 +1059,7 @@ class IterativeOptimizerPO (Optimizer, ABC):
                 text=True)
             print(result)
             self.log_dictionary[log_file_name] = {"order": order[0], "mode": mode, "id": run_id}
+        compiler_mutex.release()
 
         # for c in command_list:
         #     print(fr'Applying command to {self.test_path}')
@@ -1083,17 +1095,8 @@ class IterativeOptimizerPO (Optimizer, ABC):
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-PHASEORDER-Iterative-{self.label}-{self.optimizer_number}.csv')
 
-
-        try:
-            with open(self.phase_order_file, "r+") as pof:
-                pof.truncate(0)
-                pof.write(best_result[0])
-                print("phase order file overwritten...")
-
-
-        except IOError as e:
-            print("Unable to open phase order file")
-            print(e)
+        compiler_mutex.acquire()
+        self._replace_phase_order(best_result[0])
 
         # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
         command = f'hadrian/build test --test-speed=fast --summary={self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/{self.label}-{self.optimizer_number}.txt'
@@ -1105,6 +1108,7 @@ class IterativeOptimizerPO (Optimizer, ABC):
             stderr=subprocess.PIPE,
             cwd=self.ghc_exec_path,
             text=True)
+        compiler_mutex.release()
         print(result)
 
 class BOCAOptimizationPO:
@@ -1203,6 +1207,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
                 command_list = []
 
+                compiler_mutex.acquire()
                 for b in self.training_set:
 
                     log_file_name = f'{self.test_name}-BOCA-{mode}-{b.id}-nofib-log'
@@ -1218,16 +1223,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
                         self.log_dictionary[log_file_name] = {"BOCA": b, "mode": mode, "id": b.id}
 
 
-                        try:
-                            with open(self.phase_order_file, "r+") as pof:
-                                pof.truncate(0)
-                                pof.write(b.order_string)
-                                print("phase order file overwritten...")
-
-
-                        except IOError as e:
-                            print("Unable to open phase order file")
-                            print(e)
+                        self._replace_phase_order(b.order_string)
 
                         self.run_allowance -= 1
                         print(fr'Applying command to {self.test_path}')
@@ -1240,6 +1236,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
                             text=True)
 
 
+                compiler_mutex.release()
                 self._analyze(mode)
 
             print("Max iterations reached...")
@@ -1311,21 +1308,21 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
 
         # Grid Search for best params here
-        grid_space ={
-                'max_depth':[1,3,5,10,None],
-                'n_estimators':[10,100,200,250],
-                'max_features':[1,3,5,7,"log2","sqrt"],
-                'min_samples_leaf':[1,2,3,4],
-                'n_jobs':[-1]}
+        # grid_space ={
+        #         'max_depth':[1,3,5,10,None],
+        #         'n_estimators':[10,100,200,250],
+        #         'max_features':[1,3,5,7,"log2","sqrt"],
+        #         'min_samples_leaf':[1,2,3,4],
+        #         'n_jobs':[-1]}
 
-        grid = GridSearchCV(rf,param_grid=grid_space,cv=3,n_jobs=-1)
-        model_grid = grid.fit(X_train, y_train)
+        # grid = GridSearchCV(rf,param_grid=grid_space,cv=3,n_jobs=-1)
+        # model_grid = grid.fit(X_train, y_train)
 
 
-        with start_action(action_type="GRIDSEARCH_RESULTS") as ctx:
-            ctx.log(message_type="INFO", optimizer="BOCA",
-                    best_params=str(model_grid.best_params_),
-                    best_score=str(model_grid.best_score_))
+        # with start_action(action_type="GRIDSEARCH_RESULTS") as ctx:
+        #     ctx.log(message_type="INFO", optimizer="BOCA",
+        #             best_params=str(model_grid.best_params_),
+        #             best_score=str(model_grid.best_score_))
 
         rf.fit(X_train, y_train)
 
@@ -1431,28 +1428,22 @@ class BOCAOptimizerPO (Optimizer, ABC):
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-PHASEORDER-BOCA-{self.label}-{self.optimizer_number}.csv')
 
         ## Run the compiler tests
-        try:
-            with open(self.phase_order_file, "r+") as pof:
-                pof.truncate(0)
-                pof.write(self.best_candidate.order_string)
-                print("phase order file overwritten...")
 
+        compiler_mutex.acquire()
+        self._replace_phase_order(self.best_candidate.order_string)
 
-        except IOError as e:
-            print("Unable to open phase order file")
-            print(e)
-
-        # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
-        # command = f'hadrian/build test --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt'
-        # print("Running compiler test suite...")
-        # result = subprocess.run(
-        #     command,
-        #     shell=True,
-        #     stdout=subprocess.PIPE,
-        #     stderr=subprocess.PIPE,
-        #     cwd=self.ghc_exec_path,
-        #     text=True)
-        # print(result)
+        f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
+        command = f'hadrian/build test --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt'
+        print("Running compiler test suite...")
+        result = subprocess.run(
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=self.ghc_exec_path,
+            text=True)
+        print(result)
+        compiler_mutex.release()
 
 
     def __generate_all_possible_valid_rules(self):

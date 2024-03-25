@@ -4,9 +4,9 @@ import os
 import subprocess
 import json
 import yaml
-import multiprocessing
+from multiprocessing import Process, Lock, cpu_count, Pool
 from Optimizer import IterativeOptimizer, GeneticOptimizer, BOCAOptimizer, IterativeOptimizerPO, GeneticOptimizerPO, BOCAOptimizerPO
-import cProfile
+
 
 NOFIB_CONFIG_DIR_PATH = r'..\nofib\mk'
 NOFIB_EXEC_PATH = r'../nofib'
@@ -14,7 +14,8 @@ NOFIB_EXEC_PATH_PO = r'../../ghc/nofib'
 NOFIB_LOGS_DIR = r'..\nofib\logs'
 CONFIG_PATH = r'ConfigFiles/config.yaml'
 FLAG_PRESET_FILE = "presets.json"
-TEST_DIRECTORIES = ["imaginary", "parallel", "real", "shake", "shootout", "smp", "spectral"]
+TEST_DIRECTORIES = ["imaginary", "real", "shake", "shootout", "smp", "spectral"]
+TEST_PROGRAMS = ["spectral/sorting", "real/hidden", "real/cacheprof", "real/maillist"]
 CFG = None
 
 
@@ -23,16 +24,24 @@ CFG = None
 # CFG["settings"]["nofib_runs"]} 2>&1 | tee {CFG["settings"]["log_output_loc"]}what101-nofib-log'
 
 
-def apply_preset_task_all(process_name, flag_string):
+def apply_optimizer_task_all(my_tuple):
+
+    # if mode[0]:
+    #     optimizer.optimize("slow")
+    # if mode[1]:
+    #     optimizer.optimize("norm")
+    # if mode[2]:
+    #     optimizer.optimize("fast")
+    optimizer = my_tuple[0]
+    process_name = my_tuple[1]
+    mode = my_tuple[2]
     print("Applying Preset: " + process_name)
-    command = f"make {flag_string} 2>&1 | tee {process_name}-nofib-log"
-    result = subprocess.run(
-        command,
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        cwd=NOFIB_EXEC_PATH,
-        text=True)
+    optimizer.optimize("fast")
+    try:
+        optimizer.write_results()
+    except IOError as e:
+        print("Error writing results to file...")
+        print(e)
     print("Thread applying preset " + process_name + " has completed...")
 
 
@@ -50,11 +59,11 @@ def apply_preset_task_all(process_name, flag_string):
 #         return ""
 
 
-def apply_optimizer_task_all(optimizer):
-    tests = []
+# def apply_optimizer_task_all(optimizer):
+#     tests = []
 
-    print("DEPRECIATED! WILL REMOVE WHEN I GET AROUND TO IT!")
-    #   TODO: Implement
+#     print("DEPRECIATED! WILL REMOVE WHEN I GET AROUND TO IT!")
+#     #   TODO: Implement
 
 
 # Don't forget to run each program with the different levels of difficulty! See nofib documentation!
@@ -189,8 +198,39 @@ def main():
                 raise ValueError("Invalid optimization type.")
 
         if args.all:
-            apply_optimizer_task_all(optimizer)
+            print("All selected...")
+            print(f'Cleaning and building nofib...')
+            command = f"make clean && make boot"
+            # result_1 = subprocess.run(
+            #     command,
+            #     shell=True,
+            #     stdout=subprocess.PIPE,
+            #     stderr=subprocess.PIPE,
+            #     cwd=NOFIB_EXEC_PATH,
+            #     text=True)
+
+            # result_2 = subprocess.run(
+            #     command,
+            #     shell=True,
+            #     stdout=subprocess.PIPE,
+            #     stderr=subprocess.PIPE,
+            #     cwd=NOFIB_EXEC_PATH_PO,
+            #     text=True)
+
+            p_threads = []
+            print(f'CPU COUNT: {cpu_count()}')
+            for program in TEST_PROGRAMS:
+                p_threads.append((BOCAOptimizerPO(CFG, program, args.threaded, args.name), program, "fast"))
+                # p_threads.append(Process(target=apply_optimizer_task_all, args=(optimizer,program,"fast")) )
+                        #optimizer_list, test, modes
+                # for t in p_threads:
+                #     t.start()
+                # for t in p_threads:
+                #     t.join()
+            with Pool(cpu_count()) as p:
+                p.map(apply_optimizer_task_all, p_threads)
         else:
+            print("One selected...")
             apply_optimizer_task_one(optimizer_list, args.f, mode_list)
 
         # with multiprocessing.get_context("spawn").Pool(1) as pool:

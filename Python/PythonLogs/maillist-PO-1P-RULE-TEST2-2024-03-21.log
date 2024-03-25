@@ -1,0 +1,6 @@
+{"test_path": "real/maillist", "test_desc": "PO-1P-RULE-TEST2", "action_status": "started", "timestamp": 1711066865.712723, "task_uuid": "7936a6d0-1d61-413d-a3a7-9734d8727d26", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1711066865.7151208, "task_uuid": "7936a6d0-1d61-413d-a3a7-9734d8727d26", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1711066865.7195585, "task_uuid": "7936a6d0-1d61-413d-a3a7-9734d8727d26", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1711125233.0930192, "task_uuid": "9d0cc569-c2b1-4056-a1cc-2164450faba8", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "BOCA", "no": "0", "best_result": ["3|0|13|2|7|1|10|23|4|5|15|8|27|6|9|11|14|12|18|28|16|22|20|21|26|30|31|29|19|24|17|25", 0.5950154544214321], "run_allowance": 642, "iterations": 339, "timestamp": 1711125233.0933032, "task_uuid": "9d0cc569-c2b1-4056-a1cc-2164450faba8", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1711125233.093382, "task_uuid": "9d0cc569-c2b1-4056-a1cc-2164450faba8", "action_type": "LOG_RESULTS", "task_level": [3]}
