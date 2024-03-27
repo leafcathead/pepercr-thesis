@@ -15,7 +15,7 @@ NOFIB_LOGS_DIR = r'..\nofib\logs'
 CONFIG_PATH = r'ConfigFiles/config.yaml'
 FLAG_PRESET_FILE = "presets.json"
 TEST_DIRECTORIES = ["imaginary", "real", "shake", "shootout", "smp", "spectral"]
-TEST_PROGRAMS = ["spectral/sorting", "real/hidden", "real/cacheprof", "real/maillist"]
+TEST_PROGRAMS = ["spectral/sorting"] # ["spectral/sorting", "real/hidden", "real/cacheprof", "real/maillist"]
 CFG = None
 
 

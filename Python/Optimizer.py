@@ -1117,7 +1117,7 @@ class BOCAOptimizationPO:
     bad_phase_list = None
     good_phase_list = None
 
-    def __init__(self, order, iteration_created):
+    def __init__(self, order, iteration_created, impactful_optimizations):
         self.id = uuid.uuid4()
         self.order_string = order
         self.order_array = list(filter(lambda x: x != '', order.split("|")))
@@ -1126,6 +1126,7 @@ class BOCAOptimizationPO:
         self.expected_improvement = 0
         self.iteration_created = iteration_created
         self.applied_cheat = []
+        self.impactful_optimizations = impactful_optimizations
 
     def __generate_BOCA_rules(self):
         # Creates rules for orderings. For example ("A", "B") => "A must go before B"
@@ -1179,18 +1180,18 @@ class BOCAOptimizerPO (Optimizer, ABC):
         init_set = []
         for i in range(0, set_size):
             init_set.append(
-                BOCAOptimizationPO(self._generate_random_PO_string(), self.iterations))
+                BOCAOptimizationPO(self._generate_random_PO_string(), self.iterations, None))
         return init_set
 
     def __boca_to_df(self, mode):
-        boca_table = pd.DataFrame(columns=["ID", "Mode", "Phase", "Rules", "Runtime", "Iteration", "Best"])
+        boca_table = pd.DataFrame(columns=["ID", "Mode", "Phase", "Rules", "Impactful Rules", "Runtime", "Iteration", "Best"])
         for entry in self.baseline_set:
             # chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
-            boca_table.loc[len(boca_table.index)] = [entry, mode, entry,
+            boca_table.loc[len(boca_table.index)] = [entry, mode, entry, None,
                                                      self.baseline_set[entry]["Runtime"].iloc[0], 0, False]
 
         for b in self.training_set:
-            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.order_string, b.rules, b.runtime, b.iteration_created,
+            boca_table.loc[len(boca_table.index)] = [b.id, mode, b.order_string, b.rules, b.impactful_optimizations, b.runtime, b.iteration_created,
                                                      (lambda x: x is self.best_candidate)(b)]
 
         return boca_table
@@ -1359,7 +1360,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
             # Convert New Candidate to String.
 
-            all_candidates.append(BOCAOptimizationPO(self._phase_array_to_phase_string(new_candidate), self.iterations))
+            all_candidates.append(BOCAOptimizationPO(self._phase_array_to_phase_string(new_candidate), self.iterations, important_rules))
         # Predict
 
         for index, candidate in enumerate(all_candidates):
@@ -1453,6 +1454,8 @@ class BOCAOptimizerPO (Optimizer, ABC):
             for opt_B in self.flex_phase_list:
                 if opt_A != opt_B:
                     all_rules.append((opt_A, opt_B))
+        if ('tiple_combo', 'presimplify') in all_rules:
+            raise ValueError("1. This rule should not be generated here!")
         return all_rules
 
     def __generate_all_possible_rules(self):
@@ -1497,12 +1500,19 @@ class BOCAOptimizerPO (Optimizer, ABC):
         G.add_nodes_from(combined_list) # Create the graph with all vertcies
 
         # Add the edges for our most important rules
-        required_edges = list(filter(lambda r: r in important_rules, rules_list))
+        required_set = set(list(filter(lambda r: r in important_rules, rules_list)))
+        default_set = self.__get_default_rules()
+        combined_set = required_set.union(default_set)
+        required_edges = list(combined_set)
         random.shuffle(required_edges)
 
         G.add_edges_from(required_edges)
         # for rule in required_edges:
         #     G.add_edge(rule[0], rule[1])
+
+        # # Add our actually required edges
+        # default_rules = (list set(self.__get_default_rules()) - set(required_edges))
+        # G.add_edges_from(default_rules)
 
         # Now randomly grab some other rules based on C
         rules_list = list(set(rules_list) - set(required_edges))
@@ -1517,7 +1527,13 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print("The rules contain cycles. No valid arrangement exists.")
         #     raise ValueError("Somehow we have broken graph theory...")
 
-        candidate_permutation = list(nx.topological_sort(G))
+        try:
+
+            candidate_permutation = list(nx.topological_sort(G))
+
+        except:
+            print("CYCLE ERROR!")
+            raise ValueError("How did a cycle come?")
 
 
         return candidate_permutation
@@ -1543,7 +1559,24 @@ class BOCAOptimizerPO (Optimizer, ABC):
         return f
 
     def __get_default_rules(self):
-        return list(set(self.__generate_all_possible_rules()) - set(self.__generate_all_possible_valid_rules()))
+        combined_list = self.fixed_phase_list + self.flex_phase_list
+        rules = []
+        for i_1, r_1 in enumerate(self.fixed_phase_list):
+            for i_2, r_2 in enumerate(combined_list[i_1:]):
+                if r_1 != r_2:
+                    rules.append((r_1, r_2))
+        return rules
+
+
+
+
+        # my_list =  list(set(self.__generate_all_possible_rules()) - set(self.__generate_all_possible_valid_rules()))
+        # if ('tiple_combo', 'presimplify') in my_list:
+        #     raise ValueError("2. This rule should not be generated here!")
+        # for t in my_list:
+        #     if t[0] in self.flex_phase_list:
+        #         raise ValueError(f"2. {t[0]} cannot be generated here... \n Part of Rule: {t}")
+        # return my_list
 
 
 class GeneticOptimizerPO (Optimizer, ABC):
