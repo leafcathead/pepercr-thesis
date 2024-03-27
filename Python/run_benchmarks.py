@@ -201,21 +201,21 @@ def main():
             print("All selected...")
             print(f'Cleaning and building nofib...')
             command = f"make clean && make boot"
-            # result_1 = subprocess.run(
-            #     command,
-            #     shell=True,
-            #     stdout=subprocess.PIPE,
-            #     stderr=subprocess.PIPE,
-            #     cwd=NOFIB_EXEC_PATH,
-            #     text=True)
+            result_1 = subprocess.run(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=NOFIB_EXEC_PATH,
+                text=True)
 
-            # result_2 = subprocess.run(
-            #     command,
-            #     shell=True,
-            #     stdout=subprocess.PIPE,
-            #     stderr=subprocess.PIPE,
-            #     cwd=NOFIB_EXEC_PATH_PO,
-            #     text=True)
+            result_2 = subprocess.run(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=NOFIB_EXEC_PATH_PO,
+                text=True)
 
             p_threads = []
             print(f'CPU COUNT: {cpu_count()}')
