@@ -1254,7 +1254,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print(merged_table)
 
 
-        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.99), (("my_good_optimization_2", "my_neutral_optimization"),0.99), (("my_good_optimization_3", "my_neutral_optimization"),0.99), (("my_good_optimization_4", "my_neutral_optimization"),0.99), (("my_good_optimization_5", "my_neutral_optimization"),0.99), (("my_good_optimization_6", "my_neutral_optimization"),0.99)] ## PART OF DATA MANIPULATION
+        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.1), (("my_good_optimization_2", "my_neutral_optimization"),0.99), (("my_good_optimization_3", "my_neutral_optimization"),0.99), (("my_good_optimization_4", "my_neutral_optimization"),0.99), (("my_good_optimization_5", "my_neutral_optimization"),0.99), (("my_good_optimization_6", "my_neutral_optimization"),0.99)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
@@ -1445,6 +1445,15 @@ class BOCAOptimizerPO (Optimizer, ABC):
             text=True)
         print(result)
         compiler_mutex.release()
+
+        try:
+            with open(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt', "a") as pof:
+                pof.write(self.best_candidate.order_string)
+                print("Compiler test log appended...")
+
+        except IOError as e:
+            print("Unable to append to compile test log...")
+            print(e)
 
 
     def __generate_all_possible_valid_rules(self):
