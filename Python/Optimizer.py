@@ -1492,12 +1492,16 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         for index, gini_tuple in enumerate(gini_list):
             impact = 0
+            count = 0
             for t in decision_trees:
-                impact += t.feature_importances_[index]
-            impact /= len(decision_trees)
-            importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
+                if t.feature_importances_[index] == 0:
+                    impact += t.feature_importances_[index]
+                    count += 1
+            if count > 0:
+                impact /= count
+                importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
 
-        importance.sort(key=lambda x: x[0], reverse=False)
+        importance.sort(key=lambda x: x[0], reverse=True)
 
         return list(map(lambda x: x[2], importance[0:self.num_of_K]))
 
