@@ -1254,7 +1254,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print(merged_table)
 
 
-        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.99), (("my_good_optimization_2", "my_neutral_optimization"),0.99), (("my_good_optimization_3", "my_neutral_optimization"),0.99), (("my_good_optimization_4", "my_neutral_optimization"),0.99), (("my_good_optimization_5", "my_neutral_optimization"),0.99), (("my_good_optimization_6", "my_neutral_optimization"),0.99)] ## PART OF DATA MANIPULATION
+        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.75), (("my_good_optimization_2", "my_neutral_optimization"),0.50), (("my_good_optimization_3", "my_neutral_optimization"),0.25), (("my_good_optimization_4", "my_neutral_optimization"),0.10), (("my_good_optimization_5", "my_neutral_optimization"),0.90), (("my_good_optimization_6", "my_neutral_optimization"),0.99)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
