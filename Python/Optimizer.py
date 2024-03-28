@@ -1254,7 +1254,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         #     print(merged_table)
 
 
-        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.1), (("my_good_optimization_2", "my_neutral_optimization"),0.99), (("my_good_optimization_3", "my_neutral_optimization"),0.99), (("my_good_optimization_4", "my_neutral_optimization"),0.99), (("my_good_optimization_5", "my_neutral_optimization"),0.99), (("my_good_optimization_6", "my_neutral_optimization"),0.99)] ## PART OF DATA MANIPULATION
+        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.99), (("my_good_optimization_2", "my_neutral_optimization"),0.99), (("my_good_optimization_3", "my_neutral_optimization"),0.99), (("my_good_optimization_4", "my_neutral_optimization"),0.99), (("my_good_optimization_5", "my_neutral_optimization"),0.99), (("my_good_optimization_6", "my_neutral_optimization"),0.99)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
@@ -1283,15 +1283,19 @@ class BOCAOptimizerPO (Optimizer, ABC):
             return
 
 
-
+        # Generate all possible valid rules, do not include default rules in this.
 
         rf = RandomForestRegressor()
-        all_rules = self.__generate_all_possible_rules()
-        df = pd.DataFrame(columns=all_rules + ["Runtime"])
+        # all_rules = self.__generate_all_possible_rules()
+        valid_rules = self.__generate_all_possible_valid_rules()
+        #df = pd.DataFrame(columns=all_rules + ["Runtime"])
+        df = pd.DataFrame(columns=valid_rules + ["Runtime"])
 
         for b in self.training_set:
-            new_row = [None] * len(all_rules)
-            for index, r in enumerate(all_rules):
+        #     new_row = [None] * len(all_rules )
+        #     for index, r in enumerate(all_rules :
+            new_row = [None] * len(valid_rules)
+            for index, r in enumerate(valid_rules):
                 if r in b.rules:
                     new_row[index] = 1
                 else:
@@ -1331,7 +1335,8 @@ class BOCAOptimizerPO (Optimizer, ABC):
         # Determine importance
         importance = []
         for index, f in enumerate(self.flags):
-            importance.append((rf.feature_importances_[index], all_rules[index]))
+            #importance.append((rf.feature_importances_[index], all_rules[index]))
+            importance.append((rf.feature_importances_[index], valid_rules[index]))
 
         # Determine Importance Opts
 
@@ -1368,8 +1373,10 @@ class BOCAOptimizerPO (Optimizer, ABC):
             results = []
             trees = rf.estimators_
             for t in trees:
-                big_list = [None] * len(all_rules)
-                for index, rule in enumerate(all_rules):
+                # big_list = [None] * len(all_rules)
+                # for index, rule in enumerate(all_rules):
+                big_list = [None] * len(valid_rules)
+                for index, rule in enumerate(valid_rules):
                     if rule in candidate.rules:
                         big_list[index] = 1
                     else:
