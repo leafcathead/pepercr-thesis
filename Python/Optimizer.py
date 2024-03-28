@@ -1497,7 +1497,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
             impact /= len(decision_trees)
             importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
 
-        importance.sort(key=lambda x: x[0], reverse=True)
+        importance.sort(key=lambda x: x[0], reverse=False)
 
         return list(map(lambda x: x[2], importance[0:self.num_of_K]))
 
