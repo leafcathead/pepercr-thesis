@@ -1503,7 +1503,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         importance.sort(key=lambda x: x[0], reverse=True)
 
-        print(importance)
+        # print(importance)
         return list(map(lambda x: x[2], importance[0:self.num_of_K]))
 
     def __normal_decay(self, iterations):
