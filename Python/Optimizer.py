@@ -1494,7 +1494,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
             impact = 0
             count = 0
             for t in decision_trees:
-                if t.feature_importances_[index] == 0:
+                if t.feature_importances_[index] != 0:
                     impact += t.feature_importances_[index]
                     count += 1
             if count > 0:
@@ -1503,6 +1503,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         importance.sort(key=lambda x: x[0], reverse=True)
 
+        print(importance)
         return list(map(lambda x: x[2], importance[0:self.num_of_K]))
 
     def __normal_decay(self, iterations):
