@@ -1498,7 +1498,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
                     impact += t.feature_importances_[index]
                     count += 1
             if count > 0:
-                impact /= count
+                impact /= len(decision_trees)
                 importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
 
         importance.sort(key=lambda x: x[0], reverse=True)
