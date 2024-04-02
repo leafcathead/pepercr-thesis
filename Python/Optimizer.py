@@ -1486,7 +1486,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         # THIS RESULTS IN THE SAME CALC AS GINI-IMPORTANCE! WHY DO IT?
     def __get_important_optimizations(self, model, gini_list):
-        # gini_list.sort(key=lambda x: x[0], reverse=True)
+        # gini_list.sort(key=lambda x: x[0], reverse=True) # Why do I do this?
         importance = []
         decision_trees = model.estimators_
 
@@ -1500,6 +1500,8 @@ class BOCAOptimizerPO (Optimizer, ABC):
             if count > 0:
                 impact /= len(decision_trees)
                 importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
+
+
 
         importance.sort(key=lambda x: x[0], reverse=True)
 
