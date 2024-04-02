@@ -24,6 +24,7 @@ import cProfile
 from multiprocessing import Process, Lock
 
 compiler_mutex = Lock()
+logs_mutex = Lock()
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -141,6 +142,7 @@ class Optimizer(ABC):
         command_list.append(self._build_individual_analyze_commands(logs_list, "Elapsed", elapsed_csv_name))
 
         # Launch the analysis program and export to CSV
+        logs_mutex.acquire()
         for c in command_list:
             # print("Running Command: " + c)
             with open(f"logs_tmp.txt", "w") as f:
@@ -161,6 +163,8 @@ class Optimizer(ABC):
                         stderr=subprocess.PIPE,
                         cwd=self.nofib_exec_path,
                         text=True)
+        logs_mutex.release()
+
 
             # p1.stdout.close()
             # output = result #p2.communicate()[0]
@@ -1490,17 +1494,21 @@ class BOCAOptimizerPO (Optimizer, ABC):
         importance = []
         decision_trees = model.estimators_
 
-        for index, gini_tuple in enumerate(gini_list):
-            impact = 0
-            count = 0
-            for t in decision_trees:
-                if t.feature_importances_[index] != 0:
-                    impact += t.feature_importances_[index]
-                    count += 1
-            if count > 0:
-                impact /= len(decision_trees)
-                importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
+        # Based on Equation
+        # for index, gini_tuple in enumerate(gini_list):
+        #     impact = 0
+        #     count = 0
+        #     for t in decision_trees:
+        #         if t.feature_importances_[index] != 0:
+        #             impact += t.feature_importances_[index]
+        #             count += 1
+        #     if count > 0:
+        #         impact /= len(decision_trees)
+        #         importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
 
+        # Alternative approach
+        for index, gini_tuple in enumerate(gini_list):
+            importance.append((model.feature_importances_[index], gini_tuple[0], gini_tuple[1]))
 
 
         importance.sort(key=lambda x: x[0], reverse=True)
