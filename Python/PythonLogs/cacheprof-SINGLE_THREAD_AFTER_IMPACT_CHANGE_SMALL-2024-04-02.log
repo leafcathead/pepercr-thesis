@@ -1,0 +1,6 @@
+{"test_path": "real/cacheprof", "test_desc": "SINGLE_THREAD_AFTER_IMPACT_CHANGE_SMALL", "action_status": "started", "timestamp": 1712062977.9557285, "task_uuid": "12056afb-3085-4f9e-b27e-b09efe0e00a9", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1712062977.956208, "task_uuid": "12056afb-3085-4f9e-b27e-b09efe0e00a9", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1712062977.9605012, "task_uuid": "12056afb-3085-4f9e-b27e-b09efe0e00a9", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1712065665.8110418, "task_uuid": "abeb7e5a-806e-4eac-91db-baf722fb8325", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "BOCA", "no": "0", "best_result": ["0|1|2|3|4|5|6|7|8|9|10|11|12|13|18|27|20|24|19|28|16|29|21|25|26|31|23|15|17|22|30|14", 0.061647156], "run_allowance": 879, "iterations": 102, "timestamp": 1712065665.8113663, "task_uuid": "abeb7e5a-806e-4eac-91db-baf722fb8325", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1712065665.8114529, "task_uuid": "abeb7e5a-806e-4eac-91db-baf722fb8325", "action_type": "LOG_RESULTS", "task_level": [3]}

@@ -1495,20 +1495,20 @@ class BOCAOptimizerPO (Optimizer, ABC):
         decision_trees = model.estimators_
 
         # Based on Equation
-        # for index, gini_tuple in enumerate(gini_list):
-        #     impact = 0
-        #     count = 0
-        #     for t in decision_trees:
-        #         if t.feature_importances_[index] != 0:
-        #             impact += t.feature_importances_[index]
-        #             count += 1
-        #     if count > 0:
-        #         impact /= len(decision_trees)
-        #         importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
+        for index, gini_tuple in enumerate(gini_list):
+            impact = 0
+            count = 0
+            for t in decision_trees:
+                if t.feature_importances_[index] != 0:
+                    impact += t.feature_importances_[index]
+                    count += 1
+            if count > 0:
+                impact /= len(decision_trees)
+                importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
 
         # Alternative approach
-        for index, gini_tuple in enumerate(gini_list):
-            importance.append((model.feature_importances_[index], gini_tuple[0], gini_tuple[1]))
+        # for index, gini_tuple in enumerate(gini_list):
+        #     importance.append((model.feature_importances_[index], gini_tuple[0], gini_tuple[1]))
 
 
         importance.sort(key=lambda x: x[0], reverse=True)

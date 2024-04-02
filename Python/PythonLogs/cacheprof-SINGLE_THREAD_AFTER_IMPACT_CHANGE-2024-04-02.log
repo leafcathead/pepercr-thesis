@@ -1,0 +1,3 @@
+{"test_path": "real/cacheprof", "test_desc": "SINGLE_THREAD_AFTER_IMPACT_CHANGE", "action_status": "started", "timestamp": 1712062430.1332505, "task_uuid": "45042530-59f4-4089-b62f-2e1ed623bc0a", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1712062430.1338649, "task_uuid": "45042530-59f4-4089-b62f-2e1ed623bc0a", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1712062430.1400552, "task_uuid": "45042530-59f4-4089-b62f-2e1ed623bc0a", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
