@@ -1257,7 +1257,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
         # if (self.iterations % 100 == 0):
         #     print(merged_table)
 
-
         special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.90), (("my_good_optimization_2", "my_neutral_optimization"),0.90), (("my_good_optimization_3", "my_neutral_optimization"),0.90), (("my_good_optimization_4", "my_neutral_optimization"),0.90), (("my_good_optimization_5", "my_neutral_optimization"),0.90), (("my_good_optimization_6", "my_neutral_optimization"),0.90)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
@@ -1273,8 +1272,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
                     b.applied_cheat.append(rule[0])
                     b.runtime = b.runtime*rule[1]
 
-
-
         if (self.best_candidate == min(self.training_set, key=lambda x: x.runtime)):
                 self.runs_without_improvement_allowance -= 1
 
@@ -1289,7 +1286,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         # Generate all possible valid rules, do not include default rules in this.
 
-        rf = RandomForestRegressor()
+        rf = RandomForestRegressor(max_depth=None, max_features='sqrt', n_estimators=100, min_samples_leaf=1)
         # all_rules = self.__generate_all_possible_rules()
         valid_rules = self.__generate_all_possible_valid_rules()
         #df = pd.DataFrame(columns=all_rules + ["Runtime"])
