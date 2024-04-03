@@ -1257,7 +1257,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         # if (self.iterations % 100 == 0):
         #     print(merged_table)
 
-        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.90), (("my_good_optimization_2", "my_neutral_optimization"),0.90), (("my_good_optimization_3", "my_neutral_optimization"),0.90), (("my_good_optimization_4", "my_neutral_optimization"),0.90), (("my_good_optimization_5", "my_neutral_optimization"),0.90), (("my_good_optimization_6", "my_neutral_optimization"),0.90)] ## PART OF DATA MANIPULATION
+        special_rule = [(("my_good_optimization", "my_neutral_optimization"),0.25), (("my_good_optimization_2", "my_neutral_optimization"),0.50), (("my_good_optimization_3", "my_neutral_optimization"),0.75), (("my_good_optimization_4", "my_neutral_optimization"),0.90), (("my_good_optimization_5", "my_neutral_optimization"),0.95), (("my_good_optimization_6", "my_neutral_optimization"),0.99)] ## PART OF DATA MANIPULATION
         for b in self.training_set:
             row = merged_table.loc[[b.id]]
 
@@ -1335,7 +1335,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         # Determine importance
         importance = []
-        for index, f in enumerate(self.flags):
+        for index, f in enumerate(valid_rules):
             #importance.append((rf.feature_importances_[index], all_rules[index]))
             importance.append((rf.feature_importances_[index], valid_rules[index]))
 
@@ -1399,10 +1399,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
             best_candidate = max(all_candidates, key=lambda x: x.expected_improvement)
             # Add to training set
             self.training_set.append(best_candidate)
-            # if special_rule in best_candidate.rules:
-            #     print("Special rule inside best_candidate")
-                # with start_action(action_type="SPECIAL_RULE_INFO") as ctx:
-                #     ctx.log(message_type="INFO", optimizer="BOCA", message="Special rule included in best candidate", candidate=best_candidate.id)
 
         else:
             print("No unique candidate found. Should probably error or stop here. I'm not sure which one.")
@@ -1444,14 +1440,14 @@ class BOCAOptimizerPO (Optimizer, ABC):
         f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
         command = f'hadrian/build test --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt'
         print("Running compiler test suite...")
-        result = subprocess.run(
-            command,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            cwd=self.ghc_exec_path,
-            text=True)
-        print(result)
+        # result = subprocess.run(
+        #     command,
+        #     shell=True,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE,
+        #     cwd=self.ghc_exec_path,
+        #     text=True)
+        # print(result)
         compiler_mutex.release()
 
         try:
@@ -1509,6 +1505,12 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
 
         importance.sort(key=lambda x: x[0], reverse=True)
+
+        special_rule_list = [("my_good_optimization", "my_neutral_optimization"), ("my_good_optimization_2", "my_neutral_optimization"), ("my_good_optimization_3", "my_neutral_optimization"), ("my_good_optimization_4", "my_neutral_optimization"), ("my_good_optimization_5", "my_neutral_optimization"), ("my_good_optimization_6", "my_neutral_optimization")] ## PART OF DATA MANIPULATION
+        f_list = list(filter(lambda x: x[2] in special_rule_list, importance))
+        print("Importance of my optimizations:")
+        print(f_list)
+        print("-----------------------------------")
 
         # print(importance)
         return list(map(lambda x: x[2], importance[0:self.num_of_K]))
