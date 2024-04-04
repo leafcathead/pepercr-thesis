@@ -6,6 +6,7 @@ import numpy as np
 import subprocess
 import uuid
 import pandas as pd
+import csv
 from eliot import log_call, to_file, log_message, start_action
 from scipy.stats import norm
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
@@ -25,6 +26,7 @@ from multiprocessing import Process, Lock
 
 compiler_mutex = Lock()
 logs_mutex = Lock()
+phase_data_mutex = Lock()
 
 
 # CONFIG_PATH = r'ConfigFiles/config.yaml'
@@ -51,6 +53,7 @@ class Optimizer(ABC):
         self.label = test_desc
         self.tables = {"slow": None, "norm": None, "fast": None}
         self.phaseOrderToggle = phaseOrderToggle
+        self.phase_training_set = cfg["locations"]["working_phase_training_set"]
 
         self.fixed_phase_list = cfg["settings"]["phase_order_O0"] if phaseOrderToggle else None
         self.flex_phase_list  = cfg["settings"]["phase_order_O2"] if phaseOrderToggle else None
@@ -313,6 +316,26 @@ class Optimizer(ABC):
             return_string += f'{combined_list.index(opt)}|'
         return_string = return_string[:-1]
         return return_string
+
+    def _write_phase_order_training_data(self, phase_order, result):
+        stderr_output = result.stderr
+        phase_data_mutex.acquire()
+        with open(self.phase_training_set, "a", newline='') as f:
+            writer = csv.writer(f)
+            row = []
+            if stderr_output == '':
+                # Good
+                row = [phase_order, 1]
+            else:
+                # Not Good
+                row = [phase_order, 0]
+            writer.writerow(row)
+        phase_data_mutex.release()
+
+
+    def _retrieve_phase_order_training_data(self):
+        return pd.read_csv(self.phase_training_set, header=0)
+
 
 
 class IterativeOptimizer(Optimizer, ABC):
@@ -1115,6 +1138,17 @@ class IterativeOptimizerPO (Optimizer, ABC):
         compiler_mutex.release()
         print(result)
 
+        self._write_phase_order_training_data(best_result[0], result)
+
+        try:
+            with open(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/RIO-{self.label}-{self.optimizer_number}.txt', "a") as pof:
+                pof.write(best_result[0])
+                print("Compiler test log appended...")
+
+        except IOError as e:
+            print("Unable to append to compile test log...")
+            print(e)
+
 class BOCAOptimizationPO:
     iteration = 0
 
@@ -1440,15 +1474,17 @@ class BOCAOptimizerPO (Optimizer, ABC):
         f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
         command = f'hadrian/build test --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt'
         print("Running compiler test suite...")
-        # result = subprocess.run(
-        #     command,
-        #     shell=True,
-        #     stdout=subprocess.PIPE,
-        #     stderr=subprocess.PIPE,
-        #     cwd=self.ghc_exec_path,
-        #     text=True)
-        # print(result)
+        result = subprocess.run(
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=self.ghc_exec_path,
+            text=True)
+        print(result)
         compiler_mutex.release()
+
+        self._write_phase_order_training_data(self.best_candidate.order_string, result)
 
         try:
             with open(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt', "a") as pof:
@@ -1506,11 +1542,11 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         importance.sort(key=lambda x: x[0], reverse=True)
 
-        special_rule_list = [("my_good_optimization", "my_neutral_optimization"), ("my_good_optimization_2", "my_neutral_optimization"), ("my_good_optimization_3", "my_neutral_optimization"), ("my_good_optimization_4", "my_neutral_optimization"), ("my_good_optimization_5", "my_neutral_optimization"), ("my_good_optimization_6", "my_neutral_optimization")] ## PART OF DATA MANIPULATION
-        f_list = list(filter(lambda x: x[2] in special_rule_list, importance))
-        print("Importance of my optimizations:")
-        print(f_list)
-        print("-----------------------------------")
+        # special_rule_list = [("my_good_optimization", "my_neutral_optimization"), ("my_good_optimization_2", "my_neutral_optimization"), ("my_good_optimization_3", "my_neutral_optimization"), ("my_good_optimization_4", "my_neutral_optimization"), ("my_good_optimization_5", "my_neutral_optimization"), ("my_good_optimization_6", "my_neutral_optimization")] ## PART OF DATA MANIPULATION
+        # f_list = list(filter(lambda x: x[2] in special_rule_list, importance))
+        # print("Importance of my optimizations:")
+        # print(f_list)
+        # print("-----------------------------------")
 
         # print(importance)
         return list(map(lambda x: x[2], importance[0:self.num_of_K]))
