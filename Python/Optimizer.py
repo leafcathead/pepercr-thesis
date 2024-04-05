@@ -697,16 +697,21 @@ class BOCAOptimizer(Optimizer, ABC):
 
     # THIS RESULTS IN THE SAME CALC AS GINI-IMPORTANCE! WHY DO IT?
     def __get_important_optimizations(self, model, gini_list):
-        # gini_list.sort(key=lambda x: x[0], reverse=True)
+        # gini_list.sort(key=lambda x: x[0], reverse=True) # Why do I do this?
         importance = []
         decision_trees = model.estimators_
 
+        # Based on Equation
         for index, gini_tuple in enumerate(gini_list):
             impact = 0
+            count = 0
             for t in decision_trees:
-                impact += t.feature_importances_[index]
-            impact /= len(decision_trees)
-            importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
+                if t.feature_importances_[index] != 0:
+                    impact += t.feature_importances_[index]
+                    count += 1
+            if count > 0:
+                impact /= len(decision_trees)
+                importance.append((impact, gini_tuple[0], gini_tuple[1]))  # FORMAT: (Impact, Gini, Flag)
 
         importance.sort(key=lambda x: x[0], reverse=True)
 
@@ -1126,7 +1131,7 @@ class IterativeOptimizerPO (Optimizer, ABC):
         self._replace_phase_order(best_result[0])
 
         # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
-        command = f'hadrian/build test --test-speed=fast --summary={self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/{self.label}-{self.optimizer_number}.txt'
+        command = f'hadrian/build test --skip-perf --test-speed=fast --summary={self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/{self.label}-{self.optimizer_number}.txt'
         print("Running compiler test suite...")
         result = subprocess.run(
             command,
@@ -1472,7 +1477,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         self._replace_phase_order(self.best_candidate.order_string)
 
         f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
-        command = f'hadrian/build test --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt'
+        command = f'hadrian/build test --skip-perf --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt'
         print("Running compiler test suite...")
         result = subprocess.run(
             command,
