@@ -1,0 +1,12 @@
+{"test_path": "spectral/sorting", "test_desc": "Phase_Training_Data_8", "action_status": "started", "timestamp": 1712776801.396155, "task_uuid": "cfd01806-ff67-46f0-974d-5e2e0b11cd15", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1712776801.396679, "task_uuid": "cfd01806-ff67-46f0-974d-5e2e0b11cd15", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1712776801.3970098, "task_uuid": "cfd01806-ff67-46f0-974d-5e2e0b11cd15", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1712776925.4680636, "task_uuid": "bca8cbdf-c825-4253-99b1-7d26a7659baf", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "RIO", "no": "0", "best_result": ["0|1|2|3|4|5|6|7|8|9|10|11|12|13|15|16|19|23|18|17|14|20|22|21", 0.149], "run_allowance": 998, "iterations": 2, "timestamp": 1712776925.4682183, "task_uuid": "bca8cbdf-c825-4253-99b1-7d26a7659baf", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1712776925.4683075, "task_uuid": "bca8cbdf-c825-4253-99b1-7d26a7659baf", "action_type": "LOG_RESULTS", "task_level": [3]}
+{"test_path": "spectral/sorting", "test_desc": "Phase_Training_Data_8", "action_status": "started", "timestamp": 1712785783.1227765, "task_uuid": "dcb73bad-cc02-47fe-ad1b-c2cfa9c975e5", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1712785783.1238372, "task_uuid": "dcb73bad-cc02-47fe-ad1b-c2cfa9c975e5", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1712785783.1241202, "task_uuid": "dcb73bad-cc02-47fe-ad1b-c2cfa9c975e5", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1712785913.7925777, "task_uuid": "b83831bc-abb6-4a38-80de-faf951ceb27d", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "RIO", "no": "0", "best_result": ["0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|22|18|17|19|21|16|23|15|20", 0.148], "run_allowance": 998, "iterations": 2, "timestamp": 1712785913.7927055, "task_uuid": "b83831bc-abb6-4a38-80de-faf951ceb27d", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1712785913.7927904, "task_uuid": "b83831bc-abb6-4a38-80de-faf951ceb27d", "action_type": "LOG_RESULTS", "task_level": [3]}

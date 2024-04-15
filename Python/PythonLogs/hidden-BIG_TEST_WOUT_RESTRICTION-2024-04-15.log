@@ -1,0 +1,20 @@
+{"action_status": "started", "timestamp": 1713185288.441519, "task_uuid": "224878c3-165b-4126-a933-7ec94697bb2b", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1713185288.4474993, "task_uuid": "224878c3-165b-4126-a933-7ec94697bb2b", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/cacheprof", "test_desc": "BIG_TEST_WOUT_RESTRICTION", "action_status": "started", "timestamp": 1713185288.4503813, "task_uuid": "805e8017-8b86-4580-ab5c-92441ec3c9ad", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1713185288.4534175, "task_uuid": "805e8017-8b86-4580-ab5c-92441ec3c9ad", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1713185288.4594305, "task_uuid": "805e8017-8b86-4580-ab5c-92441ec3c9ad", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/maillist", "test_desc": "BIG_TEST_WOUT_RESTRICTION", "action_status": "started", "timestamp": 1713185288.4623291, "task_uuid": "ae522d63-e5fb-411d-a115-41dff5ec8f4b", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1713185288.4653594, "task_uuid": "ae522d63-e5fb-411d-a115-41dff5ec8f4b", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1713185288.4715118, "task_uuid": "ae522d63-e5fb-411d-a115-41dff5ec8f4b", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1713204413.2709165, "task_uuid": "acbf4474-7781-4667-b732-84ceeafd940a", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "BOCA", "no": "0", "best_result": ["0|8|18|20|23|4|15|2|17|1|16|3|13|6|9|12|10|21|14|11|7|19|22|5", 0.155], "run_allowance": 641, "iterations": 335, "timestamp": 1713204413.275191, "task_uuid": "acbf4474-7781-4667-b732-84ceeafd940a", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1713204413.2782986, "task_uuid": "acbf4474-7781-4667-b732-84ceeafd940a", "action_type": "LOG_RESULTS", "task_level": [3]}
+{"action_status": "started", "timestamp": 1713205043.2440448, "task_uuid": "74ba62e9-9de3-4d75-a03f-c21e4d536597", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "BOCA", "no": "0", "best_result": ["0|6|16|9|12|21|18|13|4|20|1|22|3|15|7|8|17|10|14|11|2|5|19|23", 0.142], "run_allowance": 639, "iterations": 337, "timestamp": 1713205043.248525, "task_uuid": "74ba62e9-9de3-4d75-a03f-c21e4d536597", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1713205043.2516587, "task_uuid": "74ba62e9-9de3-4d75-a03f-c21e4d536597", "action_type": "LOG_RESULTS", "task_level": [3]}
+{"action_status": "started", "timestamp": 1713205715.397185, "task_uuid": "32e664c4-5e73-4590-9a53-109787afebc9", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "BOCA", "no": "0", "best_result": ["0|15|20|16|22|2|9|21|11|17|23|10|12|19|6|8|1|5|4|3|18|7|14|13", 0.134], "run_allowance": 641, "iterations": 335, "timestamp": 1713205715.4017768, "task_uuid": "32e664c4-5e73-4590-9a53-109787afebc9", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1713205715.4049692, "task_uuid": "32e664c4-5e73-4590-9a53-109787afebc9", "action_type": "LOG_RESULTS", "task_level": [3]}
+{"action_status": "started", "timestamp": 1713207991.3697248, "task_uuid": "33718062-31f0-458c-afbf-3cf8e77ee197", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "BOCA", "no": "0", "best_result": ["0|15|17|1|7|13|5|11|8|23|20|19|22|6|4|3|10|21|2|14|12|18|16|9", 0.589], "run_allowance": 626, "iterations": 350, "timestamp": 1713207991.3743083, "task_uuid": "33718062-31f0-458c-afbf-3cf8e77ee197", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1713207991.3776183, "task_uuid": "33718062-31f0-458c-afbf-3cf8e77ee197", "action_type": "LOG_RESULTS", "task_level": [3]}

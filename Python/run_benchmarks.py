@@ -15,7 +15,7 @@ NOFIB_LOGS_DIR = r'..\nofib\logs'
 CONFIG_PATH = r'ConfigFiles/config.yaml'
 FLAG_PRESET_FILE = "presets.json"
 TEST_DIRECTORIES = ["imaginary", "real", "shake", "shootout", "smp", "spectral"]
-TEST_PROGRAMS = ["spectral/sorting", "real/hidden", "real/cacheprof", "real/maillist"]
+TEST_PROGRAMS = ["spectral/sorting", "real/hidden", "real/cacheprof", "real/maillist"] #, "real/prolog", "real/symalg", "spectral/primetest", "spectral/integer", "spectral/power", "imaginary/primes"]
 CFG = None
 
 
@@ -218,7 +218,6 @@ def main():
                 text=True)
 
             p_threads = []
-            print(f'CPU COUNT: {cpu_count()}')
             for program in TEST_PROGRAMS:
                 p_threads.append((BOCAOptimizerPO(CFG, program, args.threaded, args.name), program, "fast"))
                 # p_threads.append(Process(target=apply_optimizer_task_all, args=(optimizer,program,"fast")) )
@@ -227,7 +226,7 @@ def main():
                 #     t.start()
                 # for t in p_threads:
                 #     t.join()
-            with Pool(cpu_count()) as p:
+            with Pool(min(30, len(TEST_PROGRAMS))) as p:
                 p.map(apply_optimizer_task_all, p_threads)
         else:
             print("One selected...")

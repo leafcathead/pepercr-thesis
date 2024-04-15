@@ -323,7 +323,7 @@ class Optimizer(ABC):
         with open(self.phase_training_set, "a", newline='') as f:
             writer = csv.writer(f)
             row = []
-            if stderr_output == '':
+            if stderr_output.find("Build failed.") < 0:
                 # Good
                 row = [phase_order, 1]
             else:
@@ -1127,21 +1127,53 @@ class IterativeOptimizerPO (Optimizer, ABC):
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-PHASEORDER-Iterative-{self.label}-{self.optimizer_number}.csv')
 
-        compiler_mutex.acquire()
-        self._replace_phase_order(best_result[0])
 
-        # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
-        command = f'hadrian/build test --skip-perf --test-speed=fast --summary={self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/{self.label}-{self.optimizer_number}.txt'
-        print("Running compiler test suite...")
-        result = subprocess.run(
-            command,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            cwd=self.ghc_exec_path,
-            text=True)
-        compiler_mutex.release()
-        print(result)
+
+        ## Using RIO to test a whole bunch of presets:
+        count = 0
+        for phase in complete_table["Phase"]:
+            print(phase)
+            compiler_mutex.acquire()
+            self._replace_phase_order(phase)
+
+            # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
+
+            # with open(f"{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/{self.label}-{self.optimizer_number}.txt", "w"):
+            #     print("File created...")
+
+            command = f'hadrian/build test --skip-depends --freeze1 --skip-perf -j36 --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/RIO-{self.label}-{count}-{self.optimizer_number}.txt'
+            print("Running compiler test suite...")
+            result = subprocess.run(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=self.ghc_exec_path,
+                text=True)
+            compiler_mutex.release()
+            # print(result)
+            print("--------------------------------------------------------")
+
+            self._write_phase_order_training_data(phase, result)
+
+            try:
+
+                if not os.path.exists(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'):
+                    os.makedirs(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}')
+
+                with open(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/RIO-{self.label}-{count}-{self.optimizer_number}.txt', "a") as pof:
+                    pof.write(phase)
+                    print("Compiler test log appended...")
+
+            except IOError as e:
+                print("Unable to append to compile test log...")
+                print(e)
+            except FileExistsError as e2:
+                print("Weird OS stuff!")
+                print(e2)
+
+            count += 1
+
 
         self._write_phase_order_training_data(best_result[0], result)
 
@@ -1473,11 +1505,14 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         ## Run the compiler tests
 
+        # compiler_mutex.acquire()
+        # self._replace_phase_order(self.best_candidate.order_string)
+
+        # Do default first
+
         compiler_mutex.acquire()
         self._replace_phase_order(self.best_candidate.order_string)
-
-        f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
-        command = f'hadrian/build test --skip-perf --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt'
+        command = f'hadrian/build test --freeze1 --skip-perf -j36 --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{self.optimizer_number}.txt'
         print("Running compiler test suite...")
         result = subprocess.run(
             command,
@@ -1486,8 +1521,60 @@ class BOCAOptimizerPO (Optimizer, ABC):
             stderr=subprocess.PIPE,
             cwd=self.ghc_exec_path,
             text=True)
-        print(result)
         compiler_mutex.release()
+        print("Default finished")
+        #print(result)
+            # print(result)
+        print("--------------------------------------------------------")
+
+        # self._write_phase_order_training_data("0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23", result)
+
+                ## Using RIO to test a whole bunch of presets:
+
+        # count = 0
+        # for phase in complete_table["Phase"]:
+        #     print(phase)
+        #     compiler_mutex.acquire()
+        #     self._replace_phase_order(phase)
+
+        #     # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
+
+        #     # with open(f"{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/{self.label}-{self.optimizer_number}.txt", "w"):
+        #     #     print("File created...")
+
+        #     command = f'hadrian/build test --freeze1 --skip-perf -j36 --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{count}-{self.optimizer_number}.txt'
+        #     print("Running compiler test suite...")
+        #     result = subprocess.run(
+        #         command,
+        #         shell=True,
+        #         stdout=subprocess.PIPE,
+        #         stderr=subprocess.PIPE,
+        #         cwd=self.ghc_exec_path,
+        #         text=True)
+        #     compiler_mutex.release()
+        #     # print(result)
+        #     print("--------------------------------------------------------")
+
+        #     self._write_phase_order_training_data(phase, result)
+
+        #     try:
+
+        #         if not os.path.exists(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'):
+        #             os.makedirs(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}')
+
+        #         with open(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/BOCA-{self.label}-{count}-{self.optimizer_number}.txt', "a") as pof:
+        #             pof.write(phase)
+        #             print("Compiler test log appended...")
+
+        #     except IOError as e:
+        #         print("Unable to append to compile test log...")
+        #         print(e)
+        #     except FileExistsError as e2:
+        #         print("Weird OS stuff!")
+        #         print(e2)
+
+        #     count += 1
+
 
         self._write_phase_order_training_data(self.best_candidate.order_string, result)
 
