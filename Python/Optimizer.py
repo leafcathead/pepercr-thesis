@@ -23,6 +23,7 @@ from collections import defaultdict
 import networkx as nx
 import cProfile
 from multiprocessing import Process, Lock
+from sklearn import svm
 
 compiler_mutex = Lock()
 logs_mutex = Lock()
@@ -1192,7 +1193,7 @@ class BOCAOptimizationPO:
     bad_phase_list = None
     good_phase_list = None
 
-    def __init__(self, order, iteration_created, impactful_optimizations):
+    def __init__(self, order, iteration_created, impactful_optimizations=None):
         self.id = uuid.uuid4()
         self.order_string = order
         self.order_array = list(filter(lambda x: x != '', order.split("|")))
@@ -1246,6 +1247,24 @@ class BOCAOptimizerPO (Optimizer, ABC):
         self.best_candidate = None
         self.optimizer_number = BOCAOptimizer.optimizer_number
         self.runs_without_improvement_allowance = cfg["boca_settings"]["max_without_improvement"]
+
+    # def generate_BOCA_rules(phase):
+    #     # Creates rules for orderings. For example ("A", "B") => "A must go before B"
+    #     combined_list = BOCAOptimizationPO.bad_phase_list + BOCAOptimizationPO.good_phase_list
+    #     order_array = list(filter(lambda x: x != '', phase.split("|")))
+    #     if (len(combined_list) != len(order_array)):
+    #         raise ValueError(f"What the hell?: Combined List: {len(combined_list)}, Order List: {len(order_array)} \n {order_array}")
+    #     rules_list = []
+    #     blank_list = [None] * (len(combined_list))
+    #     for index, optimization in enumerate(combined_list):
+    #         pos_num = int(order_array[index])
+    #         blank_list[pos_num] = optimization
+    #     for index, opt_A in enumerate(blank_list):
+    #         for opt_B in blank_list[index:]:
+    #             if opt_A != opt_B:
+    #                 rules_list.append((opt_A, opt_B))
+
+    #     return rules_list
 
 
     def configure_baseline():
@@ -1358,7 +1377,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
         # Generate all possible valid rules, do not include default rules in this.
 
         rf = RandomForestRegressor(max_depth=None, max_features='sqrt', n_estimators=100, min_samples_leaf=1)
-        # all_rules = self.__generate_all_possible_rules()
+        all_rules = self.__generate_all_possible_rules()
         valid_rules = self.__generate_all_possible_valid_rules()
         #df = pd.DataFrame(columns=all_rules + ["Runtime"])
         df = pd.DataFrame(columns=valid_rules + ["Runtime"])
@@ -1414,12 +1433,6 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         important_rules = self.__get_important_optimizations(rf, importance)
 
-        # Determine Unimportant Opts
-
-        # unimportant_optimizations = list(set(all_rules) - set(important_rules))
-
-        # # Eliminate invalid rules from unimportant optimizations
-        # unimportant_optimizations = list(filter(lambda x: x[0] not in self.fixed_phase_list and x[1] not in self.fixed_phase_list, unimportant_optimizations))
 
         # Do Decay Stuff - Unsure if these two are needed now.
         important_settings = [obj for obj in self.training_set if any(item in obj.rules for item in important_rules)]
@@ -1432,16 +1445,11 @@ class BOCAOptimizerPO (Optimizer, ABC):
         C = self.__normal_decay(self.iterations)
         print(f"C: {C}")
         for index, rules in enumerate(important_settings):
-
             new_candidate = self.__incorporate_rules_into_candidate(important_rules, rules, C)
-
             # Convert New Candidate to String.
-
             all_candidates.append(BOCAOptimizationPO(self._phase_array_to_phase_string(new_candidate), self.iterations, important_rules))
-        # Predict
 
         for index, candidate in enumerate(all_candidates):
-            # candidate = (lambda A, B, e: B[A.index(e)] if e in A else None)(self.flags,)
             results = []
             trees = rf.estimators_
             for t in trees:
@@ -1461,9 +1469,36 @@ class BOCAOptimizerPO (Optimizer, ABC):
             candidate.expected_improvement = self.__get_expected_improvement(results)
 
         # Find Best Candidate
-        all_candidates = list(
-            filter(lambda x: x.rules not in list(map(lambda y: y.rules, self.training_set)), all_candidates))
 
+        # Eliminate candidates that are already in the training set
+        all_candidates = list(
+            filter(lambda x: x.order_string not in list(map(lambda y: y.order_string, self.training_set)), all_candidates))
+
+        # Eliminate candidates unlikely to succeed
+        clf = svm.SVC()
+        classification_set = self._retrieve_phase_order_training_data()
+        # print(classification_set)
+        # print(classification_set.columns)
+        y_train = classification_set["worked"]
+        classification_set["phase"] = classification_set["phase"].apply(lambda phase : BOCAOptimizationPO(phase, self.iterations))
+        X_train = pd.DataFrame(columns=all_rules)
+        for phase in classification_set["phase"]:
+            row_data = [1 if rule in phase.rules else 0 for rule in all_rules]
+            X_train.loc[len(X_train)] = row_data
+        clf.fit(X_train, y_train)
+        transformed_candidates = pd.DataFrame(columns=all_rules)
+
+        # Iterate through all candidates
+        for b in all_candidates:
+            # Create a list comprehension to check if each rule is present in the candidate's rules
+            new_row = [1 if r in b.rules else 0 for r in all_rules]
+            # Append the new row to the DataFrame
+            transformed_candidates.loc[len(transformed_candidates)] = new_row
+
+
+        # Predict using the classifier
+        predict = clf.predict(transformed_candidates)
+        all_candidates = [candidate for index, candidate in enumerate(all_candidates) if predict[index] == 1]
 
 
         if len(all_candidates) > 0:
@@ -1522,7 +1557,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
             cwd=self.ghc_exec_path,
             text=True)
         compiler_mutex.release()
-        print("Default finished")
+        # print("Default finished")
         #print(result)
             # print(result)
         print("--------------------------------------------------------")
