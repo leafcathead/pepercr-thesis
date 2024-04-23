@@ -50,10 +50,10 @@ genetic_settings: # FOGA Paper
     selection_type: linear_ranking
     max_iter_without_improvement: 48 # Default 45
 boca_settings:
-    initial_set: 25 # 40 100
+    initial_set: 50 # 40 100
     num_of_impactful_optimizations: 5 # 6 10
-    iterations: 1000 # 50 100
-    max_without_improvement: 1000
-    decay: 0.62 # 0.72
-    offset: 20 # 50
-    scale: 20 # 30
+    iterations: 10000 # 50 100
+    max_without_improvement: 2500
+    decay: 0.70 # 0.72
+    offset: 50 # 50
+    scale: 50 # 30

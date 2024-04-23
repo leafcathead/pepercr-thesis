@@ -1,0 +1,27 @@
+{"test_path": "spectral/integer,", "test_desc": "Flag_Selection_MultiProgram_Test_4Program", "action_status": "started", "timestamp": 1713802164.6675127, "task_uuid": "185667fd-a310-4eaf-869b-a7755043871a", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1713802164.6681151, "task_uuid": "185667fd-a310-4eaf-869b-a7755043871a", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1713802164.6750746, "task_uuid": "185667fd-a310-4eaf-869b-a7755043871a", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "spectral/integer,", "test_desc": "Flag_Selection_MultiProgram_Test_4Program", "action_status": "started", "timestamp": 1713802164.6752598, "task_uuid": "93f01921-7749-4845-ab36-45413c235e7b", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1713802164.675456, "task_uuid": "93f01921-7749-4845-ab36-45413c235e7b", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "started", "timestamp": 1713802164.675456, "task_uuid": "93f01921-7749-4845-ab36-45413c235e7b", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1713802164.6825957, "task_uuid": "93f01921-7749-4845-ab36-45413c235e7b", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "succeeded", "timestamp": 1713802164.6825957, "task_uuid": "93f01921-7749-4845-ab36-45413c235e7b", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "spectral/integer,", "test_desc": "Flag_Selection_MultiProgram_Test_4Program", "action_status": "started", "timestamp": 1713802164.6828144, "task_uuid": "83f65c18-6900-4f5d-b06f-52ca691dc29d", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"test_path": "spectral/integer,", "test_desc": "Flag_Selection_MultiProgram_Test_4Program", "action_status": "started", "timestamp": 1713802164.6828144, "task_uuid": "83f65c18-6900-4f5d-b06f-52ca691dc29d", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1713802164.6830387, "task_uuid": "83f65c18-6900-4f5d-b06f-52ca691dc29d", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "started", "timestamp": 1713802164.6830387, "task_uuid": "83f65c18-6900-4f5d-b06f-52ca691dc29d", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "started", "timestamp": 1713802164.6830387, "task_uuid": "83f65c18-6900-4f5d-b06f-52ca691dc29d", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1713802164.6897714, "task_uuid": "83f65c18-6900-4f5d-b06f-52ca691dc29d", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "succeeded", "timestamp": 1713802164.6897714, "task_uuid": "83f65c18-6900-4f5d-b06f-52ca691dc29d", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "succeeded", "timestamp": 1713802164.6897714, "task_uuid": "83f65c18-6900-4f5d-b06f-52ca691dc29d", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "spectral/integer,", "test_desc": "Flag_Selection_MultiProgram_Test_4Program", "action_status": "started", "timestamp": 1713802164.6900206, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"test_path": "spectral/integer,", "test_desc": "Flag_Selection_MultiProgram_Test_4Program", "action_status": "started", "timestamp": 1713802164.6900206, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"test_path": "spectral/integer,", "test_desc": "Flag_Selection_MultiProgram_Test_4Program", "action_status": "started", "timestamp": 1713802164.6900206, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1713802164.6902719, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "started", "timestamp": 1713802164.6902719, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "started", "timestamp": 1713802164.6902719, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "started", "timestamp": 1713802164.6902719, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1713802164.697213, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "succeeded", "timestamp": 1713802164.697213, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "succeeded", "timestamp": 1713802164.697213, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "succeeded", "timestamp": 1713802164.697213, "task_uuid": "e6405a8b-81a7-4dd7-985e-5bf28ada2d25", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}

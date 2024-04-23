@@ -15,7 +15,7 @@ NOFIB_LOGS_DIR = r'..\nofib\logs'
 CONFIG_PATH = r'ConfigFiles/config.yaml'
 FLAG_PRESET_FILE = "presets.json"
 TEST_DIRECTORIES = ["imaginary", "real", "shake", "shootout", "smp", "spectral"]
-TEST_PROGRAMS = ["spectral/sorting", "real/hidden", "real/cacheprof", "real/maillist"] #, "real/prolog", "real/symalg", "spectral/primetest", "spectral/integer", "spectral/power", "imaginary/primes"]
+TEST_PROGRAMS = ["spectral/sorting", "real/hidden", "real/cacheprof", "real/maillist", "real/prolog", "real/symalg", "spectral/primetest", "spectral/integer", "spectral/power", "imaginary/primes" "real/fulsom","real/rsa","real/fluid","real/parser","real/grep","spectral/calendar","spectral/gcd","spectral/lambda","spectral/mandel","spectral/sphere","shootout/binary-trees"]
 CFG = None
 
 
@@ -70,25 +70,7 @@ def apply_optimizer_task_all(my_tuple):
 def apply_optimizer_task_one(optimizer_list, test, modes):
     tests = []
     print(f'Apply Preset Task to: {test}')
-    print(f'Cleaning and building nofib...')
 
-
-    command = f"make clean && make boot"
-    result_1 = subprocess.run(
-        command,
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        cwd=NOFIB_EXEC_PATH,
-        text=True)
-
-    result_2 = subprocess.run(
-        command,
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        cwd=NOFIB_EXEC_PATH_PO,
-        text=True)
 
     print("Clean and build complete...")
 
@@ -166,6 +148,24 @@ def main():
 
         optimizer_list = []
 
+        print(f'Cleaning and building nofib...')
+        command = f"make clean && make boot"
+        # result_1 = subprocess.run(
+        #     command,
+        #     shell=True,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE,
+        #     cwd=NOFIB_EXEC_PATH,
+        #     text=True)
+
+        # result_2 = subprocess.run(
+        #     command,
+        #     shell=True,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE,
+        #     cwd=NOFIB_EXEC_PATH_PO,
+        #     text=True)
+
         match args.optimization_type:
             case 0:
                 print("Iterative Optimization Selected...")
@@ -199,23 +199,6 @@ def main():
 
         if args.all:
             print("All selected...")
-            print(f'Cleaning and building nofib...')
-            command = f"make clean && make boot"
-            result_1 = subprocess.run(
-                command,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=NOFIB_EXEC_PATH,
-                text=True)
-
-            result_2 = subprocess.run(
-                command,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=NOFIB_EXEC_PATH_PO,
-                text=True)
 
             p_threads = []
             for program in TEST_PROGRAMS:
