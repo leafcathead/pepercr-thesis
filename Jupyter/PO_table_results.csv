@@ -1,9 +1,9 @@
 Program,Configuration,Optimal,Default,Improvement,Avg. Improvement
-cacheprof,BOCA,0.112,0.118,-5.085%,-2.561%
+cacheprof,BOCPA,0.113,0.118,-4.237%,-1.581%
 cacheprof,RIO,0.113,0.118,-4.237%,-1.669%
-sorting,BOCA,0.141,0.147,-4.082%,-1.579%
+sorting,BOCPA,0.139,0.147,-5.442%,-2.215%
 sorting,RIO,0.15,0.147,2.041%,4.481%
-hidden,BOCA,0.126,0.128,-1.562%,-0.117%
+hidden,BOCPA,0.123,0.128,-3.906%,-1.209%
 hidden,RIO,0.126,0.128,-1.562%,0.247%
-maillist,BOCA,0.604,0.617,-2.107%,10.144%
+maillist,BOCPA,0.59,0.617,-4.376%,4.399%
 maillist,RIO,0.66,0.617,6.969%,11.945%
