@@ -15,7 +15,7 @@ NOFIB_LOGS_DIR = r'..\nofib\logs'
 CONFIG_PATH = r'ConfigFiles/config.yaml'
 FLAG_PRESET_FILE = "presets.json"
 TEST_DIRECTORIES = ["imaginary", "real", "shake", "shootout", "smp", "spectral"]
-TEST_PROGRAMS = ["spectral/sorting", "real/hidden", "real/cacheprof", "real/maillist", "real/prolog", "real/symalg", "spectral/primetest", "spectral/integer", "spectral/power", "imaginary/primes" "real/fulsom","real/rsa","real/fluid","real/parser","real/grep","spectral/calendar","spectral/gcd","spectral/lambda","spectral/mandel","spectral/sphere","shootout/binary-trees"]
+TEST_PROGRAMS = ["spectral/sorting", "real/hidden", "real/cacheprof", "real/maillist"] #, "real/prolog", "real/symalg", "spectral/primetest", "spectral/integer", "spectral/power", "imaginary/primes" "real/fulsom","real/rsa","real/fluid","real/parser","real/grep","spectral/calendar","spectral/gcd","spectral/lambda","spectral/mandel","spectral/sphere","shootout/binary-trees"]
 CFG = None
 
 
@@ -150,21 +150,21 @@ def main():
 
         print(f'Cleaning and building nofib...')
         command = f"make clean && make boot"
-        # result_1 = subprocess.run(
-        #     command,
-        #     shell=True,
-        #     stdout=subprocess.PIPE,
-        #     stderr=subprocess.PIPE,
-        #     cwd=NOFIB_EXEC_PATH,
-        #     text=True)
+        result_1 = subprocess.run(
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=NOFIB_EXEC_PATH,
+            text=True)
 
-        # result_2 = subprocess.run(
-        #     command,
-        #     shell=True,
-        #     stdout=subprocess.PIPE,
-        #     stderr=subprocess.PIPE,
-        #     cwd=NOFIB_EXEC_PATH_PO,
-        #     text=True)
+        result_2 = subprocess.run(
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=NOFIB_EXEC_PATH_PO,
+            text=True)
 
         match args.optimization_type:
             case 0:
@@ -199,16 +199,34 @@ def main():
 
         if args.all:
             print("All selected...")
-
             p_threads = []
-            for program in TEST_PROGRAMS:
-                p_threads.append((BOCAOptimizerPO(CFG, program, args.threaded, args.name), program, "fast"))
-                # p_threads.append(Process(target=apply_optimizer_task_all, args=(optimizer,program,"fast")) )
-                        #optimizer_list, test, modes
-                # for t in p_threads:
-                #     t.start()
-                # for t in p_threads:
-                #     t.join()
+            match args.optimization_type:
+                case 0:
+                    print("Iterative selected...")
+                    if args.phase:
+                        for program in TEST_PROGRAMS:
+                            p_threads.append((IterativeOptimizerPO(CFG, program, args.threaded, args.name), program, "fast"))
+                    else:
+                        for program in TEST_PROGRAMS:
+                            p_threads.append((IterativeOptimizer(CFG, program, args.threaded, args.name), program, "fast"))
+                case 1:
+                    print("Genetic selected...")
+                    if args.phase:
+                        raise ValueError("Genetic optimization not supported for the phase-order problem...")
+                    else:
+                        for program in TEST_PROGRAMS:
+                            p_threads.append((GeneticOptimizer(CFG, program, args.threaded, args.name), program, "fast"))
+                case 2:
+                    print("BOCA selected...")
+                    if args.phase:
+                        for program in TEST_PROGRAMS:
+                            p_threads.append((BOCAOptimizerPO(CFG, program, args.threaded, args.name), program, "fast"))
+                    else:
+                        for program in TEST_PROGRAMS:
+                            p_threads.append((BOCAOptimizer(CFG, program, args.threaded, args.name), program, "fast"))
+                case _:
+                    raise ValueError("Invalid optimization type.")
+
             with Pool(min(30, len(TEST_PROGRAMS))) as p:
                 p.map(apply_optimizer_task_all, p_threads)
         else:

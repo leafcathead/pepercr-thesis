@@ -1,0 +1,3 @@
+{"test_path": "spectral/sorting,", "test_desc": "Flag_Selection_MultiProgram_Test_4Program_2", "action_status": "started", "timestamp": 1713911693.2597132, "task_uuid": "87d1310c-0c78-4fa6-b5a4-6f3a0af1f04a", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1713911693.2602732, "task_uuid": "87d1310c-0c78-4fa6-b5a4-6f3a0af1f04a", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1713911693.2670302, "task_uuid": "87d1310c-0c78-4fa6-b5a4-6f3a0af1f04a", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}

@@ -34,7 +34,7 @@ settings:
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     multicore_cores: 4
     log_output_loc: logs/
-    num_of_optimizer_runs: 1
+    num_of_optimizer_runs: 4
     run_allowance: 1000
 iterative_settings:
     num_of_presets: 250 # DEFAULT 300

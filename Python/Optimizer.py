@@ -493,10 +493,10 @@ class BOCAOptimizer(Optimizer, ABC):
 
     def __boca_to_df(self, mode):
         boca_table = pd.DataFrame(columns=["ID", "Mode", "Flags", "Runtime", "Iteration", "Best"])
-        for entry in self.baseline_set:
+        for entry, value in self.baseline_set.items():
             # chromosome_table.loc[len(chromosome_table.index)] = [entry, mode, [entry], self.base_log_dictionary[entry]["Runtime"]]
             boca_table.loc[len(boca_table.index)] = [entry, mode, entry,
-                                                     self.baseline_set[entry]["Runtime"].iloc[0], 0, False]
+                                                     value, 0, False]
 
         for b in self.training_set:
             boca_table.loc[len(boca_table.index)] = [b.id, mode, b.flags, b.runtime, b.iteration_created,
@@ -526,7 +526,7 @@ class BOCAOptimizer(Optimizer, ABC):
                                                   "mode": mode, "id": f}
             table = self._run_analysis_tool(mode)
             self.log_dictionary.clear()
-            self.baseline_set[f] = table
+            self.baseline_set[f] = table["Runtime"].iloc[0]
 
         print("Baseline Configured...")
 
@@ -635,9 +635,9 @@ class BOCAOptimizer(Optimizer, ABC):
         ##print("Important Settings: ", important_settings)
         all_candidates = []
 
+        C = self.__normal_decay(self.iterations)
+        print("C: ", C)
         for index, optimization in enumerate(important_settings):
-            C = self.__normal_decay(self.iterations)
-            print("C: ", C)
         #    if C > len(unimportant_optimizations):
          #       C = len(unimportant_optimizations)
             new_candidate_flags = optimization + list(np.random.choice(unimportant_optimizations, size=random.randint(0, int(C)), replace=False))
@@ -1056,7 +1056,7 @@ class IterativeOptimizerPO (Optimizer, ABC):
 
         # self.configure_baseline(mode) -- Unneeded. Just keep a master one on file.
 
-        compiler_mutex.acquire()
+
         for order in self.orders:
 
             # If preset already exist in Dictionary, get the same ID.
@@ -1077,6 +1077,7 @@ class IterativeOptimizerPO (Optimizer, ABC):
                                                              mode)
 
             # Replace file with new order
+            compiler_mutex.acquire()
             self._replace_phase_order(order[0]) # Always acquires a mutex
 
 
@@ -1090,9 +1091,10 @@ class IterativeOptimizerPO (Optimizer, ABC):
                 stderr=subprocess.PIPE,
                 cwd=self.nofib_exec_path,
                 text=True)
-            print(result)
+            #print(result)
+            compiler_mutex.release()
             self.log_dictionary[log_file_name] = {"order": order[0], "mode": mode, "id": run_id}
-        compiler_mutex.release()
+
 
         # for c in command_list:
         #     print(fr'Applying command to {self.test_path}')
