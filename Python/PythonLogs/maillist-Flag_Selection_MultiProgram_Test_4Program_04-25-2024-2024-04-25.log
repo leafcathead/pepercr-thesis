@@ -1,0 +1,7 @@
+{"action_status": "started", "timestamp": 1714088550.7360866, "task_uuid": "4e80c0fe-f310-403b-8059-5421575390c2", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714088550.7426326, "task_uuid": "4e80c0fe-f310-403b-8059-5421575390c2", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1714088976.8950233, "task_uuid": "16db1ebd-726d-492d-8073-8dae347e83bb", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714088976.898796, "task_uuid": "16db1ebd-726d-492d-8073-8dae347e83bb", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1714089341.2219195, "task_uuid": "51c1a6c6-bbf8-4528-8692-5d76f8c922ca", "action_type": "ERROR_CANDIDATE", "task_level": [1]}
+{"optimizer": "BOCA", "message": "No unique candidate found.", "iteration": 13, "all_candidates": [], "timestamp": 1714089341.2224853, "task_uuid": "51c1a6c6-bbf8-4528-8692-5d76f8c922ca", "task_level": [2], "message_type": "ERROR"}
+{"action_status": "succeeded", "timestamp": 1714089341.2227385, "task_uuid": "51c1a6c6-bbf8-4528-8692-5d76f8c922ca", "action_type": "ERROR_CANDIDATE", "task_level": [3]}

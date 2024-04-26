@@ -1,0 +1,13 @@
+{"action_status": "started", "timestamp": 1714088550.7288435, "task_uuid": "34cbabec-32dd-4ce3-8673-01a370542eed", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714088550.7353733, "task_uuid": "34cbabec-32dd-4ce3-8673-01a370542eed", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/maillist", "test_desc": "Flag_Selection_MultiProgram_Test_4Program_04-25-2024", "action_status": "started", "timestamp": 1714088550.7357085, "task_uuid": "4e80c0fe-f310-403b-8059-5421575390c2", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714088550.7360866, "task_uuid": "4e80c0fe-f310-403b-8059-5421575390c2", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714088550.7426326, "task_uuid": "4e80c0fe-f310-403b-8059-5421575390c2", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1714088976.8485172, "task_uuid": "c5e1e6f1-d423-4cc1-8a6a-42a3548f1317", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714088976.8941255, "task_uuid": "c5e1e6f1-d423-4cc1-8a6a-42a3548f1317", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/maillist", "test_desc": "Flag_Selection_MultiProgram_Test_4Program_04-25-2024", "action_status": "started", "timestamp": 1714088976.8946016, "task_uuid": "16db1ebd-726d-492d-8073-8dae347e83bb", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714088976.8950233, "task_uuid": "16db1ebd-726d-492d-8073-8dae347e83bb", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714088976.898796, "task_uuid": "16db1ebd-726d-492d-8073-8dae347e83bb", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1714089341.2219195, "task_uuid": "51c1a6c6-bbf8-4528-8692-5d76f8c922ca", "action_type": "ERROR_CANDIDATE", "task_level": [1]}
+{"optimizer": "BOCA", "message": "No unique candidate found.", "iteration": 13, "all_candidates": [], "timestamp": 1714089341.2224853, "task_uuid": "51c1a6c6-bbf8-4528-8692-5d76f8c922ca", "task_level": [2], "message_type": "ERROR"}
+{"action_status": "succeeded", "timestamp": 1714089341.2227385, "task_uuid": "51c1a6c6-bbf8-4528-8692-5d76f8c922ca", "action_type": "ERROR_CANDIDATE", "task_level": [3]}

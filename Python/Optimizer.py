@@ -1134,48 +1134,52 @@ class IterativeOptimizerPO (Optimizer, ABC):
 
         ## Using RIO to test a whole bunch of presets:
         count = 0
-        for phase in complete_table["Phase"]:
-            print(phase)
-            compiler_mutex.acquire()
-            self._replace_phase_order(phase)
+        phase = best_result[0]
+        # for phase in complete_table["Phase"]:
+        print(phase)
+        compiler_mutex.acquire()
+        self._replace_phase_order(phase)
 
-            # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
+        # f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'
 
-            # with open(f"{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/{self.label}-{self.optimizer_number}.txt", "w"):
-            #     print("File created...")
+        # with open(f"{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/{self.label}-{self.optimizer_number}.txt", "w"):
+        #     print("File created...")
 
-            command = f'hadrian/build test --skip-depends --freeze1 --skip-perf -j36 --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/RIO-{self.label}-{count}-{self.optimizer_number}.txt'
-            print("Running compiler test suite...")
-            result = subprocess.run(
-                command,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=self.ghc_exec_path,
-                text=True)
-            compiler_mutex.release()
-            # print(result)
-            print("--------------------------------------------------------")
+        command = f'hadrian/build test --skip-depends --freeze1 --skip-perf -j36 --test-speed=fast --summary=GHC_Compile_Tests/{self.test_name}/RIO-{self.label}-{count}-{self.optimizer_number}.txt'
+        print("Running compiler test suite...")
+        result = subprocess.run(
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=self.ghc_exec_path,
+            text=True)
 
-            self._write_phase_order_training_data(phase, result)
+        compiler_mutex.release()
+        # print(result)
+        print("--------------------------------------------------------")
 
-            try:
+        self._write_phase_order_training_data(phase, result)
 
-                if not os.path.exists(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'):
-                    os.makedirs(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}')
+        try:
 
-                with open(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/RIO-{self.label}-{count}-{self.optimizer_number}.txt', "a") as pof:
-                    pof.write(phase)
-                    print("Compiler test log appended...")
+            if not os.path.exists(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}'):
+                os.makedirs(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}')
 
-            except IOError as e:
-                print("Unable to append to compile test log...")
-                print(e)
-            except FileExistsError as e2:
-                print("Weird OS stuff!")
-                print(e2)
+            with open(f'{self.ghc_exec_path}/GHC_Compile_Tests/{self.test_name}/RIO-{self.label}-{count}-{self.optimizer_number}.txt', "a") as pof:
+                pof.write(phase)
+                print("Compiler test log appended...")
 
-            count += 1
+
+        except IOError as e:
+            print("Unable to append to compile test log...")
+            print(e)
+        except FileExistsError as e2:
+            print("Weird OS stuff!")
+            print(e2)
+
+        count += 1
+        # LOOP END
 
 
         self._write_phase_order_training_data(best_result[0], result)
