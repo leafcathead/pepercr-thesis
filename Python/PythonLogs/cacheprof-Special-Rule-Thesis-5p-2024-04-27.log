@@ -1,0 +1,5 @@
+{"action_status": "started", "timestamp": 1714238466.3161087, "task_uuid": "d1ead897-3976-4c9c-8df0-de6db85ef49d", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714238466.3194225, "task_uuid": "d1ead897-3976-4c9c-8df0-de6db85ef49d", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/maillist", "test_desc": "Special-Rule-Thesis-5p", "action_status": "started", "timestamp": 1714238466.3196907, "task_uuid": "138817fa-900f-4b73-90b9-f6088c0680b5", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714238466.3200114, "task_uuid": "138817fa-900f-4b73-90b9-f6088c0680b5", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714238466.3232741, "task_uuid": "138817fa-900f-4b73-90b9-f6088c0680b5", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}

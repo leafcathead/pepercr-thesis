@@ -1481,30 +1481,30 @@ class BOCAOptimizerPO (Optimizer, ABC):
             filter(lambda x: x.order_string not in list(map(lambda y: y.order_string, self.training_set)), all_candidates))
 
         # Eliminate candidates unlikely to succeed
-        clf = svm.SVC()
-        classification_set = self._retrieve_phase_order_training_data()
-        # print(classification_set)
-        # print(classification_set.columns)
-        y_train = classification_set["worked"]
-        classification_set["phase"] = classification_set["phase"].apply(lambda phase : BOCAOptimizationPO(phase, self.iterations))
-        X_train = pd.DataFrame(columns=all_rules)
-        for phase in classification_set["phase"]:
-            row_data = [1 if rule in phase.rules else 0 for rule in all_rules]
-            X_train.loc[len(X_train)] = row_data
-        clf.fit(X_train, y_train)
-        transformed_candidates = pd.DataFrame(columns=all_rules)
+        # clf = svm.SVC()
+        # classification_set = self._retrieve_phase_order_training_data()
+        # # print(classification_set)
+        # # print(classification_set.columns)
+        # y_train = classification_set["worked"]
+        # classification_set["phase"] = classification_set["phase"].apply(lambda phase : BOCAOptimizationPO(phase, self.iterations))
+        # X_train = pd.DataFrame(columns=all_rules)
+        # for phase in classification_set["phase"]:
+        #     row_data = [1 if rule in phase.rules else 0 for rule in all_rules]
+        #     X_train.loc[len(X_train)] = row_data
+        # clf.fit(X_train, y_train)
+        # transformed_candidates = pd.DataFrame(columns=all_rules)
 
-        # Iterate through all candidates
-        for b in all_candidates:
-            # Create a list comprehension to check if each rule is present in the candidate's rules
-            new_row = [1 if r in b.rules else 0 for r in all_rules]
-            # Append the new row to the DataFrame
-            transformed_candidates.loc[len(transformed_candidates)] = new_row
+        # # Iterate through all candidates
+        # for b in all_candidates:
+        #     # Create a list comprehension to check if each rule is present in the candidate's rules
+        #     new_row = [1 if r in b.rules else 0 for r in all_rules]
+        #     # Append the new row to the DataFrame
+        #     transformed_candidates.loc[len(transformed_candidates)] = new_row
 
 
-        # Predict using the classifier
-        predict = clf.predict(transformed_candidates)
-        all_candidates = [candidate for index, candidate in enumerate(all_candidates) if predict[index] == 1]
+        # # Predict using the classifier
+        # predict = clf.predict(transformed_candidates)
+        # all_candidates = [candidate for index, candidate in enumerate(all_candidates) if predict[index] == 1]
 
 
         if len(all_candidates) > 0:

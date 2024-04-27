@@ -1,0 +1,11 @@
+{"action_status": "started", "timestamp": 1714238466.3086216, "task_uuid": "fae7cc6a-9e4f-4e41-aed2-af3b1d9da50f", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714238466.3118615, "task_uuid": "fae7cc6a-9e4f-4e41-aed2-af3b1d9da50f", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/hidden", "test_desc": "Special-Rule-Thesis-5p", "action_status": "started", "timestamp": 1714238466.312073, "task_uuid": "d34cdf02-29e1-425f-bae8-c5d3ba8a50ac", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714238466.3123229, "task_uuid": "d34cdf02-29e1-425f-bae8-c5d3ba8a50ac", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714238466.315593, "task_uuid": "d34cdf02-29e1-425f-bae8-c5d3ba8a50ac", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/cacheprof", "test_desc": "Special-Rule-Thesis-5p", "action_status": "started", "timestamp": 1714238466.315831, "task_uuid": "d1ead897-3976-4c9c-8df0-de6db85ef49d", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714238466.3161087, "task_uuid": "d1ead897-3976-4c9c-8df0-de6db85ef49d", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714238466.3194225, "task_uuid": "d1ead897-3976-4c9c-8df0-de6db85ef49d", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/maillist", "test_desc": "Special-Rule-Thesis-5p", "action_status": "started", "timestamp": 1714238466.3196907, "task_uuid": "138817fa-900f-4b73-90b9-f6088c0680b5", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714238466.3200114, "task_uuid": "138817fa-900f-4b73-90b9-f6088c0680b5", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714238466.3232741, "task_uuid": "138817fa-900f-4b73-90b9-f6088c0680b5", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
