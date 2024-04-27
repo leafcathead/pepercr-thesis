@@ -1,0 +1,6 @@
+{"test_path": "spectral/sorting", "test_desc": "BOCA_Test_4Program_04-27-2024", "action_status": "started", "timestamp": 1714161327.529943, "task_uuid": "02abd1e1-cab8-49cb-b21b-fff578cd9fcb", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714161327.5308568, "task_uuid": "02abd1e1-cab8-49cb-b21b-fff578cd9fcb", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714161327.5347528, "task_uuid": "02abd1e1-cab8-49cb-b21b-fff578cd9fcb", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1714168922.4318044, "task_uuid": "715af4bc-bc43-473c-9edd-fd7c8233fd93", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "BOCA", "no": "0", "best_result": ["0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|17|21|15|18|19|22|16|20|23", 0.141], "run_allowance": 641, "iterations": 335, "timestamp": 1714168922.4320016, "task_uuid": "715af4bc-bc43-473c-9edd-fd7c8233fd93", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1714168922.4320745, "task_uuid": "715af4bc-bc43-473c-9edd-fd7c8233fd93", "action_type": "LOG_RESULTS", "task_level": [3]}

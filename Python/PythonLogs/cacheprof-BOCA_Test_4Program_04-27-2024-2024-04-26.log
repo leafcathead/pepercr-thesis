@@ -1,0 +1,9 @@
+{"test_path": "real/cacheprof", "test_desc": "BOCA_Test_4Program_04-27-2024", "action_status": "started", "timestamp": 1714169604.1145303, "task_uuid": "1cba026d-da5c-47b4-9310-86ef9a163b6d", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714169604.115429, "task_uuid": "1cba026d-da5c-47b4-9310-86ef9a163b6d", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714169604.119402, "task_uuid": "1cba026d-da5c-47b4-9310-86ef9a163b6d", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"action_status": "started", "timestamp": 1714169645.8128364, "task_uuid": "d37e3bca-5062-41f3-919b-92859ff5702c", "action_type": "ERROR_CANDIDATE", "task_level": [1]}
+{"optimizer": "BOCA", "message": "No unique candidate found.", "iteration": 1, "all_candidates": [], "timestamp": 1714169645.8130023, "task_uuid": "d37e3bca-5062-41f3-919b-92859ff5702c", "task_level": [2], "message_type": "ERROR"}
+{"action_status": "succeeded", "timestamp": 1714169645.8130643, "task_uuid": "d37e3bca-5062-41f3-919b-92859ff5702c", "action_type": "ERROR_CANDIDATE", "task_level": [3]}
+{"action_status": "started", "timestamp": 1714177086.0193338, "task_uuid": "ec1c9dbb-dcbf-4ac1-bbb6-a3dee484d1ae", "action_type": "LOG_RESULTS", "task_level": [1]}
+{"optimizer": "BOCA", "no": "0", "best_result": ["0|1|2|3|4|5|6|7|8|9|10|11|12|13|19|22|20|15|16|14|18|23|17|21", 0.113], "run_allowance": 644, "iterations": 333, "timestamp": 1714177086.0194533, "task_uuid": "ec1c9dbb-dcbf-4ac1-bbb6-a3dee484d1ae", "task_level": [2], "message_type": "INFO"}
+{"action_status": "succeeded", "timestamp": 1714177086.0195198, "task_uuid": "ec1c9dbb-dcbf-4ac1-bbb6-a3dee484d1ae", "action_type": "LOG_RESULTS", "task_level": [3]}
