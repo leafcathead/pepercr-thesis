@@ -1,0 +1,15 @@
+{"test_path": null, "test_desc": "Special-Rule-Thesis-Multi-5P", "action_status": "started", "timestamp": 1714322497.6592803, "task_uuid": "c0a1ca1a-53a8-4ea1-80ca-22933410c874", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714322497.6599512, "task_uuid": "c0a1ca1a-53a8-4ea1-80ca-22933410c874", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714322497.6655307, "task_uuid": "c0a1ca1a-53a8-4ea1-80ca-22933410c874", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "spectral/sorting", "test_desc": "Special-Rule-Thesis-Multi-5P", "action_status": "started", "timestamp": 1714322497.6657882, "task_uuid": "66d744ab-68b2-4e39-9e47-55f0350edb3b", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714322497.666034, "task_uuid": "66d744ab-68b2-4e39-9e47-55f0350edb3b", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714322497.6708298, "task_uuid": "66d744ab-68b2-4e39-9e47-55f0350edb3b", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/hidden", "test_desc": "Special-Rule-Thesis-Multi-5P", "action_status": "started", "timestamp": 1714322497.6710622, "task_uuid": "73a69f66-6f5a-401f-93e4-03219c81868b", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714322497.6713355, "task_uuid": "73a69f66-6f5a-401f-93e4-03219c81868b", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714322497.6761482, "task_uuid": "73a69f66-6f5a-401f-93e4-03219c81868b", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/cacheprof", "test_desc": "Special-Rule-Thesis-Multi-5P", "action_status": "started", "timestamp": 1714322497.6764114, "task_uuid": "06285aa0-113e-4f96-8168-057e38da0eb6", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714322497.6767125, "task_uuid": "06285aa0-113e-4f96-8168-057e38da0eb6", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714322497.7208314, "task_uuid": "06285aa0-113e-4f96-8168-057e38da0eb6", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/maillist", "test_desc": "Special-Rule-Thesis-Multi-5P", "action_status": "started", "timestamp": 1714322497.7212548, "task_uuid": "b2c9d287-01df-478d-b03f-7338a824cba2", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714322497.7216706, "task_uuid": "b2c9d287-01df-478d-b03f-7338a824cba2", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714322497.7266243, "task_uuid": "b2c9d287-01df-478d-b03f-7338a824cba2", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
