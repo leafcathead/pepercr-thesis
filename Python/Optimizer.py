@@ -1496,7 +1496,7 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         # Iterate through all candidates
         for b in all_candidates:
-            # Create a list comprehension to check if each rule is present in the candidate's rules
+            # Create a list comprehension to check if each rule Fis present in the candidate's rules
             new_row = [1 if r in b.rules else 0 for r in all_rules]
             # Append the new row to the DataFrame
             transformed_candidates.loc[len(transformed_candidates)] = new_row
@@ -1715,7 +1715,8 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         # Now randomly grab some other rules based on C
         rules_list = list(set(rules_list) - set(required_edges))
-        rules_list = random.sample(rules_list, random.randint(0, len(rules_list) - int(C)))
+        upper_bound = len(rules_list) - int(C)
+        rules_list = random.sample(rules_list, random.randint(0, 1 if upper_bound <= 0 else upper_bound))
 
         random.shuffle(rules_list) # This line right here turns this from O(V!) -> O(|V| + |E|)
         # for rule in rules_list:
@@ -1728,7 +1729,8 @@ class BOCAOptimizerPO (Optimizer, ABC):
 
         try:
 
-            candidate_permutation = list(nx.topological_sort(G))
+            #candidate_permutation = list(nx.topological_sort(G))
+            candidate_permutation = list(cons_algorithm(G))
 
         except:
             print("CYCLE ERROR!")
@@ -2019,3 +2021,26 @@ class GeneticOptimizerPO (Optimizer, ABC):
 
         complete_table.to_csv(
             f'{self.analysis_dir}/{self.test_name}/{self.test_name}-Genetic-{self.label}-{self.optimizer_number}.csv')
+
+
+def cons_algorithm(G : nx.DiGraph):
+    # Get all sources in the graph (Nodes with in_degree = 0)
+    topological_sort = []
+
+    if not nx.is_directed_acyclic_graph(G):
+        raise TypeError("Graph should be a DAG, this graph contains a cycle!")
+
+    while (G.order() > 0):
+        sources = [node for node in G.nodes if G.in_degree(node) == 0]
+        # Calculate Weights for random choice. Weight is based on minimum other nodes could be visited from that node, including itself.
+        weights = [1 + G.out_degree(node) for node in sources]
+        tmp = sum(weights)
+        weights = list(map(lambda x: x/tmp, weights))
+        topo_elem = random.choices(sources, weights)[0]
+        # Erase all edges from our selected source
+        topological_sort.append(topo_elem)
+        G.remove_edges_from(list(map(lambda x: (topo_elem, x), list(G.successors(topo_elem)))))
+        # Remove selected node from the Graph
+        G.remove_node(topo_elem)
+        # Repeat
+    return topological_sort

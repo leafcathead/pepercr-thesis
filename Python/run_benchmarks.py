@@ -150,21 +150,21 @@ def main():
 
         print(f'Cleaning and building nofib...')
         command = f"make clean && make boot"
-        result_1 = subprocess.run(
-            command,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            cwd=NOFIB_EXEC_PATH,
-            text=True)
+        # result_1 = subprocess.run(
+        #     command,
+        #     shell=True,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE,
+        #     cwd=NOFIB_EXEC_PATH,
+        #     text=True)
 
-        result_2 = subprocess.run(
-            command,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            cwd=NOFIB_EXEC_PATH_PO,
-            text=True)
+        # result_2 = subprocess.run(
+        #     command,
+        #     shell=True,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE,
+        #     cwd=NOFIB_EXEC_PATH_PO,
+        #     text=True)
 
         match args.optimization_type:
             case 0:

@@ -1,0 +1,5 @@
+{"action_status": "started", "timestamp": 1714347233.5758986, "task_uuid": "4404fe82-1ccb-4fab-9619-aff36b5b607d", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714347233.5828345, "task_uuid": "4404fe82-1ccb-4fab-9619-aff36b5b607d", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
+{"test_path": "real/maillist", "test_desc": "Thesis-PO-FS-Final_MultiThreaded", "action_status": "started", "timestamp": 1714347233.5836072, "task_uuid": "a2095f95-8396-4588-9203-e1789462abca", "action_type": "OPTIMIZER_CREATION", "task_level": [1]}
+{"action_status": "started", "timestamp": 1714347233.5844307, "task_uuid": "a2095f95-8396-4588-9203-e1789462abca", "action_type": "LOG_RESULTS", "task_level": [2, 1]}
+{"action_status": "succeeded", "timestamp": 1714347233.5911658, "task_uuid": "a2095f95-8396-4588-9203-e1789462abca", "action_type": "OPTIMIZER_CREATION", "task_level": [3]}
