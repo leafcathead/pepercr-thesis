@@ -34,7 +34,7 @@ settings:
     ghc-default-flags: [-O0,-O1,-O2,-Os]
     multicore_cores: 4
     log_output_loc: logs/
-    num_of_optimizer_runs: 10
+    num_of_optimizer_runs: 1
     run_allowance: 10000
 iterative_settings:
     num_of_presets: 500 # DEFAULT 300
@@ -52,8 +52,8 @@ genetic_settings: # FOGA Paper
 boca_settings:
     initial_set: 25 # 40 100
     num_of_impactful_optimizations: 5 # 6 10
-    iterations: 5000 # 50 100
+    iterations: 500 # 50 100
     max_without_improvement: 2000
-    decay: 0.64 # 0.72
+    decay: 0.55 # 0.72
     offset: 25 # 50
-    scale: 40 # 30
+    scale: 16 # 30
